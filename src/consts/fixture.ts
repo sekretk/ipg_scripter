@@ -1,4 +1,6 @@
-const USERS_LIST = `SamAccountName    DistinguishedName                                       Enabled
+import { COMMANDS } from './commands';
+
+export const USERS_LIST_01 = `SamAccountName    DistinguishedName                                       Enabled
 --------------    -----------------                                       -------
 Administrator     CN=Administrator,CN=Users,DC=IPG,DC=LOCAL                  True
 Guest             CN=Guest,CN=Users,DC=IPG,DC=LOCAL                         False
@@ -82,7 +84,7 @@ krm_netolchina    CN=Нетолчина Ольга Юрьевна,OU=CRM,DC=IPG,
 volga_jabkin      CN=Жабкин А.И.,OU=VLG,DC=IPG,DC=LOCAL                      True
 volga_zobov       CN=Зобов С.А.,OU=VLG,DC=IPG,DC=LOCAL                       True`;
 
-export const ALL_GROUPS_OUTPUT = `Name                                    SID
+export const GROUPS_OUTPUT_01 = `Name                                    SID
 ----                                    ---
 Administrators                          S-1-5-32-544
 Users                                   S-1-5-32-545
@@ -146,9 +148,21 @@ IPG_Documentation                       S-1-5-21-1403180944-1677745273-223...
 IPG_Buhgalteria                         S-1-5-21-1403180944-1677745273-223...
 `;
 
-export const USER_GROUPS_OUTPUT = `name                 SID
+export const GROUPS_OUTPUT_02 = `name                 SID
 ----                 ---
 Domain Users         S-1-5-21-1403180944-1677745273-2235910166-513
 IPG_Management_M-A-M S-1-5-21-1403180944-1677745273-2235910166-1196
 IPG_Buhgalteria      S-1-5-21-1403180944-1677745273-2235910166-1601`;
 
+export const COMMAND_MOCKS: Record<
+  (typeof COMMANDS)[keyof typeof COMMANDS],
+  string
+> = {
+  [COMMANDS.GET_ALL_USER]: USERS_LIST_01,
+  [COMMANDS.ADD_USER_TO_GROUP]: '',
+  [COMMANDS.DISABLE_USER]: '',
+  [COMMANDS.GET_ALL_GROUPS]: GROUPS_OUTPUT_01,
+  [COMMANDS.GET_USER_GROUPS]: GROUPS_OUTPUT_02,
+  [COMMANDS.REMOVE_USER_FROM_GROUP]: '',
+  [COMMANDS.HELLO]: 'mock hello',
+};
