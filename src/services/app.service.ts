@@ -15,6 +15,7 @@ export class AppService {
 
   users = (): Array<User> =>
     byLines(this.shellService.exec(COMMANDS.GET_ALL_USER))
+    .filter(_ => Boolean(_.trim()))
       .map(toUser)
       .filter((_) => Boolean(_.unit));
 
