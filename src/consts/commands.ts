@@ -1,6 +1,6 @@
 export const COMMANDS = {
   GET_ALL_USER:
-    'Get-ADUser -Filter * | Format-Table SamAccountName, DistinguishedName, Enabled -A',
+    `Get-ADUser -Filter * -Properties lastLogon | Select SamAccountName, DistinguishedName, Enabled,  @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.'lastLogon').toString("yyyy-MM-dd")}}`,
 
   GET_ALL_GROUPS: 'Get-ADGroup -Filter * | Format-Table Name',
 

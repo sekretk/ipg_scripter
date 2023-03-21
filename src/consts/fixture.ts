@@ -1,88 +1,90 @@
 import { COMMANDS } from './commands';
 
-export const USERS_LIST_01 = `SamAccountName    DistinguishedName                                       Enabled
---------------    -----------------                                       -------
-Administrator     CN=Administrator,CN=Users,DC=IPG,DC=LOCAL                  True
-Guest             CN=Guest,CN=Users,DC=IPG,DC=LOCAL                         False
-DefaultAccount    CN=DefaultAccount,CN=Users,DC=IPG,DC=LOCAL                False
-krbtgt            CN=krbtgt,CN=Users,DC=IPG,DC=LOCAL                        False
-rnd_avdienko      CN=Авдиенко Анастасия,OU=RND,DC=IPG,DC=LOCAL               True
-rnd_grigorieva    CN=Григорьева,OU=RND,DC=IPG,DC=LOCAL                       True
-rnd_audit         CN=Аудит,OU=RND,DC=IPG,DC=LOCAL                           False
-rnd_hucishvilly   CN=Хуцишвилли,OU=RND,DC=IPG,DC=LOCAL                       True
-rnd_office        CN=Офис РНД,OU=RND,DC=IPG,DC=LOCAL                         True
-rnd_belokobilskay CN=Белокобыльская,OU=RND,DC=IPG,DC=LOCAL                   True
-rnd_sabich        CN=Сабич,OU=RND,DC=IPG,DC=LOCAL                            True
-msk_muraveva      CN=Муравьёва,OU=MSK,DC=IPG,DC=LOCAL                        True
-rnd_providohin    CN=Провидохин,OU=RND,DC=IPG,DC=LOCAL                       True
-rnd_sklad         CN=Скад,OU=RND,DC=IPG,DC=LOCAL                             True
-volga_urtanova    CN=Уртанова,OU=VLG,DC=IPG,DC=LOCAL                         True
-rnd_gugevin       CN=Гужевин,OU=RND,DC=IPG,DC=LOCAL                          True
-msk_vasileva      CN=Васильева,OU=MSK,DC=IPG,DC=LOCAL                        True
-rnd_vatulina      CN=Ватулина,OU=MSK,DC=IPG,DC=LOCAL                         True
-krm_kuzma         CN=Кузьма,OU=CRM,DC=IPG,DC=LOCAL                           True
-krm_chumak        CN=Чумак,OU=CRM,DC=IPG,DC=LOCAL                            True
-rnd_larin         CN=Ларин,OU=RND,DC=IPG,DC=LOCAL                            True
-rnd_sergeev       CN=Сергеев,OU=RND,DC=IPG,DC=LOCAL                          True
-rnd_gorbachev     CN=Горбачёв,OU=RND,DC=IPG,DC=LOCAL                         True
-rnd_komarov       CN=Комаров,OU=RND,DC=IPG,DC=LOCAL                          True
-msk_zarev         CN=Царёв,OU=MSK,DC=IPG,DC=LOCAL                            True
-krm_saidov        CN=Саидов,OU=CRM,DC=IPG,DC=LOCAL                           True
-1cadmin           CN=1С пользователь,CN=Users,DC=IPG,DC=LOCAL                True
-msk_morozova      CN=Морозова,OU=MSK,DC=IPG,DC=LOCAL                         True
-msk_shavkin       CN=Шавкин,OU=MSK,DC=IPG,DC=LOCAL                           True
-krn_marchenkova   CN=Марченкова,OU=KRN,DC=IPG,DC=LOCAL                       True
-msk_chprasov      CN=Чепасов,OU=MSK,DC=IPG,DC=LOCAL                          True
-msk_chekunov      CN=Чекунов,OU=MSK,DC=IPG,DC=LOCAL                          True
-krm_vasilkovsky   CN=Васильковский,OU=CRM,DC=IPG,DC=LOCAL                   False
-krm_shipilov      CN=Шипилов,OU=CRM,DC=IPG,DC=LOCAL                          True
-msk_muravev       CN=Муравьёв,OU=MSK,DC=IPG,DC=LOCAL                         True
-rnd_careva        CN=Царёва,OU=RND,DC=IPG,DC=LOCAL                           True
-msk_kosobochkina  CN=Кособочкина,OU=MSK,DC=IPG,DC=LOCAL                      True
-spb_laiming       CN=Лайминг,OU=SPB,DC=IPG,DC=LOCAL                          True
-spb_morozova      CN=Морозова,OU=SPB,DC=IPG,DC=LOCAL                         True
-krn_zotov         CN=Зотов,OU=KRN,DC=IPG,DC=LOCAL                            True
-volga_sidorov     CN=Сидоров,OU=VLG,DC=IPG,DC=LOCAL                          True
-rnd_glavbuh       CN=Главбух,OU=RND,DC=IPG,DC=LOCAL                         False
-rnd_kuznezova     CN=Кузнецова,OU=RND,DC=IPG,DC=LOCAL                        True
-rnd_gutiryk       CN=Гутирук,OU=RND,DC=IPG,DC=LOCAL                          True
-ptg_portnova      CN=Портнова,OU=PTG,DC=IPG,DC=LOCAL                         True
-ptg_gulidin       CN=Гулидин,OU=PTG,DC=IPG,DC=LOCAL                          True
-spb_aleksandrova  CN=Александрова,OU=SPB,DC=IPG,DC=LOCAL                     True
-krm_harchev       CN=Харчев Александр Юрьевич,OU=CRM,DC=IPG,DC=LOCAL         True
-krm_kuzmina       CN=Кузьмина Лилия Ринатовна,OU=CRM,DC=IPG,DC=LOCAL        False
-krm_ulitina       CN=Улитина Оксана Сергеевна,OU=CRM,DC=IPG,DC=LOCAL         True
-krm_mechanic      CN=механик,OU=CRM,DC=IPG,DC=LOCAL                          True
-rnd_elitaudit     CN=Элит Аудит,OU=RND,DC=IPG,DC=LOCAL                      False
-krm_rybov         CN=Рябов Андрей Александрович,OU=CRM,DC=IPG,DC=LOCAL       True
-krn_jevkiak       CN=Жевтяк Валерий Васильевич,OU=KRN,DC=IPG,DC=LOCAL        True
-krn_sedunov       CN=Седунов Иван Викторович,OU=KRN,DC=IPG,DC=LOCAL          True
-krm_kovalev       CN=Ковалев Сергей,OU=CRM,DC=IPG,DC=LOCAL                   True
-krm_kravchenko    CN=Кравченко Оксана Васильевна,OU=CRM,DC=IPG,DC=LOCAL      True
-krm_yakovleva     CN=Яковлева О.В.,OU=CRM,DC=IPG,DC=LOCAL                    True
-rnd_gym           CN=Спортзал РНД,OU=RND,DC=IPG,DC=LOCAL                     True
-krm_agapova       CN=Агапова Наталья,OU=CRM,DC=IPG,DC=LOCAL                  True
-krm_knyzev        CN=Князев Михаил Александрович,OU=CRM,DC=IPG,DC=LOCAL     False
-msk_guest         CN=Гость,OU=MSK,DC=IPG,DC=LOCAL                            True
-krm_lashenova     CN=Лащенова Анастасия Викторовна,OU=CRM,DC=IPG,DC=LOCAL    True
-krm_guest         CN=Крым Гость,OU=CRM,DC=IPG,DC=LOCAL                       True
-krm_momot         CN=Момот Сергей Викторович,OU=KRN,DC=IPG,DC=LOCAL          True
-krm_ososkova      CN=Ососкова Т.Ф.,OU=CRM,DC=IPG,DC=LOCAL                    True
-krm_batorshina    CN=Баторшина Виолетта Рашидовна,OU=CRM,DC=IPG,DC=LOCAL     True
-rkm_prebuh        CN=Плебух Лидия Анатольевна,OU=CRM,DC=IPG,DC=LOCAL         True
-msk_warehouse     CN=Склад Москва,OU=MSK,DC=IPG,DC=LOCAL                     True
-rnd_vashenko      CN=Ващенко Михаил,OU=RND,DC=IPG,DC=LOCAL                   True
-rnd_stepochkin    CN=Степочкин Денис,OU=RND,DC=IPG,DC=LOCAL                  True
-rnd_bluslenko     CN=Брусленко Наталья,OU=RND,DC=IPG,DC=LOCAL                True
-rnd_controller    CN=Контролер,OU=RND,DC=IPG,DC=LOCAL                        True
-krn_begun         CN=Мищенко Николай,OU=RND,DC=IPG,DC=LOCAL                  True
-rnd_mishenko      CN=Мищенко Николай,CN=Users,DC=IPG,DC=LOCAL                True
-krm_scheduler     CN=Планировщик,OU=CRM,DC=IPG,DC=LOCAL                      True
-test              CN=test testovich,CN=Users,DC=IPG,DC=LOCAL                 True
-krm_eshmanova     CN=Эмшанова Елена Васильевна,OU=CRM,DC=IPG,DC=LOCAL        True
-krm_netolchina    CN=Нетолчина Ольга Юрьевна,OU=CRM,DC=IPG,DC=LOCAL          True
-volga_jabkin      CN=Жабкин А.И.,OU=VLG,DC=IPG,DC=LOCAL                      True
-volga_zobov       CN=Зобов С.А.,OU=VLG,DC=IPG,DC=LOCAL                       True`;
+export const USERS_LIST_01 = `SamAccountName    DistinguishedName                                       Enabled lastLogon
+--------------    -----------------                                       ------- ---------
+Administrator     CN=Administrator,CN=Users,DC=IPG,DC=LOCAL                  True 2023-03-21
+Guest             CN=Guest,CN=Users,DC=IPG,DC=LOCAL                         False 1601-01-01
+DefaultAccount    CN=DefaultAccount,CN=Users,DC=IPG,DC=LOCAL                False 1601-01-01
+krbtgt            CN=krbtgt,CN=Users,DC=IPG,DC=LOCAL                        False 1601-01-01
+rnd_avdienko      CN=Авдиенко Анастасия,OU=RND,DC=IPG,DC=LOCAL               True 2023-03-21
+rnd_grigorieva    CN=Григорьева,OU=RND,DC=IPG,DC=LOCAL                       True 2023-03-21
+rnd_audit         CN=Аудит,OU=RND,DC=IPG,DC=LOCAL                           False 2023-03-14
+rnd_hucishvilly   CN=Хуцишвилли,OU=RND,DC=IPG,DC=LOCAL                       True 2023-03-21
+rnd_office        CN=Офис РНД,OU=RND,DC=IPG,DC=LOCAL                         True 2023-03-21
+rnd_belokobilskay CN=Белокобыльская,OU=RND,DC=IPG,DC=LOCAL                   True 2020-01-31
+rnd_sabich        CN=Сабич,OU=RND,DC=IPG,DC=LOCAL                            True 2023-03-21
+msk_muraveva      CN=Муравьёва,OU=MSK,DC=IPG,DC=LOCAL                        True 2023-03-21
+rnd_providohin    CN=Провидохин,OU=RND,DC=IPG,DC=LOCAL                       True 2023-03-21
+rnd_sklad         CN=Скад,OU=RND,DC=IPG,DC=LOCAL                             True 2023-03-21
+volga_urtanova    CN=Уртанова,OU=VLG,DC=IPG,DC=LOCAL                         True 2023-03-21
+rnd_gugevin       CN=Гужевин,OU=RND,DC=IPG,DC=LOCAL                          True 2023-03-21
+msk_vasileva      CN=Васильева,OU=MSK,DC=IPG,DC=LOCAL                        True 2023-03-21
+rnd_vatulina      CN=Ватулина,OU=MSK,DC=IPG,DC=LOCAL                         True 2023-03-21
+krm_kuzma         CN=Кузьма,OU=CRM,DC=IPG,DC=LOCAL                           True 2022-04-15
+krm_chumak        CN=Чумак,OU=CRM,DC=IPG,DC=LOCAL                            True 2023-03-21
+rnd_larin         CN=Ларин,OU=RND,DC=IPG,DC=LOCAL                            True 2023-03-21
+rnd_sergeev       CN=Сергеев,OU=RND,DC=IPG,DC=LOCAL                          True 2023-03-21
+rnd_gorbachev     CN=Горбачёв,OU=RND,DC=IPG,DC=LOCAL                         True 2023-03-21
+rnd_komarov       CN=Комаров,OU=RND,DC=IPG,DC=LOCAL                          True 2023-03-21
+msk_zarev         CN=Царёв,OU=MSK,DC=IPG,DC=LOCAL                            True 2023-03-21
+krm_saidov        CN=Саидов,OU=CRM,DC=IPG,DC=LOCAL                           True 2020-12-28
+1cadmin           CN=1С пользователь,CN=Users,DC=IPG,DC=LOCAL                True 2023-03-21
+msk_morozova      CN=Морозова,OU=MSK,DC=IPG,DC=LOCAL                         True 2023-03-21
+msk_shavkin       CN=Шавкин,OU=MSK,DC=IPG,DC=LOCAL                           True 2023-03-21
+krn_marchenkova   CN=Марченкова,OU=KRN,DC=IPG,DC=LOCAL                       True 2023-03-21
+msk_chprasov      CN=Чепасов,OU=MSK,DC=IPG,DC=LOCAL                          True 2020-12-14
+msk_chekunov      CN=Чекунов,OU=MSK,DC=IPG,DC=LOCAL                          True 2023-03-21
+krm_vasilkovsky   CN=Васильковский,OU=CRM,DC=IPG,DC=LOCAL                   False 2021-05-25
+krm_shipilov      CN=Шипилов,OU=CRM,DC=IPG,DC=LOCAL                          True 2019-12-18
+msk_muravev       CN=Муравьёв,OU=MSK,DC=IPG,DC=LOCAL                         True 2023-03-20
+rnd_careva        CN=Царёва,OU=RND,DC=IPG,DC=LOCAL                           True 2023-03-21
+msk_kosobochkina  CN=Кособочкина,OU=MSK,DC=IPG,DC=LOCAL                      True 1601-01-01
+spb_laiming       CN=Лайминг,OU=SPB,DC=IPG,DC=LOCAL                          True 2023-03-21
+spb_morozova      CN=Морозова,OU=SPB,DC=IPG,DC=LOCAL                         True 2023-03-21
+krn_zotov         CN=Зотов,OU=KRN,DC=IPG,DC=LOCAL                            True 2023-03-18
+volga_sidorov     CN=Сидоров,OU=VLG,DC=IPG,DC=LOCAL                          True 2023-02-14
+rnd_glavbuh       CN=Главбух,OU=RND,DC=IPG,DC=LOCAL                         False 2023-03-10
+rnd_kuznezova     CN=Кузнецова,OU=RND,DC=IPG,DC=LOCAL                        True 2023-02-10
+rnd_gutiryk       CN=Гутирук,OU=RND,DC=IPG,DC=LOCAL                          True 2020-05-15
+ptg_portnova      CN=Портнова,OU=PTG,DC=IPG,DC=LOCAL                         True 2023-03-21
+ptg_gulidin       CN=Гулидин,OU=PTG,DC=IPG,DC=LOCAL                          True 2023-03-20
+spb_aleksandrova  CN=Александрова,OU=SPB,DC=IPG,DC=LOCAL                     True 2023-03-21
+krm_harchev       CN=Харчев Александр Юрьевич,OU=CRM,DC=IPG,DC=LOCAL         True 2020-03-16
+krm_kuzmina       CN=Кузьмина Лилия Ринатовна,OU=CRM,DC=IPG,DC=LOCAL        False 2021-01-28
+krm_ulitina       CN=Улитина Оксана Сергеевна,OU=CRM,DC=IPG,DC=LOCAL         True 2023-03-15
+krm_mechanic      CN=механик,OU=CRM,DC=IPG,DC=LOCAL                          True 2020-03-24
+rnd_elitaudit     CN=Элит Аудит,OU=RND,DC=IPG,DC=LOCAL                      False 2023-03-13
+krm_rybov         CN=Рябов Андрей Александрович,OU=CRM,DC=IPG,DC=LOCAL       True 2023-03-16
+krn_jevkiak       CN=Жевтяк Валерий Васильевич,OU=KRN,DC=IPG,DC=LOCAL        True 2023-03-21
+krn_sedunov       CN=Седунов Иван Викторович,OU=KRN,DC=IPG,DC=LOCAL          True 2023-03-21
+krm_kovalev       CN=Ковалев Сергей,OU=CRM,DC=IPG,DC=LOCAL                   True 2023-03-21
+krm_kravchenko    CN=Кравченко Оксана Васильевна,OU=CRM,DC=IPG,DC=LOCAL      True 2023-03-21
+krm_yakovleva     CN=Яковлева О.В.,OU=CRM,DC=IPG,DC=LOCAL                    True 1601-01-01
+rnd_gym           CN=Спортзал РНД,OU=RND,DC=IPG,DC=LOCAL                     True 2021-05-28
+krm_agapova       CN=Агапова Наталья,OU=CRM,DC=IPG,DC=LOCAL                  True 2023-03-21
+krm_knyzev        CN=Князев Михаил Александрович,OU=CRM,DC=IPG,DC=LOCAL     False 2022-12-30
+msk_guest         CN=Гость,OU=MSK,DC=IPG,DC=LOCAL                            True 2021-05-30
+krm_lashenova     CN=Лащенова Анастасия Викторовна,OU=CRM,DC=IPG,DC=LOCAL    True 2023-03-21
+krm_guest         CN=Крым Гость,OU=CRM,DC=IPG,DC=LOCAL                       True 2023-02-08
+krm_momot         CN=Момот Сергей Викторович,OU=KRN,DC=IPG,DC=LOCAL          True 2023-03-17
+krm_ososkova      CN=Ососкова Т.Ф.,OU=CRM,DC=IPG,DC=LOCAL                    True 2023-03-21
+krm_batorshina    CN=Баторшина Виолетта Рашидовна,OU=CRM,DC=IPG,DC=LOCAL     True 2023-02-14
+rkm_prebuh        CN=Плебух Лидия Анатольевна,OU=CRM,DC=IPG,DC=LOCAL         True 2023-03-21
+msk_warehouse     CN=Склад Москва,OU=MSK,DC=IPG,DC=LOCAL                     True 2023-03-14
+rnd_vashenko      CN=Ващенко Михаил,OU=RND,DC=IPG,DC=LOCAL                   True 2023-03-21
+rnd_stepochkin    CN=Степочкин Денис,OU=RND,DC=IPG,DC=LOCAL                  True 2023-03-21
+rnd_bluslenko     CN=Брусленко Наталья,OU=RND,DC=IPG,DC=LOCAL                True 2023-03-21
+rnd_controller    CN=Контролер,OU=RND,DC=IPG,DC=LOCAL                        True 2023-03-18
+krn_begun         CN=Мищенко Николай,OU=RND,DC=IPG,DC=LOCAL                  True 1601-01-01
+rnd_mishenko      CN=Мищенко Николай,CN=Users,DC=IPG,DC=LOCAL                True 2023-03-21
+krm_scheduler     CN=Планировщик,OU=CRM,DC=IPG,DC=LOCAL                      True 2023-03-21
+test              CN=test testovich,CN=Users,DC=IPG,DC=LOCAL                 True 2023-03-21
+krm_eshmanova     CN=Эмшанова Елена Васильевна,OU=CRM,DC=IPG,DC=LOCAL        True 2023-03-21
+krm_netolchina    CN=Нетолчина Ольга Юрьевна,OU=CRM,DC=IPG,DC=LOCAL          True 2023-03-21
+volga_jabkin      CN=Жабкин А.И.,OU=VLG,DC=IPG,DC=LOCAL                      True 1601-01-01
+volga_zobov       CN=Зобов С.А.,OU=VLG,DC=IPG,DC=LOCAL                       True 1601-01-01
+
+`;
 
 export const GROUPS_OUTPUT_01 = `Name                                    SID
 ----                                    ---
