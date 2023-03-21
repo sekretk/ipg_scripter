@@ -1,7 +1,7 @@
 import { User } from '../dto';
 
 const fullNameParse = (value: string): { unit?: string; fullname?: string } => {
-  const values = value.split(',');
+  const values = value?.split(',') ?? [];
 
   const unit = values.find((_) => _.startsWith('OU='))?.replace('OU=', '');
 
@@ -14,14 +14,20 @@ const fullNameParse = (value: string): { unit?: string; fullname?: string } => {
 };
 
 export const toUser = (str: string): User => {
+
+
   const [name, description, enabled] = str.split(/\s/gm).filter(Boolean);
 
   const { fullname, unit } = fullNameParse(description);
 
-  return {
+  const res = {
     name,
-    disabled: enabled !== 'True',
+    disabled: enabled === 'False',
     fullname,
     unit,
   };
+
+  console.log(`[toUser] ${str}`);
+
+  return res;
 };
