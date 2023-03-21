@@ -3,6 +3,7 @@ export type User = {
   unit?: string;
   fullname?: string;
   disabled: boolean;
+  lastLogin: string;
 };
 
 export type Group = {

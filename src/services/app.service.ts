@@ -20,7 +20,25 @@ export class AppService {
     .filter((_) => !_.startsWith('SamAccountName'))
       .map(toUser)
       .filter((_) => Boolean(_.unit))
-      .sort((a, b) => (a.disabled > b.disabled ? 1 : -1));
+      .sort((a, b) => {
+        if (a.disabled > b.disabled) {
+          return 1;
+        } else {
+          if (a.disabled < b.disabled) {
+            return -1;
+          }
+        }
+
+        if (new Date(a.lastLogin) < new Date(b.lastLogin)) {
+          return 1;
+        } else {
+          if (new Date(a.lastLogin) > new Date(b.lastLogin)) {
+            return -1;
+          }
+        }
+
+        return 0;
+      });
 
   groups = (user: string): Array<Checked<Group>> => [];
 
