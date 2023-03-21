@@ -2,7 +2,7 @@ export type User = {
   name: string;
   unit?: string;
   fullname?: string;
-  enabled: boolean;
+  disabled: boolean;
 };
 
 export type Group = {
