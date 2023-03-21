@@ -25,3 +25,7 @@
 .PTG {
     color: tomato;
 }
+
+.disabled {
+    text-decoration: line-through;
+}

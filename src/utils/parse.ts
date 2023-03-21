@@ -20,7 +20,7 @@ export const toUser = (str: string): User => {
 
   return {
     name,
-    enabled: enabled === 'True',
+    disabled: enabled !== 'True',
     fullname,
     unit,
   };
