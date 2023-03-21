@@ -14,7 +14,9 @@ const fullNameParse = (value: string): { unit?: string; fullname?: string } => {
 };
 
 export const toUser = (str: string): User => {
-  const [name, description, enabled] = str.split(/\s/gm).filter(Boolean);
+  const [name, description, enabled, lastLogin] = str
+    .split(/\s/gm)
+    .filter(Boolean);
 
   const { fullname, unit } = fullNameParse(description);
 
@@ -23,5 +25,6 @@ export const toUser = (str: string): User => {
     disabled: enabled !== 'True',
     fullname,
     unit,
+    lastLogin,
   };
 };
