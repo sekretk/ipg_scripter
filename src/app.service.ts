@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { spawn, spawnSync, execSync } from 'child_process';
 import { GET_ALL_USER } from 'src/consts/commands';
-import { PowerShell } from 'node-powershell/dist';
 
 @Injectable()
 export class AppService {
