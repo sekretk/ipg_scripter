@@ -1,23 +1,26 @@
-import { Injectable } from '@nestjs/common';
-import { execSync } from 'child_process';
-import { GET_ALL_USER } from 'src/consts/commands';
+import { Inject, Injectable } from '@nestjs/common';
+import { COMMANDS } from '../consts/commands';
+import { Checked, Group, User, UserChangeSet } from '../dto';
+import { toUser } from '../utils/parse';
+import { byLines } from '../utils/string.utils';
+import { IShellService, SHELL_SERVICE } from './shell/shell.abstract';
 
 @Injectable()
 export class AppService {
+  constructor(@Inject(SHELL_SERVICE) private shellService: IShellService) {}
+
   getHello(): string {
-    // console.log('XXX get hello');
-
-    // const res = execSync(GET_ALL_USER, {
-    //   shell: 'powershell.exe',
-    //   encoding: 'utf-8',
-    // });
-
-    // console.log(res);
-    // return res
-    //   .split('\r\n')
-    //   .map((_) => _.split(' ').filter(Boolean)[1])
-    //   .join(' - ');
-
-    return 'hello';
+    return this.shellService.exec('HELLO');
   }
+
+  users = (): Array<User> =>
+    byLines(this.shellService.exec(COMMANDS.GET_ALL_USER))
+      .map(toUser)
+      .filter((_) => Boolean(_.unit));
+
+  groups = (user: string): Array<Checked<Group>> => [];
+
+  changeUser = (update: UserChangeSet): void => {
+    console.log('change user');
+  };
 }

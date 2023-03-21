@@ -1,12 +1,18 @@
-export const GET_ALL_USER = 'Get-ADUser -Filter * | Format-Table SamAccountName, DistinguishedName, Enabled -A';
+export const COMMANDS = {
+  GET_ALL_USER:
+    'Get-ADUser -Filter * | Format-Table SamAccountName, DistinguishedName, Enabled -A',
 
-export const GET_ALL_GROUPS = 'Get-ADGroup -Filter * | Format-Table Name';
+  GET_ALL_GROUPS: 'Get-ADGroup -Filter * | Format-Table Name',
 
-export const GET_USER_GROUPS = 'Get-ADPrincipalGroupMembership test | Format-Table name';
+  GET_USER_GROUPS: 'Get-ADPrincipalGroupMembership test | Format-Table name',
 
-export const ADD_USER_TO_GROUP = 'Add-ADGroupMember -Identity "IPG_Controller" -Members test';
+  ADD_USER_TO_GROUP:
+    'Add-ADGroupMember -Identity "IPG_Controller" -Members test',
 
-export const REMOVE_USER_FROM_GROUP = `Remove-ADGroupMember -Identity "IPG_Buhgalteria"
--Members test -Confirm:$false`;
+  REMOVE_USER_FROM_GROUP: `Remove-ADGroupMember -Identity "IPG_Buhgalteria"
+    -Members test -Confirm:$false`,
 
-export const DISABLE_USER = 'Disable-ADAccount -Identity PattiFul';
+  DISABLE_USER: 'Disable-ADAccount -Identity PattiFul',
+
+  HELLO: 'hello',
+};
