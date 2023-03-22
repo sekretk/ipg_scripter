@@ -1,46 +1,59 @@
+import * as A from 'fp-ts/lib/Array';
+import * as Ord from 'fp-ts/lib/Ord';
+import * as B from 'fp-ts/lib/boolean';
+import * as N from 'fp-ts/lib/number';
+import * as O from 'fp-ts/lib/Option';
 import { Inject, Injectable } from '@nestjs/common';
-import { COMMANDS } from '../consts/commands';
-import { Checked, Group, User, UserChangeSet } from '../dto';
-import { toUser } from '../utils/parse';
-import { byLines } from '../utils/string.utils';
+import { constant, flow, pipe } from 'fp-ts/lib/function';
+import {
+  COMMANDS,
+  getUserDetailsCommand,
+  getUserGroups,
+} from '../consts/commands';
+import { Group, User, UserChangeSet, UserDetailed } from '../dto';
+import { toGroupLines, toUserLines } from '../utils/parse';
 import { IShellService, SHELL_SERVICE } from './shell/shell.abstract';
+import { get } from '../utils/generic';
+import { FALLBACK_USER } from '../consts/fixture';
+import { mergeGroups } from '../utils/group';
 
 @Injectable()
 export class AppService {
   constructor(@Inject(SHELL_SERVICE) private shellService: IShellService) {}
 
-  getHello(): string {
-    return this.shellService.exec('HELLO');
-  }
-
   users = (): Array<User> =>
-    byLines(this.shellService.exec(COMMANDS.GET_ALL_USER))
-      .filter((_) => Boolean(_.trim()))
-      .filter((_) => !_.startsWith('----'))
-      .filter((_) => !_.startsWith('SamAccountName'))
-      .map(toUser)
-      .filter((_) => Boolean(_.unit))
-      .sort((a, b) => {
-        if (a.disabled > b.disabled) {
-          return 1;
-        } else {
-          if (a.disabled < b.disabled) {
-            return -1;
-          }
-        }
+    pipe(
+      this.shellService.exec(COMMANDS.GET_ALL_USER),
+      toUserLines,
+      A.filter(flow(get('unit'), Boolean)),
+      A.sortBy([
+        Ord.contramap<boolean, User>(get('disabled'))(B.Ord),
+        Ord.contramap<number, User>(flow(get('lastLogin'), Date.parse))(
+          Ord.reverse(N.Ord),
+        ),
+      ]),
+    );
 
-        if (new Date(a.lastLogin) < new Date(b.lastLogin)) {
-          return 1;
-        } else {
-          if (new Date(a.lastLogin) > new Date(b.lastLogin)) {
-            return -1;
-          }
-        }
+  details = (login: string): UserDetailed => {
+    const user: User = pipe(
+      this.shellService.exec(getUserDetailsCommand(login)),
+      toUserLines,
+      A.head,
+      O.getOrElse(constant(FALLBACK_USER)),
+    );
 
-        return 0;
-      });
+    const allGroups: Array<Group> = pipe(
+      this.shellService.exec(COMMANDS.GET_ALL_GROUPS),
+      toGroupLines,
+    );
 
-  groups = (user: string): Array<Checked<Group>> => [];
+    const userGroups: Array<Group> = pipe(
+      this.shellService.exec(getUserGroups(login)),
+      toGroupLines,
+    );
+
+    return { ...user, groups: mergeGroups(allGroups, userGroups) };
+  };
 
   changeUser = (update: UserChangeSet): void => {
     console.log('change user');

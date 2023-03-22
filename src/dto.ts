@@ -16,3 +16,7 @@ export type Checked<T> = { _checked: boolean } & T;
 export type UserChangeSet = Partial<{
   enable: boolean;
 }>;
+
+export type UserDetailed = User & {
+  groups: Array<Checked<Group>>;
+};

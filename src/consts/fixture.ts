@@ -1,4 +1,5 @@
-import { COMMANDS } from './commands';
+import { User } from '../dto';
+import { COMMANDS, getUserDetailsCommand, getUserGroups } from './commands';
 
 export const USERS_LIST_01 = `SamAccountName    DistinguishedName                                       Enabled lastLogon
 --------------    -----------------                                       ------- ---------
@@ -156,6 +157,10 @@ Domain Users         S-1-5-21-1403180944-1677745273-2235910166-513
 IPG_Management_M-A-M S-1-5-21-1403180944-1677745273-2235910166-1196
 IPG_Buhgalteria      S-1-5-21-1403180944-1677745273-2235910166-1601`;
 
+export const ONE_USER_RESP = `SamAccountName    DistinguishedName                                       Enabled lastLogon
+--------------    -----------------                                       ------- ---------
+rnd_grigorieva    CN=Григорьева,OU=RND,DC=IPG,DC=LOCAL                       False 2023-03-21`;
+
 export const COMMAND_MOCKS: Record<
   (typeof COMMANDS)[keyof typeof COMMANDS],
   string
@@ -164,7 +169,14 @@ export const COMMAND_MOCKS: Record<
   [COMMANDS.ADD_USER_TO_GROUP]: '',
   [COMMANDS.DISABLE_USER]: '',
   [COMMANDS.GET_ALL_GROUPS]: GROUPS_OUTPUT_01,
-  [COMMANDS.GET_USER_GROUPS]: GROUPS_OUTPUT_02,
   [COMMANDS.REMOVE_USER_FROM_GROUP]: '',
   [COMMANDS.HELLO]: 'mock hello',
+  [getUserDetailsCommand('rnd_grigorieva')]: ONE_USER_RESP,
+  [getUserGroups('rnd_grigorieva')]: GROUPS_OUTPUT_02,
+};
+
+export const FALLBACK_USER: User = {
+  disabled: false,
+  lastLogin: '--',
+  name: 'unknown',
 };

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Render } from '@nestjs/common';
+import { Controller, Get, Param, Post, Render } from '@nestjs/common';
 import { AppService } from './services/app.service';
 
 @Controller()
@@ -8,18 +8,37 @@ export class AppController {
   @Get('/users')
   @Render('users')
   getUsers() {
+    const users = this.appService.users();
     return {
-      users: this.appService.users(),
-      length: this.appService.users().length,
+      users,
+      length: users.length,
     };
   }
 
   @Get('/users/:id')
   @Render('user')
   getUser(@Param('id') id: string) {
-    return {
-      name: id,
-      fullname: 'fullname',
-    };
+    console.log('USER DETAILS', this.appService.details(id));
+    return this.appService.details(id);
+  }
+
+  @Post('/users/:id/activate')
+  activate(@Param('id') id: string) {
+    console.log('Activate', id);
+  }
+
+  @Post('/users/:id/deactivate')
+  deactivate(@Param('id') id: string) {
+    console.log('Deactivate', id);
+  }
+
+  @Post('/users/:id/addToGroup/:group')
+  togroup(@Param('id') id: string, @Param('group') group: string) {
+    console.log('togroup', id, group);
+  }
+
+  @Post('/users/:id/removeFromGroup/:group')
+  fromgroup(@Param('id') id: string, @Param('group') group: string) {
+    console.log('togroup', id, group);
   }
 }

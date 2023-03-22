@@ -1,10 +1,7 @@
 export const COMMANDS = {
-  GET_ALL_USER:
-    `Get-ADUser -Filter * -Properties lastLogon | Select SamAccountName, DistinguishedName, Enabled,  @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.'lastLogon').toString("yyyy-MM-dd")}}`,
+  GET_ALL_USER: `Get-ADUser -Filter * -Properties lastLogon | Select SamAccountName, DistinguishedName, Enabled,  @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.'lastLogon').toString("yyyy-MM-dd")}}`,
 
   GET_ALL_GROUPS: 'Get-ADGroup -Filter * | Format-Table Name',
-
-  GET_USER_GROUPS: 'Get-ADPrincipalGroupMembership test | Format-Table name',
 
   ADD_USER_TO_GROUP:
     'Add-ADGroupMember -Identity "IPG_Controller" -Members test',
@@ -16,3 +13,9 @@ export const COMMANDS = {
 
   HELLO: 'hello',
 };
+
+export const getUserDetailsCommand = (user: string) =>
+  `Get-ADUser -Filter "SamAccountName -eq '${user}'" -Properties lastLogon | Select SamAccountName, DistinguishedName, Enabled,  @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.'lastLogon').toString("yyyy-MM-dd")}}`;
+
+export const getUserGroups = (user: string) =>
+  `Get-ADPrincipalGroupMembership ${user} | Format-Table name`;
