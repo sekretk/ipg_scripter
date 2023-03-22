@@ -1,4 +1,14 @@
+echo on
+FOR /F %%I IN ('git pull') DO @SET "MY_VAR=%%I"
+echo %MY_VAR%
+if /i "%MY_VAR%"=="Already" GOTO end
+
+nssm stop ipgusers
+REM nssm remove ipgusers confirm
 git pull
-npm i
-npm run build
-@REM sc create IPGUSERS binpath= "C:\Program Files\nodejs\node.exe C:\projects\ipg_scripter\dist\main" start= auto depend= "Tcpip/Afd" DisplayName= "IPGUSERS"
+call npm run build
+REM nssm install ipgusers "c:\Program Files\nodejs\node.exe" "C:\projects\ipg_scripter\dist\main"
+nssm start ipgusers
+
+:end
+echo END
