@@ -15,9 +15,9 @@ export class AppService {
 
   users = (): Array<User> =>
     byLines(this.shellService.exec(COMMANDS.GET_ALL_USER))
-    .filter((_) => Boolean(_.trim()))
-    .filter((_) => !_.startsWith('----'))
-    .filter((_) => !_.startsWith('SamAccountName'))
+      .filter((_) => Boolean(_.trim()))
+      .filter((_) => !_.startsWith('----'))
+      .filter((_) => !_.startsWith('SamAccountName'))
       .map(toUser)
       .filter((_) => Boolean(_.unit))
       .sort((a, b) => {
