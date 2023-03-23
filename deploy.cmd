@@ -5,7 +5,7 @@ if /i "%MY_VAR%"=="Already" GOTO end
 
 nssm stop ipg
 REM nssm remove ipg confirm
-git pull
+call npm i
 call npm run build
 REM nssm install ipg "c:\Program Files\nodejs\node.exe" "C:\projects\ipg_scripter\dist\main"
 nssm start ipg
