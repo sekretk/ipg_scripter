@@ -2,16 +2,6 @@ export const COMMANDS = {
   GET_ALL_USER: `Get-ADUser -Filter * -Properties lastLogon | Select SamAccountName, DistinguishedName, Enabled,  @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.'lastLogon').toString("yyyy-MM-dd")}}`,
 
   GET_ALL_GROUPS: 'Get-ADGroup -Filter * | Format-Table Name',
-
-  ADD_USER_TO_GROUP:
-    'Add-ADGroupMember -Identity "IPG_Controller" -Members test',
-
-  REMOVE_USER_FROM_GROUP: `Remove-ADGroupMember -Identity "IPG_Buhgalteria"
-    -Members test -Confirm:$false`,
-
-  DISABLE_USER: 'Disable-ADAccount -Identity PattiFul',
-
-  HELLO: 'hello',
 };
 
 export const getUserDetailsCommand = (user: string) =>
@@ -19,3 +9,15 @@ export const getUserDetailsCommand = (user: string) =>
 
 export const getUserGroups = (user: string) =>
   `Get-ADPrincipalGroupMembership ${user} | Format-Table name`;
+
+export const activateUser = (user: string) =>
+  `Enable-ADAccount -Identity ${user}`;
+
+export const deactivateUser = (user: string) =>
+  `Disable-ADAccount -Identity ${user}`;
+
+export const moveUserToGroup = (user: string, group: string) =>
+  `Add-ADGroupMember -Identity "${group}" -Members ${user}`;
+
+export const removeUserFromGroup = (user: string, group: string) =>
+  `Remove-ADGroupMember -Identity "${group}" -Members ${user} -Confirm:$false`;

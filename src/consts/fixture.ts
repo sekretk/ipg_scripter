@@ -1,5 +1,13 @@
 import { User } from '../dto';
-import { COMMANDS, getUserDetailsCommand, getUserGroups } from './commands';
+import {
+  activateUser,
+  COMMANDS,
+  deactivateUser,
+  getUserDetailsCommand,
+  getUserGroups,
+  moveUserToGroup,
+  removeUserFromGroup,
+} from './commands';
 
 export const USERS_LIST_01 = `SamAccountName    DistinguishedName                                       Enabled lastLogon
 --------------    -----------------                                       ------- ---------
@@ -166,13 +174,13 @@ export const COMMAND_MOCKS: Record<
   string
 > = {
   [COMMANDS.GET_ALL_USER]: USERS_LIST_01,
-  [COMMANDS.ADD_USER_TO_GROUP]: '',
-  [COMMANDS.DISABLE_USER]: '',
   [COMMANDS.GET_ALL_GROUPS]: GROUPS_OUTPUT_01,
-  [COMMANDS.REMOVE_USER_FROM_GROUP]: '',
-  [COMMANDS.HELLO]: 'mock hello',
   [getUserDetailsCommand('rnd_grigorieva')]: ONE_USER_RESP,
   [getUserGroups('rnd_grigorieva')]: GROUPS_OUTPUT_02,
+  [activateUser('rnd_grigorieva')]: '',
+  [deactivateUser('rnd_grigorieva')]: '',
+  [moveUserToGroup('rnd_grigorieva', 'IPG_Buhgalteria')]: '',
+  [removeUserFromGroup('rnd_grigorieva', 'IPG_Buhgalteria')]: '',
 };
 
 export const FALLBACK_USER: User = {

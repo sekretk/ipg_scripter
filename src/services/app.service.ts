@@ -6,9 +6,13 @@ import * as O from 'fp-ts/lib/Option';
 import { Inject, Injectable } from '@nestjs/common';
 import { constant, flow, pipe } from 'fp-ts/lib/function';
 import {
+  activateUser,
   COMMANDS,
+  deactivateUser,
   getUserDetailsCommand,
   getUserGroups,
+  moveUserToGroup,
+  removeUserFromGroup,
 } from '../consts/commands';
 import { Group, User, UserChangeSet, UserDetailed } from '../dto';
 import { toGroupLines, toUserLines } from '../utils/parse';
@@ -57,5 +61,21 @@ export class AppService {
 
   changeUser = (update: UserChangeSet): void => {
     console.log('change user');
+  };
+
+  deactive = (user: string): void => {
+    this.shellService.exec(deactivateUser(user));
+  };
+
+  activate = (user: string): void => {
+    this.shellService.exec(activateUser(user));
+  };
+
+  move = (user: string, group: string): void => {
+    this.shellService.exec(moveUserToGroup(user, group));
+  };
+
+  remove = (user: string, group: string): void => {
+    this.shellService.exec(removeUserFromGroup(user, group));
   };
 }

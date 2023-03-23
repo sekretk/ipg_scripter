@@ -24,21 +24,25 @@ export class AppController {
 
   @Post('/users/:id/activate')
   activate(@Param('id') id: string) {
-    console.log('Activate', id);
+    console.log('[AppController#Activate]', id);
+    this.appService.activate(id);
   }
 
   @Post('/users/:id/deactivate')
   deactivate(@Param('id') id: string) {
-    console.log('Deactivate', id);
+    console.log('[AppController#Deactivate]', id);
+    this.appService.deactive(id);
   }
 
   @Post('/users/:id/addToGroup/:group')
   togroup(@Param('id') id: string, @Param('group') group: string) {
-    console.log('togroup', id, group);
+    console.log('[AppController#togroup]', id, group);
+    this.appService.move(id, group);
   }
 
   @Post('/users/:id/removeFromGroup/:group')
   fromgroup(@Param('id') id: string, @Param('group') group: string) {
-    console.log('togroup', id, group);
+    console.log('[AppController#fromgroup]', id, group);
+    this.appService.remove(id, group);
   }
 }
