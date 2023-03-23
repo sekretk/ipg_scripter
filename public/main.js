@@ -27,9 +27,10 @@ const deactivate = (user) => () => {
       window.location.reload();
     });
 };
-var myAlert = document.getElementById('toastNotice');
-const toast = new bootstrap.Toast(myAlert);
-toast.show();
+
+// Create an instance of Notyf
+var notyf = new Notyf();
+
 const addToGroup = (user) => (event) => {
   document.getElementById('veil').style.display = 'block';
   console.log('addToGroup', user, event.target.checked, event.target.id);
@@ -37,9 +38,16 @@ const addToGroup = (user) => (event) => {
   if (Boolean(event.target.checked)) {
     fetch(`/users/${user}/addToGroup/${event.target.id}`, { method: 'POST' })
       .then(() => {
+        notyf.success(
+          `Пользователь ${user} добавлен в группу ${event.target.id}`,
+        );
         console.log('addToGroup user success', user);
       })
       .catch((_) => {
+        notyf.error(
+          `Ошибка при добавлении пользователя ${user} в группу ${event.target.id}`,
+        );
+
         console.error('addToGroup user FAILED', user);
       })
       .finally(() => {
@@ -50,9 +58,15 @@ const addToGroup = (user) => (event) => {
       method: 'POST',
     })
       .then(() => {
+        notyf.success(
+          `Пользователь ${user} удалён из группы ${event.target.id}`,
+        );
         console.log('removeFromGroup user success', user);
       })
       .catch((_) => {
+        notyf.error(
+          `Ошибка при удалении пользователя ${user} из группы ${event.target.id}`,
+        );
         console.error('removeFromGroup user FAILED', user);
       })
       .finally(() => {
