@@ -12,7 +12,6 @@
     <div class="container">
         <header class="d-flex justify-content-center py-3">
             <ul class="nav nav-pills">
-                <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">Пользователи</a></li>
                 <li class="nav-item"><a href="#" class="nav-link">Создать</a></li>
             </ul>
         </header>
@@ -24,9 +23,7 @@
                         {{#each users}}
                         <a class="list-group-item list-group-item-action {{#if this.disabled }}disabled{{/if}} " href="/users/{{this.name}}">
                             <span class="badge badge-success {{this.unit}}">{{this.unit}}</span>
-                            <span>{{this.name}}</span>
-                            <span>{{this.fullname}}</span>
-                            (<span>{{this.lastLogin}}</span>)
+                            <span>{{this.name}}</span> (<span>{{this.fullname}}</span>) - <span>{{this.lastLogin}}</span>
                         </a>
                         {{/each}}
                     </ul>

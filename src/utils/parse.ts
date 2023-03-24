@@ -20,7 +20,7 @@ const fullNameParse = (value: string): { unit?: string; fullname?: string } => {
 
 export const toUser = (str: string): User => {
   const [name, description, enabled, lastLogin] = str
-    .split(/\s/gm)
+    .split(';')
     .filter(Boolean);
 
   const { fullname, unit } = fullNameParse(description);
@@ -42,8 +42,6 @@ export const toUserLines: FunctionN<[string], Array<User>> = flow(
   byLines,
   A.map(S.trim),
   A.filter(Boolean),
-  A.filter(not(S.startsWith('---'))),
-  A.filter(not(S.startsWith('SamAccountName'))),
   A.map(toUser),
 );
 
