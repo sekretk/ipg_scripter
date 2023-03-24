@@ -158,9 +158,7 @@ Domain Users         S-1-5-21-1403180944-1677745273-2235910166-513
 IPG_Management_M-A-M S-1-5-21-1403180944-1677745273-2235910166-1196
 IPG_Buhgalteria      S-1-5-21-1403180944-1677745273-2235910166-1601`;
 
-export const ONE_USER_RESP = `SamAccountName    DistinguishedName                                       Enabled lastLogon
---------------    -----------------                                       ------- ---------
-rnd_grigorieva    CN=Григорьева,OU=RND,DC=IPG,DC=LOCAL                       False 2023-03-21`;
+export const ONE_USER_RESP = `rnd_avdienko;CN=Авдиенко Анастасия,OU=RND,DC=IPG,DC=LOCAL;True;2023-03-24`;
 
 export const COMMAND_MOCKS: Record<
   (typeof COMMANDS)[keyof typeof COMMANDS],
@@ -168,12 +166,12 @@ export const COMMAND_MOCKS: Record<
 > = {
   [COMMANDS.GET_ALL_USER]: USERS_LIST_01,
   [COMMANDS.GET_ALL_GROUPS]: GROUPS_OUTPUT_01,
-  [getUserDetailsCommand('rnd_grigorieva')]: ONE_USER_RESP,
-  [getUserGroups('rnd_grigorieva')]: GROUPS_OUTPUT_02,
-  [activateUser('rnd_grigorieva')]: '',
-  [deactivateUser('rnd_grigorieva')]: '',
-  [moveUserToGroup('rnd_grigorieva', 'IPG_Buhgalteria')]: '',
-  [removeUserFromGroup('rnd_grigorieva', 'IPG_Buhgalteria')]: '',
+  [getUserDetailsCommand('rnd_avdienko')]: ONE_USER_RESP,
+  [getUserGroups('rnd_avdienko')]: GROUPS_OUTPUT_02,
+  [activateUser('rnd_avdienko')]: '',
+  [deactivateUser('rnd_avdienko')]: '',
+  [moveUserToGroup('rnd_avdienko', 'IPG_Buhgalteria')]: '',
+  [removeUserFromGroup('rnd_avdienko', 'IPG_Buhgalteria')]: '',
 };
 
 export const FALLBACK_USER: User = {
