@@ -26,15 +26,5 @@ export const moveUserToGroup = (user: string, group: string) =>
 export const removeUserFromGroup = (user: string, group: string) =>
   `Remove-ADGroupMember -Identity "${group}" -Members ${user} -Confirm:$false`;
 
-export const CREATE_FOLDER = (folder: string) =>
-  `New-item -Path "${SHARE_ROOT}${folder.toUpperCase()}" -ItemType Directory`;
-
-export const CREATE_GROUP = (group: string) =>
-  `New-ADGroup -Name ${PREFIX}${group.toUpperCase()} -GroupScope Universal`;
-
-//remove inheritance
-
-/**
-  "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule('IPG_TEST','Modify', 'ContainerInherit,ObjectInherit', 'None', 'Allow'); $acl = (Get-ACL -Path 'E:\SHARE\TEST'); $acl.SetAccessRuleProtection($True, $True); $domainUsers = New-Object System.Security.Principal.Ntaccount('Domain Users'); $acl.PurgeAccessRules($domainUsers); $acl.SetAccessRule($AccessRule); $Acl | Set-Acl -Path 'E:\SHARE\TEST'"
-  
-   */
+export const createResource = (folder: string) =>
+  `scripts/createResource.ps1 ${SHARE_ROOT}${folder.toUpperCase()} ${PREFIX}${folder.toUpperCase()}`;

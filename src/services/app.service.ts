@@ -8,8 +8,7 @@ import { constant, flow, pipe } from 'fp-ts/lib/function';
 import {
   activateUser,
   COMMANDS,
-  CREATE_FOLDER,
-  CREATE_GROUP,
+  createResource,
   deactivateUser,
   getUserDetailsCommand,
   getUserGroups,
@@ -22,7 +21,6 @@ import { IShellService, SHELL_SERVICE } from './shell/shell.abstract';
 import { get } from '../utils/generic';
 import { FALLBACK_USER } from '../consts/fixture';
 import { mergeGroups } from '../utils/group';
-import { PREFIX, SHARE_ROOT } from '../consts/config';
 
 @Injectable()
 export class AppService {
@@ -83,8 +81,6 @@ export class AppService {
   };
 
   createFolder = (folder: string): void => {
-    this.shellService.exec(
-      `scripts/createResource.ps1 ${SHARE_ROOT}${folder.toUpperCase()} ${PREFIX}${folder.toUpperCase()}`,
-    );
+    this.shellService.exec(createResource(folder));
   };
 }
