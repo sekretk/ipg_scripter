@@ -27,4 +27,4 @@ export const removeUserFromGroup = (user: string, group: string) =>
   `Remove-ADGroupMember -Identity "${group}" -Members ${user} -Confirm:$false`;
 
 export const createResource = (folder: string) =>
-  `scripts/createResource.ps1 ${SHARE_ROOT}${folder.toUpperCase()} ${PREFIX}${folder.toUpperCase()}`;
+  `c:\\projects\\ipg_scripter\\scripts\\createResource.ps1 ${SHARE_ROOT}${folder.toUpperCase()} ${PREFIX}${folder.toUpperCase()}`;
