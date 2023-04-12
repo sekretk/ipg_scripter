@@ -1,3 +1,5 @@
+import { PREFIX, SHARE_ROOT } from './config';
+
 export const COMMANDS = {
   GET_ALL_USER: `Get-ADUser -Filter * -Properties lastLogon | Select SamAccountName, DistinguishedName, Enabled, @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.'lastLogon').toString("yyyy-MM-dd")}} |
   ForEach-Object { $_.SamAccountName + ';' + $_.DistinguishedName + ';' + $_.Enabled + ';' + $_.lastLogon }`,
@@ -25,10 +27,10 @@ export const removeUserFromGroup = (user: string, group: string) =>
   `Remove-ADGroupMember -Identity "${group}" -Members ${user} -Confirm:$false`;
 
 export const CREATE_FOLDER = (folder: string) =>
-  `New-item -Path "e:\\share\\${folder}" -ItemType Directory`;
+  `New-item -Path "${SHARE_ROOT}${folder.toUpperCase()}" -ItemType Directory`;
 
 export const CREATE_GROUP = (group: string) =>
-  `New-ADGroup -Name ${group} -GroupScope Universal`;
+  `New-ADGroup -Name ${PREFIX}${group.toUpperCase()} -GroupScope Universal`;
 
 //remove inheritance
 

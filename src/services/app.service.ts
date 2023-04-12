@@ -22,6 +22,7 @@ import { IShellService, SHELL_SERVICE } from './shell/shell.abstract';
 import { get } from '../utils/generic';
 import { FALLBACK_USER } from '../consts/fixture';
 import { mergeGroups } from '../utils/group';
+import { PREFIX, SHARE_ROOT } from '../consts/config';
 
 @Injectable()
 export class AppService {
@@ -82,12 +83,10 @@ export class AppService {
   };
 
   createFolder = (folder: string): void => {
-    this.shellService.exec(CREATE_FOLDER(folder.toUpperCase()));
-    this.shellService.exec(CREATE_GROUP('IPG_' + folder.toUpperCase()));
+    this.shellService.exec(CREATE_FOLDER(folder));
+    this.shellService.exec(CREATE_GROUP(folder));
     this.shellService.exec(
-      `scripts/createResource.ps1 ${folder.toUpperCase()} ${
-        'IPG_' + folder.toUpperCase()
-      }`,
+      `scripts/createResource.ps1 ${SHARE_ROOT}${folder.toUpperCase()} ${PREFIX}${folder.toUpperCase()}`,
     );
   };
 }
