@@ -83,8 +83,6 @@ export class AppService {
   };
 
   createFolder = (folder: string): void => {
-    this.shellService.exec(CREATE_FOLDER(folder));
-    this.shellService.exec(CREATE_GROUP(folder));
     this.shellService.exec(
       `scripts/createResource.ps1 ${SHARE_ROOT}${folder.toUpperCase()} ${PREFIX}${folder.toUpperCase()}`,
     );
