@@ -8,6 +8,8 @@ import { constant, flow, pipe } from 'fp-ts/lib/function';
 import {
   activateUser,
   COMMANDS,
+  CREATE_FOLDER,
+  CREATE_GROUP,
   deactivateUser,
   getUserDetailsCommand,
   getUserGroups,
@@ -77,5 +79,13 @@ export class AppService {
 
   remove = (user: string, group: string): void => {
     this.shellService.exec(removeUserFromGroup(user, group));
+  };
+
+  createFolder = (folder: string): void => {
+    this.shellService.exec(CREATE_FOLDER(folder.toUpperCase()));
+    this.shellService.exec(CREATE_GROUP('IPG_' + folder));
+    this.shellService.exec(
+      `scripts/createResource.ps1 ${folder.toUpperCase()} ${'IPG_' + folder}`,
+    );
   };
 }

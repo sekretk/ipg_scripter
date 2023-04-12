@@ -6,7 +6,7 @@ import { IShellService } from './shell.abstract';
 export class ShellService implements IShellService {
   exec = (cmd: string): string => {
     const res = execSync(cmd, {
-      shell: 'powershell.exe',
+      shell: 'pwsh',
       encoding: 'utf-8',
     });
 

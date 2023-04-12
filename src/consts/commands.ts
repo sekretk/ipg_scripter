@@ -1,8 +1,8 @@
 export const COMMANDS = {
   GET_ALL_USER: `Get-ADUser -Filter * -Properties lastLogon | Select SamAccountName, DistinguishedName, Enabled, @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.'lastLogon').toString("yyyy-MM-dd")}} |
   ForEach-Object { $_.SamAccountName + ';' + $_.DistinguishedName + ';' + $_.Enabled + ';' + $_.lastLogon }`,
-
   GET_ALL_GROUPS: 'Get-ADGroup -Filter * | Format-Table Name',
+  SNAPSHOT: `Get-ADUser -Filter * | Select-Object SamAccountName, DistinguishedName, Enabled, @{Name="groups"; Expression={ Get-ADPrincipalGroupMembership $_.SamAccountName | Join-String -Property name -Separator ';'}}, @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.'lastLogon').toString("yyyy-MM-dd")}} | ForEach-Object { $_.SamAccountName + '|' + $_.DistinguishedName + '|' + $_.Enabled + '|' + $_.lastLogon + '|' + $_.groups }`,
 };
 
 export const getUserDetailsCommand = (user: string) =>
@@ -23,3 +23,16 @@ export const moveUserToGroup = (user: string, group: string) =>
 
 export const removeUserFromGroup = (user: string, group: string) =>
   `Remove-ADGroupMember -Identity "${group}" -Members ${user} -Confirm:$false`;
+
+export const CREATE_FOLDER = (folder: string) =>
+  `New-item -Path "e:\\share\\${folder}" -ItemType Directory`;
+
+export const CREATE_GROUP = (group: string) =>
+  `New-ADGroup -Name ${group} -GroupScope Universal`;
+
+//remove inheritance
+
+/**
+  "$AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule('IPG_TEST','Modify', 'ContainerInherit,ObjectInherit', 'None', 'Allow'); $acl = (Get-ACL -Path 'E:\SHARE\TEST'); $acl.SetAccessRuleProtection($True, $True); $domainUsers = New-Object System.Security.Principal.Ntaccount('Domain Users'); $acl.PurgeAccessRules($domainUsers); $acl.SetAccessRule($AccessRule); $Acl | Set-Acl -Path 'E:\SHARE\TEST'"
+  
+   */

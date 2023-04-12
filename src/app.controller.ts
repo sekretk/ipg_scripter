@@ -45,4 +45,11 @@ export class AppController {
     console.log('[AppController#fromgroup]', id, group);
     this.appService.remove(id, group);
   }
+
+  @Post('/users/createFolder/:folder')
+  createFolder(@Param('folder') folder: string) {
+    console.log('[AppController#createFolder]', folder);
+
+    this.appService.createFolder(folder);
+  }
 }
