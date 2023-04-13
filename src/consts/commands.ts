@@ -28,3 +28,5 @@ export const removeUserFromGroup = (user: string, group: string) =>
 
 export const createResource = (folder: string) =>
   `scripts/createResource.ps1 "${SHARE_ROOT}${folder.toUpperCase()}" "${PREFIX}${folder.toUpperCase()}"`;
+
+export const deleteUser = (user: string) => `scripts/removeUser.ps1 ${user}`;
