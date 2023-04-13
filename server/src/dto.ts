@@ -4,6 +4,7 @@ export type User = {
   fullname?: string;
   disabled: boolean;
   lastLogin: string;
+  attachedGroups?: Array<string>;
 };
 
 export type Group = {
@@ -19,4 +20,9 @@ export type UserChangeSet = Partial<{
 
 export type UserDetailed = User & {
   groups: Array<Checked<Group>>;
+};
+
+export type Snapshot = {
+  users: Array<User>;
+  groups: Array<string>;
 };

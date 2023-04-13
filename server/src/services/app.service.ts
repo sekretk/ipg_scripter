@@ -15,8 +15,8 @@ import {
   moveUserToGroup,
   removeUserFromGroup,
 } from '../consts/commands';
-import { Group, User, UserChangeSet, UserDetailed } from '../dto';
-import { toGroupLines, toUserLines } from '../utils/parse';
+import { Group, Snapshot, User, UserChangeSet, UserDetailed } from '../dto';
+import { toGroupLines, toUserLines, toUsersWithGroup } from '../utils/parse';
 import { IShellService, SHELL_SERVICE } from './shell/shell.abstract';
 import { get } from '../utils/generic';
 import { FALLBACK_USER } from '../consts/fixture';
@@ -39,6 +39,9 @@ export class AppService {
       ]),
     );
 
+  allGroups = (): Array<Group> =>
+    pipe(this.shellService.exec(COMMANDS.GET_ALL_GROUPS), toGroupLines);
+
   details = (login: string): UserDetailed => {
     const user: User = pipe(
       this.shellService.exec(getUserDetailsCommand(login)),
@@ -47,10 +50,7 @@ export class AppService {
       O.getOrElse(constant(FALLBACK_USER)),
     );
 
-    const allGroups: Array<Group> = pipe(
-      this.shellService.exec(COMMANDS.GET_ALL_GROUPS),
-      toGroupLines,
-    );
+    const allGroups = this.allGroups();
 
     const userGroups: Array<Group> = pipe(
       this.shellService.exec(getUserGroups(login)),
@@ -58,6 +58,18 @@ export class AppService {
     );
 
     return { ...user, groups: mergeGroups(allGroups, userGroups) };
+  };
+
+  snapshot = (): Snapshot => {
+    const res = this.shellService.exec(COMMANDS.SNAPSHOT);
+
+    const users = toUsersWithGroup(res);
+    const groups = this.allGroups().map((_) => _.name);
+
+    return {
+      groups,
+      users,
+    };
   };
 
   changeUser = (update: UserChangeSet): void => {

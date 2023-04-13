@@ -1,15 +1,15 @@
-import { PREFIX, SHARE_ROOT } from './config';
+import { AUX_SEPERATOR, MAIN_SEPERATOR, PREFIX, SHARE_ROOT } from './config';
 
 export const COMMANDS = {
   GET_ALL_USER: `Get-ADUser -Filter * -Properties lastLogon | Select SamAccountName, DistinguishedName, Enabled, @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.'lastLogon').toString("yyyy-MM-dd")}} |
-  ForEach-Object { $_.SamAccountName + ';' + $_.DistinguishedName + ';' + $_.Enabled + ';' + $_.lastLogon }`,
+  ForEach-Object { $_.SamAccountName + '${MAIN_SEPERATOR}' + $_.DistinguishedName + '${MAIN_SEPERATOR}' + $_.Enabled + '${MAIN_SEPERATOR}' + $_.lastLogon }`,
   GET_ALL_GROUPS: 'Get-ADGroup -Filter * | Format-Table Name',
-  SNAPSHOT: `Get-ADUser -Filter * | Select-Object SamAccountName, DistinguishedName, Enabled, @{Name="groups"; Expression={ Get-ADPrincipalGroupMembership $_.SamAccountName | Join-String -Property name -Separator ';'}}, @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.'lastLogon').toString("yyyy-MM-dd")}} | ForEach-Object { $_.SamAccountName + '|' + $_.DistinguishedName + '|' + $_.Enabled + '|' + $_.lastLogon + '|' + $_.groups }`,
+  SNAPSHOT: `Get-ADUser -Filter * | Select-Object SamAccountName, DistinguishedName, Enabled, @{Name="groups"; Expression={ Get-ADPrincipalGroupMembership $_.SamAccountName | Join-String -Property name -Separator '${AUX_SEPERATOR}'}}, @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.'lastLogon').toString("yyyy-MM-dd")}} | ForEach-Object { $_.SamAccountName + '${MAIN_SEPERATOR}' + $_.DistinguishedName + '${MAIN_SEPERATOR}' + $_.Enabled + '${MAIN_SEPERATOR}' + $_.lastLogon + '${MAIN_SEPERATOR}' + $_.groups }`,
 };
 
 export const getUserDetailsCommand = (user: string) =>
   `Get-ADUser -Filter "SamAccountName -eq '${user}'" -Properties lastLogon | Select SamAccountName, DistinguishedName, Enabled, @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.'lastLogon').toString("yyyy-MM-dd")}} |
-  ForEach-Object { $_.SamAccountName + ';' + $_.DistinguishedName + ';' + $_.Enabled + ';' + $_.lastLogon }`;
+  ForEach-Object { $_.SamAccountName + '${MAIN_SEPERATOR}' + $_.DistinguishedName + '${MAIN_SEPERATOR}' + $_.Enabled + '${MAIN_SEPERATOR}' + $_.lastLogon }`;
 
 export const getUserGroups = (user: string) =>
   `Get-ADPrincipalGroupMembership ${user} | Format-Table name`;

@@ -22,6 +22,12 @@ export class AppController {
     return this.appService.details(id);
   }
 
+  @Get('/snapshot')
+  getSnapshot() {
+    console.log('snapshot');
+    return this.appService.snapshot();
+  }
+
   @Post('/users/:id/activate')
   activate(@Param('id') id: string) {
     console.log('[AppController#Activate]', id);

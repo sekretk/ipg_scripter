@@ -33,7 +33,7 @@ $ npm install
 ```
 
 ## Running the app
-
+****npx create-react-app my-app --template typescript
 ```bash
 # development
 $ npm run start
