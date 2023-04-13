@@ -1,4 +1,4 @@
-import { PREFIX, SHARE_ROOT } from './config';
+import { PREFIX, SCRIPT_ROOTS, SHARE_ROOT } from './config';
 
 export const COMMANDS = {
   GET_ALL_USER: `Get-ADUser -Filter * -Properties lastLogon | Select SamAccountName, DistinguishedName, Enabled, @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.'lastLogon').toString("yyyy-MM-dd")}} |
@@ -27,6 +27,6 @@ export const removeUserFromGroup = (user: string, group: string) =>
   `Remove-ADGroupMember -Identity "${group}" -Members ${user} -Confirm:$false`;
 
 export const createResource = (folder: string) =>
-  `scripts/createResource.ps1 "${SHARE_ROOT}${folder.toUpperCase()}" "${PREFIX}${folder.toUpperCase()}"`;
+  `${SCRIPT_ROOTS}createResource.ps1 "${SHARE_ROOT}${folder.toUpperCase()}" "${PREFIX}${folder.toUpperCase()}"`;
 
-export const deleteUser = (user: string) => `scripts/removeUser.ps1 ${user}`;
+export const deleteUser = (user: string) => `${SCRIPT_ROOTS}removeUser.ps1 ${user}`;
