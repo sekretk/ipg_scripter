@@ -21,3 +21,26 @@ createFolderBtn.addEventListener('click', () => {
       folderNameInput.value = '';
     });
 });
+
+document.querySelectorAll('.deleteuser').forEach((btn) => {
+  btn.addEventListener('click', (event) => {
+    console.log(event.target.id);
+    event.preventDefault();
+    event.stopPropagation();
+    fetch(`/users/${event.target.id.substring(4)}`, {
+      method: 'DELETE',
+    })
+      .then(() => {
+        notyf.success(`Пользоватлель ${event.target.id.substring(4)} удалён`);
+        console.log('delete user success', event.target.id.substring(4));
+        window.location.reload();
+      })
+      .catch((_) => {
+        notyf.error(
+          `Ошибка при удалении пользователя ${event.target.id.substring(4)}`,
+        );
+
+        console.error('delete user FAILED', event.target.id.substring(4));
+      });
+  });
+});

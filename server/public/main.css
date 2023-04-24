@@ -26,7 +26,7 @@
     color: tomato;
 }
 
-.disabled {
+.inactive {
     text-decoration: line-through;
 }
 

@@ -10,6 +10,7 @@ import {
   COMMANDS,
   createResource,
   deactivateUser,
+  deleteUser,
   getUserDetailsCommand,
   getUserGroups,
   moveUserToGroup,
@@ -75,6 +76,10 @@ export class AppService {
   changeUser = (update: UserChangeSet): void => {
     console.log('change user');
   };
+
+  delete = (user: string): void => {
+    this.shellService.exec(deleteUser(user));
+  }
 
   deactive = (user: string): void => {
     this.shellService.exec(deactivateUser(user));

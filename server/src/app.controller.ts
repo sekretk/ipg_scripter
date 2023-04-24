@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Render } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post, Render,  } from '@nestjs/common';
 import { AppService } from './services/app.service';
 
 @Controller()
@@ -22,10 +22,17 @@ export class AppController {
     return this.appService.details(id);
   }
 
+<<<<<<< HEAD:server/src/app.controller.ts
   @Get('/snapshot')
   getSnapshot() {
     console.log('snapshot');
     return this.appService.snapshot();
+=======
+  @Delete('/users/:user')
+  deleteUse(@Param('user') user: string) {
+    console.log('USER delete', user);
+    return this.appService.delete(user);
+>>>>>>> main:src/app.controller.ts
   }
 
   @Post('/users/:id/activate')
