@@ -5,6 +5,8 @@
 /client/build
 /server/node_modules
 /server/dist
+/srv/dist
+/srv/node_modules
 
 # Logs
 logs
