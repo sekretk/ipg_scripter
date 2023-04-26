@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@frp-ts/react": "^1.0.0-beta.3",
     "@frp-ts/core": "^1.0.0-beta.3",
     "@frp-ts/fp-ts": "^1.0.0-beta.3",
+    "@frp-ts/react": "^1.0.0-beta.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
