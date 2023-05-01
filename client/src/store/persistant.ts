@@ -1,9 +1,10 @@
 import { Property, newAtom } from "@frp-ts/core"
 import { Persistant } from "../abstract/persistant"
-import { Page } from "../abstract";
+import { Department, Page } from "../abstract";
 
 const DEFAULT_PERSISTANT: Persistant = {
-    page: 'users'
+    page: 'users',
+    usersFilterText: ''
 }
 
 interface IPersistant extends Property<Persistant> {
@@ -11,6 +12,9 @@ interface IPersistant extends Property<Persistant> {
     readonly page: (page: Page) => void;
     readonly selectUser: (user: string | undefined) => void;
     readonly selectGroup: (group: string | undefined) => void;
+    readonly usersFilterText: (str: string) => void;
+    readonly usersFilterDep: (dep: Department) => void;
+    readonly groupsFilterText: (str: string) => void;
 }
 
 const setPage =
@@ -29,6 +33,17 @@ const setGroup =
     (selectedGroup: string | undefined) =>
         (persistant: Persistant): Persistant => ({ ...persistant, selectedGroup })
 
+const setUsersFilterText = (usersFilterText: string) => (persistant: Persistant): Persistant => ({
+    ...persistant, usersFilterText
+})
+const setUsersDepText = (department: Department) => (persistant: Persistant): Persistant =>
+({
+    ...persistant, usersFilterDep: persistant.usersFilterDep === department ? undefined : department
+})
+
+const setGroupsFilterText = (groupsFilter: string) => (persistant: Persistant): Persistant =>
+ ({ ...persistant, groupsFilter })
+
 const newPersistant = (): IPersistant => {
     const state = newAtom<Persistant>(DEFAULT_PERSISTANT);
 
@@ -36,13 +51,19 @@ const newPersistant = (): IPersistant => {
     const page: IPersistant['page'] = (page) => state.modify(setPage(page));
     const selectUser: IPersistant['selectUser'] = (user) => state.modify(setUser(user));
     const selectGroup: IPersistant['selectGroup'] = (group) => state.modify(setGroup(group));
+    const usersFilterText: IPersistant['usersFilterText'] = (str) => state.modify(setUsersFilterText(str));
+    const usersFilterDep: IPersistant['usersFilterDep'] = (dep) => state.modify(setUsersDepText(dep));
+    const groupsFilterText: IPersistant['groupsFilterText'] = (str) => state.modify(setGroupsFilterText(str));
 
     return {
         ...state,
         update,
         page,
         selectUser,
-        selectGroup
+        selectGroup,
+        usersFilterText,
+        usersFilterDep,
+        groupsFilterText
     }
 }
 

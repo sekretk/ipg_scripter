@@ -1,0 +1,1 @@
+export type Checked<T> = { isChecked: boolean, value: T}

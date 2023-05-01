@@ -3,7 +3,7 @@ import { Container } from 'react-bootstrap';
 import { Users } from './components/users';
 import { Groups } from './components/groups';
 import { MainToolBar } from './components/mainbar';
-import { useEffect } from 'react';
+import { useEffect, useReducer } from 'react';
 import axios from 'axios';
 import { Page, Snapshot } from './abstract';
 import { isLoadingProperty, pageProperty, snapshot } from './store';
@@ -12,6 +12,8 @@ import { useProperty } from '@frp-ts/react';
 import { persistantProp } from './store/persistant';
 import { Persistant } from './abstract/persistant';
 import styled from 'styled-components';
+import { API_URL } from './config';
+import { ToastContainer } from 'react-toastify';
 
 const PERSISTANT_KEY = 'PERSISTANT';
 
@@ -34,7 +36,7 @@ function App() {
 
   useEffect(() => {
     snapshot.startLoad()
-    axios.get<Snapshot>('http://localhost:4444/snapshot')
+    axios.get<Snapshot>(`${API_URL}snapshot`)
       .then(({ data }) => snapshot.successLoad(data))
       .catch((err) => snapshot.failedLoad(`${err}`));
   }, [])
@@ -44,8 +46,8 @@ function App() {
     persistant && persistantProp.update(JSON.parse(persistant) as unknown as Persistant);
     const sub = persistantProp.subscribe({
       next: () => {
-        console.log('XXX', persistantProp.get())
-        localStorage.setItem(PERSISTANT_KEY, JSON.stringify(persistantProp.get()))}
+        localStorage.setItem(PERSISTANT_KEY, JSON.stringify(persistantProp.get()))
+      }
     });
 
     return () => sub.unsubscribe();
@@ -64,6 +66,18 @@ function App() {
         {pageComponentMap[page]}
       </Container>
       {isLoading && <Veil />}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={1000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </RootContainer>
   );
 }

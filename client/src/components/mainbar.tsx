@@ -27,18 +27,18 @@ export const MainToolBar = () => {
                 PAGES.map(page => pageNavMap[page](currentPage))
               }
               <NavDropdown title="Действия" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/createUser">Создать пользователя</NavDropdown.Item>
-                <NavDropdown.Item href="#action/createGroup">
+                <NavDropdown.Item>Создать пользователя</NavDropdown.Item>
+                <NavDropdown.Item>
                     Создать каталог
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/broadcast">
+                <NavDropdown.Item>
                     Написать сообщение
                 </NavDropdown.Item>
-                <NavDropdown.Item href="#action/broadcast">
+                <NavDropdown.Item>
                     Перезапустить 1С
                 </NavDropdown.Item>
-                <NavDropdown.Item href="#action/broadcast">
+                <NavDropdown.Item>
                     Перезапустить терминал
                 </NavDropdown.Item>
               </NavDropdown>

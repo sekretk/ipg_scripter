@@ -1,10 +1,14 @@
+export const DEPARTMENTS = ['RND', 'MSK', 'SPB', 'CRM', 'VLG'] as const;
+
+export type Department = typeof DEPARTMENTS[number];
+
 export type User = {
     name: string;
-    unit?: string;
-    fullname?: string;
+    unit: Department;
+    fullname: string;
     disabled: boolean;
     lastLogin: string;
-    attachedGroups?: Array<string>;
+    attachedGroups: Array<string>;
   };
 
 export type Snapshot = {
