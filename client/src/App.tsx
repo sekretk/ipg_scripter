@@ -1,14 +1,32 @@
 import './App.css';
-import { Container, Tab, Tabs } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { Users } from './components/users';
 import { Groups } from './components/groups';
 import { MainToolBar } from './components/mainbar';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { Snapshot } from './abstract';
-import { isLoadingProperty, snapshot } from './store';
+import { Page, Snapshot } from './abstract';
+import { isLoadingProperty, pageProperty, snapshot } from './store';
 import { Veil } from './components/veil';
 import { useProperty } from '@frp-ts/react';
+import { persistantProp } from './store/persistant';
+import { Persistant } from './abstract/persistant';
+import styled from 'styled-components';
+
+const PERSISTANT_KEY = 'PERSISTANT';
+
+const pageComponentMap: Record<Page, JSX.Element> = {
+  groups: <Groups />,
+  users: <Users />
+}
+
+const RootContainer = styled.div`
+    display: grid;
+    grid-template-rows: auto 1fr;
+    grid-gap: 10px;
+    height: 100vh;
+    width: 100vw;
+  `;
 
 function App() {
 
@@ -17,29 +35,36 @@ function App() {
   useEffect(() => {
     snapshot.startLoad()
     axios.get<Snapshot>('http://localhost:4444/snapshot')
-    .then(({ data }) => snapshot.successLoad(data))
-    .catch((err) => snapshot.failedLoad(`${err}`));
+      .then(({ data }) => snapshot.successLoad(data))
+      .catch((err) => snapshot.failedLoad(`${err}`));
   }, [])
 
+  useEffect(() => {
+    const persistant = localStorage.getItem(PERSISTANT_KEY); //TODO: sanitaze input
+    persistant && persistantProp.update(JSON.parse(persistant) as unknown as Persistant);
+    const sub = persistantProp.subscribe({
+      next: () => {
+        console.log('XXX', persistantProp.get())
+        localStorage.setItem(PERSISTANT_KEY, JSON.stringify(persistantProp.get()))}
+    });
+
+    return () => sub.unsubscribe();
+  }, [])
+
+  useEffect(() => {
+    document.title = 'IPG - Пользователи';
+  }, []);
+
+  const page = useProperty(pageProperty);
+
   return (
-    <div>
+    <RootContainer>
       <MainToolBar />
-      <Container className="p-3">
-        <Tabs
-          defaultActiveKey="profile"
-          id="uncontrolled-tab-example"
-          className="mb-3"
-        >
-          <Tab eventKey="home" title="Пользователи">
-            <Users />
-          </Tab>
-          <Tab eventKey="profile" title="Группы">
-            <Groups />
-          </Tab>
-        </Tabs>
+      <Container className="p-3 m-3 overflow-auto">
+        {pageComponentMap[page]}
       </Container>
-      {isLoading && <Veil/>}
-    </div>
+      {isLoading && <Veil />}
+    </RootContainer>
   );
 }
 

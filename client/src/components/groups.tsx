@@ -1,5 +1,35 @@
+import { useProperty } from "@frp-ts/react";
 import { FC } from "react";
+import { groupsProperty, selectedGroupProp } from "../store";
+import { ListGroup } from "react-bootstrap";
+import styled from "styled-components";
+import { GroupDetails } from "./group-details";
+import { constant, pipe } from "fp-ts/lib/function";
+import * as O from "fp-ts/lib/Option";
+import { get } from "../utils";
+import { persistantProp } from "../store/persistant";
+
+const Container = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  `;
 
 export const Groups: FC = () => {
-    return <>Groups</>
+    const groups = useProperty(groupsProperty);
+    const selected = useProperty(selectedGroupProp);
+    return (
+        <Container>
+            <ListGroup>
+                {
+                    groups.map((group) => (
+                        <ListGroup.Item
+                            key={group}
+                            active={pipe(selected, O.map(groupName => group === groupName), O.getOrElse(constant(false)))}
+                            onClick={() => persistantProp.selectGroup(group)}
+                        >{group}</ListGroup.Item>))
+                }
+            </ListGroup>
+            <GroupDetails />
+        </Container>
+    )
 }
