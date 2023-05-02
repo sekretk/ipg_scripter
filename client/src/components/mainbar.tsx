@@ -1,9 +1,9 @@
 import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap"
 import { PAGES, Page } from "../abstract";
-import { useProperty } from "@frp-ts/react";
 import { pageProperty } from "../store";
 import { FC } from "react";
 import { persistantProp } from "../store/persistant";
+import { useProperty } from "../hoc/use-property";
 
 
 

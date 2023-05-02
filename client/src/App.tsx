@@ -8,12 +8,12 @@ import axios from 'axios';
 import { Page, Snapshot } from './abstract';
 import { isLoadingProperty, pageProperty, snapshot } from './store';
 import { Veil } from './components/veil';
-import { useProperty } from '@frp-ts/react';
 import { persistantProp } from './store/persistant';
 import { Persistant } from './abstract/persistant';
 import styled from 'styled-components';
 import { API_URL } from './config';
 import { ToastContainer } from 'react-toastify';
+import { useProperty } from './hoc/use-property';
 
 const PERSISTANT_KEY = 'PERSISTANT';
 

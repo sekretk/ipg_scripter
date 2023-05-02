@@ -10,6 +10,8 @@ interface ISnapshot extends Property<RemoteData<string, Snapshot>> {
     readonly failedLoad: (error: string) => void
     readonly moveUserToGroup: (user: string, group: string) => void
     readonly removeUserFromGroup: (user: string, group: string) => void
+    readonly blockUser: (user: string) => void
+    readonly unblockUser: (user: string) => void
 }
 
 const newSnapshot = (): ISnapshot => {
@@ -54,13 +56,49 @@ const newSnapshot = (): ISnapshot => {
         return st;
     });
 
+    const blockUser: ISnapshot['blockUser'] = (user) => state.modify(st => {
+        if (isSuccess(st)) {
+
+            return success({
+                groups: st.value.groups,
+                users: st.value.users.map(usr => {
+                    if (usr.name === user) {
+                        return { ...usr, disabled: true }
+                    } else {
+                        return usr;
+                    }
+                })
+            })
+        }
+        return st;
+    })
+
+    const unblockUser: ISnapshot['unblockUser'] = (user) => state.modify(st => {
+        if (isSuccess(st)) {
+
+            return success({
+                groups: st.value.groups,
+                users: st.value.users.map(usr => {
+                    if (usr.name === user) {
+                        return { ...usr, disabled: false }
+                    } else {
+                        return usr;
+                    }
+                })
+            })
+        }
+        return st;
+    }) ;
+
     return {
         ...state,
         startLoad,
         successLoad,
         failedLoad,
         moveUserToGroup,
-        removeUserFromGroup
+        removeUserFromGroup,
+        blockUser,
+        unblockUser
     }
 }
 

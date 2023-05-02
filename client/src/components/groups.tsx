@@ -1,4 +1,3 @@
-import { useProperty } from "@frp-ts/react";
 import { FC } from "react";
 import { groupsProperty, selectedGroupProp } from "../store";
 import { ListGroup } from "react-bootstrap";
@@ -6,8 +5,8 @@ import styled from "styled-components";
 import { GroupDetails } from "./group-details";
 import { constant, pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
-import { get } from "../utils";
 import { persistantProp } from "../store/persistant";
+import { useProperty } from "../hoc/use-property";
 
 const Container = styled.div`
     display: grid;

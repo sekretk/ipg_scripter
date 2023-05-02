@@ -25,7 +25,7 @@ export const Users: FC = () => {
   const selected = useProperty(selectedUserProp);
 
   useEffect(() => {
-    if (users.every(usr => selected._tag === 'Some' && usr.name !== selected.value.name)) {
+    if (O.isSome(selected) && users.every(usr => usr.name !== selected.value.name)) {
       persistantProp.selectUser(undefined);
     }
   }, [users, selected])
@@ -38,6 +38,7 @@ export const Users: FC = () => {
           {
             users.map((user) => (
               <ListGroup.Item
+                variant={user.disabled ? 'secondary' : ''}
                 key={user.name}
                 active={pipe(selected, O.map(get('name')), O.map(name => name === user.name), O.getOrElse(constant(false)))}
                 onClick={() => persistantProp.selectUser(user.name)}

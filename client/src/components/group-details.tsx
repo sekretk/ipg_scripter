@@ -1,7 +1,7 @@
 import { constant, pipe } from "fp-ts/lib/function";
 import { selectedGroupProp } from "../store";
 import * as O from "fp-ts/lib/Option";
-import { useProperty } from "@frp-ts/react";
+import { useProperty } from "../hoc/use-property";
 
 export const GroupDetails = () => {
     const selected = useProperty(selectedGroupProp);

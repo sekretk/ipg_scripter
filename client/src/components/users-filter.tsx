@@ -1,10 +1,10 @@
-import { useProperty } from "@frp-ts/react";
 import { Badge, Button, Form, InputGroup } from "react-bootstrap";
 import styled from "styled-components";
 import { usersFilterDepProp, usersFilterStrProp } from "../store";
 import { persistantProp } from "../store/persistant";
 import { DEPARTMENTS } from "../abstract";
 import { unitColor, unitDescription } from "../utils";
+import { useProperty } from "../hoc/use-property";
 
 const FilterDepartments = styled.div`
     display: flex;

@@ -37,6 +37,26 @@ export const UserDetails = () => {
         })
     }, [])
 
+    const blockUser = useCallback((user: string) => {
+        axios.post(`${API_URL}users/${user}/deactivate`).then(() => {
+            toast.warn(`${user} деактивирован`);
+            snapshot.blockUser(user);
+        }).catch((err) => {
+            console.log(`Error on POST /users/${user}/deactivate`, err)
+            toast.error('Ошибка', { autoClose: 5000 });
+        })
+    }, []);
+
+    const unblockUser = useCallback((user: string) => {
+        axios.post(`${API_URL}users/${user}/activate`).then(() => {
+            toast.info(`${user} активирован`);
+            snapshot.unblockUser(user);
+        }).catch((err) => {
+            console.log(`Error on POST /users/${user}/activate`, err)
+            toast.error('Ошибка', { autoClose: 5000 });
+        })
+    }, [])
+
     return (
         pipe(
             selected,
@@ -47,8 +67,8 @@ export const UserDetails = () => {
                         <Badge bg={unitColor[user.unit]}>{unitDescription[user.unit]}</Badge>
                         <p>Логин: {user.name}</p>
                         <p>Дата последнего логина: {user.lastLogin}</p>
-                        <Button variant="primary">Разбокировать</Button>
-                        <Button variant="warning">Заблокировать</Button>
+                        {user.disabled && <Button variant="primary" onClick={() => unblockUser(user.name)}>Разбокировать</Button> }
+                        {!user.disabled && <Button variant="warning" onClick={() => blockUser(user.name)}>Заблокировать</Button>}
                         <ListGroup className="m-1">
                             {
                                 groups.map(({ isChecked, value }) => (

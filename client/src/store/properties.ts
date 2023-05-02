@@ -5,7 +5,7 @@ import * as RD from "@devexperts/remote-data-ts";
 import { Property } from "@frp-ts/core";
 import { Checked, Department, Page, Snapshot, User } from "../abstract";
 import { EMPTY_SNAPSHOT } from "../fixture";
-import { get } from "../utils";
+import { get, usersFilter, usersOrd } from "../utils";
 import { not } from "fp-ts/lib/Predicate";
 import { persistantProp } from "./persistant";
 import * as O from "fp-ts/lib/Option";
@@ -73,16 +73,5 @@ export const groupsFilterProp: Property<Persistant['groupsFilter']> = pipe(persi
 
 export const filteredUsersProp: Property<Array<User>> = pipe(
     FRP.sequenceT(usersProperty, usersFilterStrProp, usersFilterDepProp),
-    FRP.map(([users, filter, dep]) => users.filter(user => {
-
-        if (Boolean(filter?.substring) && (!user.name.includes(filter) && !user.fullname.includes(filter))) {
-            return false;
-        }
-
-        if (Boolean(dep) && user.unit !== dep) {
-            return false;
-        }
-
-        return true;
-    }))
+    FRP.map(([users, filter, dep]) => pipe(users, A.filter(usersFilter(filter, dep)), A.sort(usersOrd)))
 )
