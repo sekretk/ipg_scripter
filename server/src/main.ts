@@ -3,8 +3,10 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { execSync } from 'child_process';
 import { join } from 'path';
 import { AppModule } from './app.module';
+import * as dotenv from 'dotenv';
 
 async function bootstrap() {
+  dotenv.config();
   process.env.ENV !== 'development' && execSync('chcp 65001');
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 

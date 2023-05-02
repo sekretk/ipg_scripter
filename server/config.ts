@@ -1,3 +1,3 @@
-export const SHARE_ROOT = 'e:\\share\\';
-export const PREFIX = 'IPG_';
-export const SCRIPT_ROOTS = 'c:\\projects\\ipg_scripter\\scripts\\'
+export const SHARE_ROOT = process.env.SHARE_ROOT;
+export const PREFIX = process.env.PREFIX;
+export const SCRIPT_ROOTS = process.env.SCRIPT_ROOTS;

@@ -1,1 +1,1 @@
-export const API_URL = process.env.BE ?? 'http://localhost:4444/';
+export const API_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:4444/';
