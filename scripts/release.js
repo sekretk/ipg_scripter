@@ -8,7 +8,7 @@ execSync('git checkout release');
 
 execSync('git pull');
 
-const nextVersion = Number(curVersion)++ ;
+const nextVersion = ++Number(curVersion);
 
 fs.writeFile('.version', nextVersion);
 
