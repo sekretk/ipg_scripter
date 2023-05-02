@@ -28,6 +28,7 @@ const changeSet = changeLog.split('\n').filter(msg => msg.startsWith('(d)')).map
 
 console.log(`Released ${nextVersion} ${changeSet.join('\n')}`)
 
+execSync('git switch -');
 execSync('git stash pop');
 } catch (err) {
     console.log(`Error on release ${err.toString()}`)
