@@ -7,19 +7,21 @@ execSync('git stash');
 execSync('git checkout release');
 
 execSync('git merge develop');
+console.log(Number(curVersion))
+const nextVersion = Number(curVersion) + 1;
 
-const nextVersion = ++Number(curVersion);
-
-fs.writeFile('.version', nextVersion);
+fs.writeFileSync('.version', nextVersion.toString(), { encoding: 'utf8' });
 
 execSync('git add .version');
 execSync(`git commit -m"Release ${nextVersion}"`);
 execSync(`git push`);
 
 execSync(`git tag ${nextVersion}`);
-execSync(`git push orig ${nextVersion}`);
+execSync(`git push origin ${nextVersion}`);
 
 const changeLog = execSync(`git log --oneline --pretty=format:%s ${curVersion}..HEAD`, { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 })
+
+console.log('XXX ', changeLog)
 
 const changeSet = changeLog.split('\n').filter(msg => msg.startsWith('(d)')).map(msg => msg.substring(2));
 
