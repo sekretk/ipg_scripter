@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { execSync } from 'child_process';
 import { join } from 'path';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
+import { execSync } from 'child_process';
 
 async function bootstrap() {
   dotenv.config();

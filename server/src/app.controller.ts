@@ -1,9 +1,22 @@
-import { Controller, Delete, Get, Param, Post, Render } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Redirect,
+  Render,
+} from '@nestjs/common';
 import { AppService } from './services/app.service';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
+
+  @Get('/')
+  root() {
+    Redirect('index.html');
+  }
 
   @Get('/users')
   @Render('users')

@@ -1,6 +1,8 @@
 cd ../client
+npm i
 npm run build
 cd ../server
+npm i
 npm run build
 cd ..
 cp -rf server/public server/dist/public
