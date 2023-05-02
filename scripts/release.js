@@ -6,7 +6,7 @@ execSync('git stash');
 
 execSync('git checkout release');
 
-execSync('git pull');
+execSync('git merge develop');
 
 const nextVersion = ++Number(curVersion);
 
@@ -21,7 +21,7 @@ execSync(`git push orig ${nextVersion}`);
 
 const changeLog = execSync(`git log --oneline --pretty=format:%s ${curVersion}..HEAD`, { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 })
 
-const changeSet = changeLog.split('\n').filter(msg => msg.startsWith('(d)'));
+const changeSet = changeLog.split('\n').filter(msg => msg.startsWith('(d)')).map(msg => msg.substring(2));
 
 console.log(`Released ${nextVersion} ${changeSet.join('\n')}`)
 
