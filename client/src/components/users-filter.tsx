@@ -28,11 +28,15 @@ export const UsersFilter = () => {
                     value={usersFilterStr}
                     onChange={({ target: { value } }) => persistantProp.usersFilterText(value)}
                 />
-                <Button variant="outline-secondary" id="clear-filter-btn">
+                <Button variant="outline-secondary" id="clear-filter-btn" onClick={() => {
+                    persistantProp.usersFilterText('');
+                    const currentDep = usersFilterDepProp.get();
+                    currentDep !== undefined && persistantProp.usersFilterDep(currentDep);
+                }}>
                     X
                 </Button>
             </InputGroup>
-            <FilterDepartments>
+            <FilterDepartments className="m-2">
                 {DEPARTMENTS.map(dep =>
                     <Badge
                         key={dep}

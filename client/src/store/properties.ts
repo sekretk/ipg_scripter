@@ -72,18 +72,16 @@ export const usersFilterDepProp: Property<Department | undefined> = pipe(
 export const groupsFilterProp: Property<Persistant['groupsFilter']> = pipe(persistantProp, FRP.map(get('groupsFilter')));
 
 export const filteredUsersProp: Property<Array<User>> = pipe(
-    FRP.sequenceT(usersProperty, usersFilterStrProp),
-    FRP.map(([users, filter]) => users.filter(user => {
-
-        console.log('XXX filter', filter )
+    FRP.sequenceT(usersProperty, usersFilterStrProp, usersFilterDepProp),
+    FRP.map(([users, filter, dep]) => users.filter(user => {
 
         if (Boolean(filter?.substring) && (!user.name.includes(filter) && !user.fullname.includes(filter))) {
             return false;
         }
 
-        // if (Boolean(filter?.department) && user.unit !== filter?.department) {
-        //     return false;
-        // }
+        if (Boolean(dep) && user.unit !== dep) {
+            return false;
+        }
 
         return true;
     }))

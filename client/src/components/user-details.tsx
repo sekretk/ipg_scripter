@@ -1,4 +1,3 @@
-import { useProperty } from "@frp-ts/react";
 import { selectedUserGroupsProp, selectedUserProp, snapshot } from "../store";
 import * as O from "fp-ts/lib/Option";
 import { constant, pipe } from "fp-ts/lib/function";
@@ -9,6 +8,7 @@ import { useCallback } from "react";
 import axios from "axios";
 import { toast } from 'react-toastify';
 import { API_URL } from "../config";
+import { useProperty } from "../hoc/use-property";
 
 const Container = styled.div`
 margin: 10px;`;
@@ -47,8 +47,9 @@ export const UserDetails = () => {
                         <Badge bg={unitColor[user.unit]}>{unitDescription[user.unit]}</Badge>
                         <p>Логин: {user.name}</p>
                         <p>Дата последнего логина: {user.lastLogin}</p>
-                        <Button variant="primary">Primary</Button>{' '}
-                        <ListGroup>
+                        <Button variant="primary">Разбокировать</Button>
+                        <Button variant="warning">Заблокировать</Button>
+                        <ListGroup className="m-1">
                             {
                                 groups.map(({ isChecked, value }) => (
                                     <ListGroup.Item
