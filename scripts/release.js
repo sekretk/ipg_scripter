@@ -1,6 +1,7 @@
 const { execSync } = require("child_process");
 const fs = require('fs');
 
+try {
 const curVersion = fs.readFileSync('.version', 'utf8');
 execSync('git stash');
 
@@ -28,3 +29,6 @@ const changeSet = changeLog.split('\n').filter(msg => msg.startsWith('(d)')).map
 console.log(`Released ${nextVersion} ${changeSet.join('\n')}`)
 
 execSync('git stash pop');
+} catch (err) {
+    console.log(`Error on release ${err.toString()}`)
+}
