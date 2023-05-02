@@ -22,10 +22,15 @@ import { IShellService, SHELL_SERVICE } from './shell/shell.abstract';
 import { get } from '../utils/generic';
 import { FALLBACK_USER } from '../consts/fixture';
 import { mergeGroups } from '../utils/group';
+import { ConfigService } from '@nestjs/config';
+import { ENV_KEYS } from '../consts/config';
 
 @Injectable()
 export class AppService {
-  constructor(@Inject(SHELL_SERVICE) private shellService: IShellService) {}
+  constructor(
+    @Inject(SHELL_SERVICE) private shellService: IShellService,
+    private configService: ConfigService,
+  ) {}
 
   users = (): Array<User> =>
     pipe(
@@ -78,8 +83,10 @@ export class AppService {
   };
 
   delete = (user: string): void => {
-    this.shellService.exec(deleteUser(user));
-  }
+    this.shellService.exec(
+      deleteUser(user, this.configService.get(ENV_KEYS.SCRIPT_ROOTS)),
+    );
+  };
 
   deactive = (user: string): void => {
     this.shellService.exec(deactivateUser(user));
@@ -98,6 +105,13 @@ export class AppService {
   };
 
   createFolder = (folder: string): void => {
-    this.shellService.exec(createResource(folder));
+    this.shellService.exec(
+      createResource(
+        folder,
+        this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
+        this.configService.get(ENV_KEYS.SHARE_ROOT),
+        this.configService.get(ENV_KEYS.PREFIX),
+      ),
+    );
   };
 }

@@ -1,5 +1,4 @@
-import { SCRIPT_ROOTS } from '../../config';
-import { AUX_SEPERATOR, MAIN_SEPERATOR, PREFIX, SHARE_ROOT } from './config';
+import { AUX_SEPERATOR, MAIN_SEPERATOR } from './config';
 
 export const COMMANDS = {
   GET_ALL_USER: `Get-ADUser -Filter * -Properties lastLogon | Select SamAccountName, DistinguishedName, Enabled, @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.'lastLogon').toString("yyyy-MM-dd")}} |
@@ -27,8 +26,13 @@ export const moveUserToGroup = (user: string, group: string) =>
 export const removeUserFromGroup = (user: string, group: string) =>
   `Remove-ADGroupMember -Identity "${group}" -Members ${user} -Confirm:$false`;
 
-export const createResource = (folder: string) =>
-  `${SCRIPT_ROOTS}createResource.ps1 "${SHARE_ROOT}${folder.toUpperCase()}" "${PREFIX}${folder.toUpperCase()}"`;
+export const createResource = (
+  folder: string,
+  scriptRoot: string,
+  shareRoot: string,
+  prefix: string,
+) =>
+  `${scriptRoot}createResource.ps1 "${shareRoot}${folder.toUpperCase()}" "${prefix}${folder.toUpperCase()}"`;
 
-export const deleteUser = (user: string) =>
-  `${SCRIPT_ROOTS}removeUser.ps1 ${user}`;
+export const deleteUser = (user: string, root: string) =>
+  `${root}removeUser.ps1 ${user}`;
