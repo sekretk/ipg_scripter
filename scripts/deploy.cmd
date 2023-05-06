@@ -5,12 +5,16 @@ cd ..\client\
 call npm i
 call npm run build
 cd ..\server\
+if not exist dist rmdir dist /Q /S
+cd ..
+if not exist .\server\public mkdir .\server\public
+xcopy .\client\build .\server\public /E/H/C/I/Y
+cd ..\server\
 call npm i
 call npm run build
-cd ..
-if not exist .\server\dist\public mkdir .\server\dist\public
+
 xcopy .\server\public .\server\dist\public /E/H/C/I/Y
-xcopy .\client\build .\server\dist\public /E/H/C/I/Y
+
 
 if not exist .\server\dist\views mkdir .\server\dist\views
 xcopy .\server\views .\server\dist\views /E/H/C/I/Y
