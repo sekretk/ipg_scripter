@@ -22,7 +22,7 @@ execSync(`git push origin ${nextVersion}`);
 
 const changeLog = execSync(`git log --oneline --pretty=format:%s ${curVersion}..HEAD`, { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 })
 
-console.log('XXX ', changeLog)
+console.log('Change log ', changeLog)
 
 const changeSet = changeLog.split('\n').filter(msg => msg.startsWith('(d)')).map(msg => msg.substring(2));
 
