@@ -1,6 +1,7 @@
 import { User } from '../dto';
 import {
   activateUser,
+  changePassword,
   COMMANDS,
   deactivateUser,
   getUserDetailsCommand,

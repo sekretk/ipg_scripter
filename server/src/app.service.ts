@@ -5,8 +5,6 @@ import { COMMANDS } from 'src/consts/commands';
 @Injectable()
 export class AppService {
   getHello(): string {
-    console.log('XXX get hello');
-
     const res = execSync(COMMANDS.GET_ALL_USER, {
       shell: 'powershell.exe',
       encoding: 'utf-8',

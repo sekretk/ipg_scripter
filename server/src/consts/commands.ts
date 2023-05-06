@@ -36,3 +36,6 @@ export const createResource = (
 
 export const deleteUser = (user: string, root: string) =>
   `${root}removeUser.ps1 ${user}`;
+
+export const changePassword = (user: string, password: string, root: string) =>
+  `${root}removeUser.ps1 ${user}`;

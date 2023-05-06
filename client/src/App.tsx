@@ -59,8 +59,6 @@ function App() {
 
   const page = useProperty(pageProperty);
 
-  console.log('XXX', isLoading)
-
   return (
     <RootContainer>
       <MainToolBar />

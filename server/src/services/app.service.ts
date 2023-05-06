@@ -7,6 +7,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { constant, flow, pipe } from 'fp-ts/lib/function';
 import {
   activateUser,
+  changePassword,
   COMMANDS,
   createResource,
   deactivateUser,
@@ -111,6 +112,16 @@ export class AppService {
         this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
         this.configService.get(ENV_KEYS.SHARE_ROOT),
         this.configService.get(ENV_KEYS.PREFIX),
+      ),
+    );
+  };
+
+  changePassword = (user: string, password: string): void => {
+    this.shellService.exec(
+      changePassword(
+        user,
+        password,
+        this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
       ),
     );
   };
