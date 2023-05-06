@@ -8,6 +8,7 @@ export class ShellServiceMock implements IShellService {
     console.log(
       `[ShellServiceMock#exec] '${cmd}', response '${COMMAND_MOCKS[cmd]}'`,
     );
+
     return COMMAND_MOCKS[cmd];
   };
 }

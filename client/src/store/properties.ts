@@ -1,11 +1,11 @@
-import { constant, flow, pipe } from "fp-ts/lib/function";
+import { constant, flow, identity, pipe } from "fp-ts/lib/function";
 import { snapshot } from "./snapshot";
 import * as FRP from "@frp-ts/fp-ts";
 import * as RD from "@devexperts/remote-data-ts";
 import { Property } from "@frp-ts/core";
 import { Checked, Department, Page, Snapshot, User } from "../abstract";
 import { EMPTY_SNAPSHOT } from "../fixture";
-import { get, usersFilter, usersOrd } from "../utils";
+import { any, get, usersFilter, usersOrd } from "../utils";
 import { not } from "fp-ts/lib/Predicate";
 import { persistantProp } from "./persistant";
 import * as O from "fp-ts/lib/Option";
@@ -13,8 +13,12 @@ import * as A from "fp-ts/lib/Array";
 import * as Ord from "fp-ts/lib/Ord";
 import * as S from "fp-ts/lib/string";
 import { Persistant } from "../abstract/persistant";
+import { processProp } from "./process";
 
-export const isLoadingProperty: Property<boolean> = pipe(snapshot, FRP.map(flow(not(RD.isSuccess))));
+export const isLoadingProperty: Property<boolean> = pipe(
+    FRP.sequenceT(pipe(snapshot, FRP.map(flow(not(RD.isSuccess)))), processProp),
+    FRP.map(any(identity))
+    );
 
 export const snapshotProperty: Property<Snapshot> = pipe(snapshot, FRP.map(RD.getOrElse(constant(EMPTY_SNAPSHOT))));
 

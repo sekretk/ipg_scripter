@@ -1,4 +1,4 @@
-import { selectedUserGroupsProp, selectedUserProp, snapshot } from "../store";
+import { processProp, selectedUserGroupsProp, selectedUserProp, snapshot } from "../store";
 import * as O from "fp-ts/lib/Option";
 import { constant, pipe } from "fp-ts/lib/function";
 import styled from "styled-components";
@@ -18,42 +18,54 @@ export const UserDetails = () => {
     const groups = useProperty(selectedUserGroupsProp);
 
     const removeFromGroup = useCallback((group: string, user: string) => {
+        processProp.set(true);
         axios.post(`${API_URL}users/${user}/removeFromGroup/${group}`).then(() => {
             toast.info(`${user} удалё из ${group}`);
             snapshot.removeUserFromGroup(user, group);
+            processProp.set(false);
         }).catch((err) => {
             console.log(`Error on POST /users/${user}/addToGroup/${group}`, err)
             toast.error('Ошибка', { autoClose: 5000 });
+            processProp.set(false);
         })
     }, [])
 
     const addtoGroup = useCallback((group: string, user: string) => {
+        processProp.set(true);
         axios.post(`${API_URL}users/${user}/addToGroup/${group}`).then(() => {
             toast.warn(`${user} добавлен в ${group}`);
             snapshot.moveUserToGroup(user, group);
+            processProp.set(false);
         }).catch((err) => {
             console.log(`Error on POST /users/${user}/addToGroup/${group}`, err)
             toast.error('Ошибка', { autoClose: 5000 });
+            processProp.set(false);
         })
     }, [])
 
     const blockUser = useCallback((user: string) => {
+        processProp.set(true);
         axios.post(`${API_URL}users/${user}/deactivate`).then(() => {
             toast.warn(`${user} деактивирован`);
             snapshot.blockUser(user);
+            processProp.set(false);
         }).catch((err) => {
             console.log(`Error on POST /users/${user}/deactivate`, err)
             toast.error('Ошибка', { autoClose: 5000 });
+            processProp.set(false);
         })
     }, []);
 
     const unblockUser = useCallback((user: string) => {
+        processProp.set(true);
         axios.post(`${API_URL}users/${user}/activate`).then(() => {
             toast.info(`${user} активирован`);
             snapshot.unblockUser(user);
+            processProp.set(false);
         }).catch((err) => {
             console.log(`Error on POST /users/${user}/activate`, err)
             toast.error('Ошибка', { autoClose: 5000 });
+            processProp.set(false);
         })
     }, [])
 
@@ -79,6 +91,7 @@ export const UserDetails = () => {
                                             type={'checkbox'}
                                             checked={isChecked}
                                             label={value}
+                                            style={({'cursor': 'pointer'})}
                                             onChange={() => isChecked ? removeFromGroup(value, user.name) : addtoGroup(value, user.name)}
                                         />
                                     </ListGroup.Item>))
