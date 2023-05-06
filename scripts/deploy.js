@@ -7,10 +7,11 @@ execSync('git pull');
 const pulledVersion = fs.readFileSync('.version', 'utf8');
 
 if (pulledVersion === curVersion) {
+    console.log('Version not changed. Deploy skipped')
     return;
 }
 
-execSync('cd ../client');
+execSync('cd client');
 execSync('npm i');
 execSync('npm run build');
 execSync('cd ../server');
