@@ -20,7 +20,7 @@ export const UserDetails = () => {
     const removeFromGroup = useCallback((group: string, user: string) => {
         processProp.set(true);
         axios.post(`${API_URL}users/${user}/removeFromGroup/${group}`).then(() => {
-            toast.info(`${user} удалё из ${group}`);
+            toast.info(`${user} удалён из ${group}`);
             snapshot.removeUserFromGroup(user, group);
             processProp.set(false);
         }).catch((err) => {

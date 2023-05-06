@@ -18,7 +18,7 @@ import { processProp } from "./process";
 export const isLoadingProperty: Property<boolean> = pipe(
     FRP.sequenceT(pipe(snapshot, FRP.map(flow(not(RD.isSuccess)))), processProp),
     FRP.map(any(identity))
-    );
+);
 
 export const snapshotProperty: Property<Snapshot> = pipe(snapshot, FRP.map(RD.getOrElse(constant(EMPTY_SNAPSHOT))));
 
@@ -61,6 +61,15 @@ export const selectedUserGroupsProp: Property<Array<Checked<string>>> = pipe(
                 isChecked: Boolean(user.attachedGroups?.find(userGroup => userGroup === group)) ? true : false
             })))
         }
+    ));
+
+export const selectedGroupUsersProp: Property<Array<Checked<User>>> = pipe(
+    FRP.sequenceT(selectedGroupProp, snapshotProperty),
+    FRP.map(
+        ([selectedGroup, { users }]) => users.map(user => ({
+            isChecked: pipe(selectedGroup, O.map(group => user.attachedGroups.includes(group)), O.getOrElse(constant(false as boolean))),
+            value: user
+        }))
     ));
 
 export const usersFilterStrProp: Property<string> = pipe(
