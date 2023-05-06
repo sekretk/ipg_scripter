@@ -4,6 +4,7 @@ const fs = require('fs');
 require('dotenv').config()
 
 const curVersion = fs.readFileSync('../.version', 'utf8');
+const currentHash = execSync('git rev-parse HEAD', { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 }).trim().replace('\n', '').replace('\r', '');
 execSync('git pull');
  
 const pulledVersion = fs.readFileSync('../.version', 'utf8');
@@ -13,7 +14,7 @@ if (pulledVersion === curVersion) {
     return;
 }
 
-const changeLog = execSync(`git log --oneline --pretty=format:%s ${curVersion}..HEAD`, { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 })
+const changeLog = execSync(`git log --oneline --pretty=format:%s ${currentHash}..HEAD`, { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 })
 const changes = changeLog.split('\n').filter(msg => msg.startsWith('(d)')).map(item => item.substring(3));
 
 
