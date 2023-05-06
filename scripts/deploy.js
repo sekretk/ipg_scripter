@@ -3,10 +3,10 @@ const fs = require('fs');
 
 require('dotenv').config()
 
-const curVersion = fs.readFileSync('.version', 'utf8');
+const curVersion = fs.readFileSync('../.version', 'utf8');
 execSync('git pull');
  
-const pulledVersion = fs.readFileSync('.version', 'utf8');
+const pulledVersion = fs.readFileSync('../.version', 'utf8');
 
 if (pulledVersion === curVersion) {
     console.log('Version not changed. Deploy skipped')
