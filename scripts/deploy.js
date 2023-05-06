@@ -18,9 +18,9 @@ execSync('cd ../server');
 execSync('npm i');
 execSync('npm run build');
 execSync('cd ..');
-execSync('cp -rf server/public server/dist/public');
-execSync('cp -rf server/views server/dist/views');
-execSync('cp -rf client/build/* server/dist/public/');
+execSync('copy server/public server/dist/public');
+execSync('copy server/views server/dist/views');
+execSync('copy client/build/* server/dist/public/');
 execSync('cp .env server/dist/.env');
 
 const changeLog = execSync(`git log --oneline --pretty=format:%s ${curVersion}..HEAD`, { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 })
