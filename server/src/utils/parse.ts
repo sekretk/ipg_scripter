@@ -78,7 +78,7 @@ export const toUsersWithGroup: FunctionN<[string], Array<User>> = (value) => {
       .split(MAIN_SEPERATOR)
       .filter(Boolean);
 
-    const groupsArr = groups.split(AUX_SEPERATOR);
+    const groupsArr = groups?.split(AUX_SEPERATOR)??[];
 
     const { fullname, unit } = fullNameParse(description);
 

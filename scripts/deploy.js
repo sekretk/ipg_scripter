@@ -1,9 +1,11 @@
 const { execSync } = require("child_process");
 const fs = require('fs');
 
+require('dotenv').config()
+
 const curVersion = fs.readFileSync('.version', 'utf8');
 execSync('git pull');
-
+ 
 const pulledVersion = fs.readFileSync('.version', 'utf8');
 
 if (pulledVersion === curVersion) {
@@ -11,19 +13,34 @@ if (pulledVersion === curVersion) {
     return;
 }
 
-execSync('cd client');
-execSync('npm i');
-execSync('npm run build');
-execSync('cd ../server');
-execSync('npm i');
-execSync('npm run build');
-execSync('cd ..');
-execSync('copy server/public server/dist/public');
-execSync('copy server/views server/dist/views');
-execSync('copy client/build/* server/dist/public/');
-execSync('cp .env server/dist/.env');
-
 const changeLog = execSync(`git log --oneline --pretty=format:%s ${curVersion}..HEAD`, { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 })
-const changeSet = changeLog.split('\n').filter(msg => msg.startsWith('(d)'));
+const changes = changeLog.split('\n').filter(msg => msg.startsWith('(d)')).map(item => item.substring(3));
 
-//send to slack
+
+try {
+
+execSync('deploy.cmd');
+
+
+} catch (err) {
+    console.error('Error on execution', err.toString())
+}
+
+const https = require('https');
+
+https.get(encodeURI(`${process.env.NOTIFY_URL}Новая версия '${pulledVersion}'. Изменения: ${changes.join(';')}`), (resp) => {
+  let data = '';
+
+  // A chunk of data has been received.
+  resp.on('data', (chunk) => {
+    data += chunk;
+  });
+
+  // The whole response has been received. Print out the result.
+  resp.on('end', () => {
+    console.log(JSON.parse(data).explanation);
+  });
+
+}).on("error", (err) => {
+  console.log("Error: " + err.message);
+});
