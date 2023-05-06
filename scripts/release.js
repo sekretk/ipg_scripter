@@ -24,7 +24,7 @@ const changeLog = execSync(`git log --oneline --pretty=format:%s ${curVersion}..
 
 console.log('Change log ', changeLog)
 
-const changeSet = changeLog.split('\n').filter(msg => msg.startsWith('(d)')).map(msg => msg.substring(2));
+const changeSet = changeLog.split('\n').filter(msg => msg.startsWith('(d)')).map(msg => msg.substring(3));
 
 console.log(`Released ${nextVersion} ${changeSet.join('\n')}`)
 
