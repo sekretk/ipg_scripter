@@ -33,18 +33,21 @@ export const MainToolBar = memo(() => {
     }
 
     processProp.set(true);
+
+    setIsCreateFolderOpened(false);
+
     axios.post(`${API_URL}users/createFolder/${folder}`).then(() => {
       toast.info(`Каталог '${folder}' создан`);
       processProp.set(false);
       snapshot.createFolder(folder);
-      handleCloseCreateFolder();
+      setFolder('');
     }).catch((err) => {
       console.log(`Error on POST users/createFolder/${folder}`, err)
       toast.error('Ошибка', { autoClose: 5000 });
       processProp.set(false);
-      handleCloseCreateFolder();
+      setFolder('');
     })
-  }, [folder, handleCloseCreateFolder]);
+  }, [folder]);
 
   return (
     <>
