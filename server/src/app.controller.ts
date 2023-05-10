@@ -77,4 +77,14 @@ export class AppController {
 
     this.appService.createFolder(folder);
   }
+
+  @Post('/users/:id/password/:password')
+  changePassword(
+    @Param('id') user: string,
+    @Param('password') password: string,
+  ) {
+    console.log('[AppController#changePassword]', user, password);
+
+    this.appService.changePassword(user, password);
+  }
 }

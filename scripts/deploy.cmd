@@ -1,14 +1,27 @@
 echo on
-FOR /F %%I IN ('git pull') DO @SET "MY_VAR=%%I"
-echo %MY_VAR%
-if /i "%MY_VAR%"=="Already" GOTO end
-
 nssm stop ipg
-REM nssm remove ipg confirm
+
+cd ..\client\
 call npm i
 call npm run build
-REM nssm install ipg "c:\Program Files\nodejs\node.exe" "C:\projects\ipg_scripter\dist\main"
-nssm start ipg
+cd ..\server\
+if not exist dist rmdir dist /Q /S
+cd ..
+if not exist .\server\public mkdir .\server\public
+xcopy .\client\build .\server\public /E/H/C/I/Y
+cd ..\server\
+call npm i
+call npm run build
 
-:end
-echo END
+xcopy .\server\public .\server\dist\public /E/H/C/I/Y
+
+
+if not exist .\server\dist\views mkdir .\server\dist\views
+xcopy .\server\views .\server\dist\views /E/H/C/I/Y
+
+xcopy ".env" "server\dist\" /Y
+xcopy ".env" "scripts\" /Y
+
+REM nssm remove ipg confirm
+REM nssm install ipg "c:\Program Files\nodejs\node.exe" "c:\projects\ipg_scripter\server\dist\main.js"
+nssm start ipg

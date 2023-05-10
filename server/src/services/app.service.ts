@@ -3,10 +3,11 @@ import * as Ord from 'fp-ts/lib/Ord';
 import * as B from 'fp-ts/lib/boolean';
 import * as N from 'fp-ts/lib/number';
 import * as O from 'fp-ts/lib/Option';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { constant, flow, pipe } from 'fp-ts/lib/function';
 import {
   activateUser,
+  changePassword,
   COMMANDS,
   createResource,
   deactivateUser,
@@ -27,6 +28,7 @@ import { ENV_KEYS } from '../consts/config';
 
 @Injectable()
 export class AppService {
+  private readonly logger = new Logger(AppService.name);
   constructor(
     @Inject(SHELL_SERVICE) private shellService: IShellService,
     private configService: ConfigService,
@@ -70,6 +72,8 @@ export class AppService {
   };
 
   snapshot = (): Snapshot => {
+    this.logger.debug('snapshot asked');
+
     const res = this.shellService.exec(COMMANDS.SNAPSHOT);
 
     const users = toUsersWithGroup(res);
@@ -114,6 +118,16 @@ export class AppService {
         this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
         this.configService.get(ENV_KEYS.SHARE_ROOT),
         this.configService.get(ENV_KEYS.PREFIX),
+      ),
+    );
+  };
+
+  changePassword = (user: string, password: string): void => {
+    this.shellService.exec(
+      changePassword(
+        user,
+        password,
+        this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
       ),
     );
   };

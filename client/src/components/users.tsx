@@ -36,8 +36,19 @@ export const Users: FC = () => {
       <UsersContainer>
         <ListGroup className="m-1">
           {
-            users.map((user) => (
-              <ListGroup.Item
+            users.map((user) =>
+              user.disabled ? (<s>
+                <ListGroup.Item
+                  variant={user.disabled ? 'secondary' : ''}
+                  key={user.name}
+                  active={pipe(selected, O.map(get('name')), O.map(name => name === user.name), O.getOrElse(constant(false)))}
+                  onClick={() => persistantProp.selectUser(user.name)}
+                > <Badge pill bg={unitColor[user.unit]} className="m-1">
+                    {user.unit}
+                  </Badge>
+                  {user.fullname}
+                </ListGroup.Item>
+              </s>) : <ListGroup.Item
                 variant={user.disabled ? 'secondary' : ''}
                 key={user.name}
                 active={pipe(selected, O.map(get('name')), O.map(name => name === user.name), O.getOrElse(constant(false)))}
@@ -46,7 +57,8 @@ export const Users: FC = () => {
                   {user.unit}
                 </Badge>
                 {user.fullname}
-              </ListGroup.Item>))
+              </ListGroup.Item>
+            )
           }
         </ListGroup>
         <UserDetails />

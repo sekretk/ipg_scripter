@@ -8,6 +8,9 @@
 /srv/dist
 /srv/node_modules
 /scripts/node_modules
+/server/.env
+/server/public
+/scripts/.env
 
 # Logs
 logs

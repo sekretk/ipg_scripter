@@ -12,6 +12,7 @@ interface ISnapshot extends Property<RemoteData<string, Snapshot>> {
     readonly removeUserFromGroup: (user: string, group: string) => void
     readonly blockUser: (user: string) => void
     readonly unblockUser: (user: string) => void
+    readonly createFolder: (folder: string) => void
 }
 
 const newSnapshot = (): ISnapshot => {
@@ -45,7 +46,7 @@ const newSnapshot = (): ISnapshot => {
                 groups: st.value.groups,
                 users: st.value.users.map(usr => {
                     if (usr.name === user) {
-                        
+
                         return { ...usr, attachedGroups: usr.attachedGroups.filter(userGroup => userGroup !== group) }
                     } else {
                         return usr;
@@ -88,7 +89,18 @@ const newSnapshot = (): ISnapshot => {
             })
         }
         return st;
-    }) ;
+    });
+
+    const createFolder: ISnapshot['createFolder'] = (folder) => state.modify(st => {
+        if (isSuccess(st)) {
+
+            return success({
+                groups: [...st.value.groups, folder],
+                users: st.value.users
+            })
+        }
+        return st;
+    });
 
     return {
         ...state,
@@ -98,7 +110,8 @@ const newSnapshot = (): ISnapshot => {
         moveUserToGroup,
         removeUserFromGroup,
         blockUser,
-        unblockUser
+        unblockUser,
+        createFolder
     }
 }
 
