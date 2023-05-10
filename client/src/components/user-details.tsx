@@ -140,8 +140,8 @@ export const UserDetails = () => {
                         </Modal.Body>
 
                         <Modal.Footer>
-                            <Button variant="secondary" onClick={handleCloseChangePassword}>Close</Button>
-                            <Button variant="primary" onClick={() => changePassword(user.name)}>Save changes</Button>
+                            <Button variant="secondary" onClick={handleCloseChangePassword}>Отмена</Button>
+                            <Button variant="primary" onClick={() => changePassword(user.name)}>Сменить</Button>
                         </Modal.Footer>
                     </Modal>
                 </>)

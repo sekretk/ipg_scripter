@@ -15,7 +15,7 @@ if (pulledVersion === curVersion) {
 }
 
 const changeLog = execSync(`git log --oneline --pretty=format:%s ${currentHash}..HEAD`, { encoding: 'utf8', maxBuffer: 50 * 1024 * 1024 })
-const changes = changeLog.split('\n').filter(msg => msg.startsWith('(d)')).map(item => item.substring(3));
+const changes = changeLog.split('\n').filter(msg => msg.startsWith('(d)')).map(item => item.substring(3).trim());
 
 
 try {
@@ -29,7 +29,9 @@ execSync('deploy.cmd');
 
 const https = require('https');
 
-https.get(encodeURI(`${process.env.NOTIFY_URL}Новая версия '${pulledVersion}'. Изменения: ${changes.join(';')}`), (resp) => {
+const notifyMessage = `Новая версия '${pulledVersion}'.\nИзменения:\n${changes.join(';\n')}`
+
+https.get(encodeURI(`${process.env.NOTIFY_URL}${notifyMessage}`), (resp) => {
   let data = '';
 
   // A chunk of data has been received.
