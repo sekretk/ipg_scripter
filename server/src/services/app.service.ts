@@ -48,7 +48,10 @@ export class AppService {
     );
 
   allGroups = (): Array<Group> =>
-    pipe(this.shellService.exec(COMMANDS.GET_ALL_GROUPS), toGroupLines);
+    pipe(
+      this.shellService.exec(COMMANDS.GET_ALL_GROUPS), 
+      toGroupLines(this.configService.get(ENV_KEYS.PREFIX))
+    );
 
   details = (login: string): UserDetailed => {
     const user: User = pipe(
@@ -62,7 +65,7 @@ export class AppService {
 
     const userGroups: Array<Group> = pipe(
       this.shellService.exec(getUserGroups(login)),
-      toGroupLines,
+      toGroupLines(this.configService.get(ENV_KEYS.PREFIX)),
     );
 
     return { ...user, groups: mergeGroups(allGroups, userGroups) };

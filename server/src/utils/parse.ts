@@ -59,7 +59,7 @@ export const toGroup = (str: string): Group => {
   return { id, name };
 };
 
-export const toGroupLines: FunctionN<[string], Array<Group>> = flow(
+export const toGroupLines: (prefix: string) => FunctionN<[string], Array<Group>> = (prefix) => flow(
   byLines,
   A.map(S.trim),
   A.filter(Boolean),
