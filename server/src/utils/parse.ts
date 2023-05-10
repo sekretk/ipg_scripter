@@ -90,7 +90,9 @@ export const toUsersWithGroup: FunctionN<[string], Array<User>> = (value) => {
       fullname,
       unit,
       lastLogin,
-      attachedGroups: groupsArr,
+      attachedGroups: groupsArr
+        .map(S.replace('\r', ''))
+        .map(S.replace('\\r', '')),
     };
 
     console.log(`[toUsersWithGroup] user`, user);
