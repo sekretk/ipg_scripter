@@ -59,15 +59,18 @@ export const toGroup = (str: string): Group => {
   return { id, name };
 };
 
-export const toGroupLines: (prefix: string) => FunctionN<[string], Array<Group>> = (prefix) => flow(
-  byLines,
-  A.map(S.trim),
-  A.filter(Boolean),
-  A.filter(not(S.startsWith('---'))),
-  A.filter(not(S.startsWith('Name'))),
-  A.filter(S.startsWith(process.env[ENV_KEYS.PREFIX])),
-  A.map(toGroup),
-);
+export const toGroupLines: (
+  prefix: string,
+) => FunctionN<[string], Array<Group>> = (prefix) =>
+  flow(
+    byLines,
+    A.map(S.trim),
+    A.filter(Boolean),
+    A.filter(not(S.startsWith('---'))),
+    A.filter(not(S.startsWith('Name'))),
+    A.filter(S.startsWith(prefix)),
+    A.map(toGroup),
+  );
 
 export const toUsersWithGroup: FunctionN<[string], Array<User>> = (value) => {
   const users: Array<User> = [];
