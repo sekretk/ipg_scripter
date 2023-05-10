@@ -4,7 +4,7 @@ export const COMMANDS = {
   GET_ALL_USER: `Get-ADUser -Filter * -Properties lastLogon | Select SamAccountName, DistinguishedName, Enabled, @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.'lastLogon').toString("yyyy-MM-dd")}} |
   ForEach-Object { $_.SamAccountName + '${MAIN_SEPERATOR}' + $_.DistinguishedName + '${MAIN_SEPERATOR}' + $_.Enabled + '${MAIN_SEPERATOR}' + $_.lastLogon }`,
   GET_ALL_GROUPS: 'Get-ADGroup -Filter * | Format-Table Name',
-  SNAPSHOT: `Get-ADUser -Filter * | Select-Object SamAccountName, DistinguishedName, Enabled, @{Name="groups"; Expression={ Get-ADPrincipalGroupMembership $_.SamAccountName | Join-String -Property name -Separator '${AUX_SEPERATOR}'}}, @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.'lastLogon').toString("yyyy-MM-dd")}} | ForEach-Object { $_.SamAccountName + '${MAIN_SEPERATOR}' + $_.DistinguishedName + '${MAIN_SEPERATOR}' + $_.Enabled + '${MAIN_SEPERATOR}' + $_.lastLogon + '${MAIN_SEPERATOR}' + $_.groups }`,
+  SNAPSHOT: `Get-ADUser -Filter * -Properties lastLogon | Select-Object SamAccountName, DistinguishedName, Enabled, @{Name="groups"; Expression={ Get-ADPrincipalGroupMembership $_.SamAccountName | Join-String -Property name -Separator '${AUX_SEPERATOR}'}}, @{Name="lastLogon";Expression={[datetime]::FromFileTime($_.lastLogon).toString("yyyy-MM-dd")}} | ForEach-Object { $_.SamAccountName + '${MAIN_SEPERATOR}' + $_.DistinguishedName + '${MAIN_SEPERATOR}' + $_.Enabled + '${MAIN_SEPERATOR}' + $_.lastLogon + '${MAIN_SEPERATOR}' + $_.groups }`,
 };
 
 export const getUserDetailsCommand = (user: string) =>

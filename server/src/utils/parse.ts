@@ -7,6 +7,7 @@ import { not } from 'fp-ts/lib/Predicate';
 import {
   AD_UNIT_SEPERATOR,
   AUX_SEPERATOR,
+  ENV_KEYS,
   MAIN_SEPERATOR,
 } from '../consts/config';
 
@@ -64,7 +65,7 @@ export const toGroupLines: FunctionN<[string], Array<Group>> = flow(
   A.filter(Boolean),
   A.filter(not(S.startsWith('---'))),
   A.filter(not(S.startsWith('Name'))),
-  A.filter(S.startsWith('IPG_')),
+  A.filter(S.startsWith(process.env[ENV_KEYS.PREFIX])),
   A.map(toGroup),
 );
 
@@ -78,7 +79,8 @@ export const toUsersWithGroup: FunctionN<[string], Array<User>> = (value) => {
       .split(MAIN_SEPERATOR)
       .filter(Boolean);
 
-    const groupsArr = groups?.split(AUX_SEPERATOR)??[];
+    const groupsArr =
+      groups?.split(AUX_SEPERATOR)?.map(S.replace('\r', '')) ?? [];
 
     const { fullname, unit } = fullNameParse(description);
 
