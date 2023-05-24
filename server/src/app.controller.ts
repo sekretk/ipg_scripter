@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -76,6 +77,26 @@ export class AppController {
     console.log('[AppController#createFolder]', folder);
 
     this.appService.createFolder(folder);
+  }
+
+  @Post('/users/createUser')
+  createUser(
+    @Body()
+    user: {
+      login: string;
+      name: string;
+      department: string;
+      password: string;
+    },
+  ) {
+    console.log('[AppController#createUser]', user);
+
+    this.appService.createUser(
+      user.login,
+      user.name,
+      user.department,
+      user.password,
+    );
   }
 
   @Post('/users/:id/password/:password')

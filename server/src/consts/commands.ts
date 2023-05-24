@@ -34,6 +34,14 @@ export const createResource = (
 ) =>
   `${scriptRoot}createResource.ps1 "${shareRoot}${folder.toUpperCase()}" "${prefix}${folder.toUpperCase()}"`;
 
+export const createUser = (
+  scriptRoot: string,
+  login: string,
+  name: string,
+  dep: string,
+  password: string,
+) => `${scriptRoot}createUser.ps1 "${login}" "${name}" "${password}" ${dep}"`;
+
 export const deleteUser = (user: string, root: string) =>
   `${root}removeUser.ps1 ${user}`;
 

@@ -1,5 +1,5 @@
 import { Property, newAtom } from "@frp-ts/core"
-import { Snapshot } from "../abstract"
+import { Snapshot, User } from "../abstract"
 import { RemoteData, failure, initial, isSuccess, pending, success } from "@devexperts/remote-data-ts"
 import * as A from "fp-ts/lib/Array";
 import * as S from "fp-ts/lib/string";
@@ -13,6 +13,7 @@ interface ISnapshot extends Property<RemoteData<string, Snapshot>> {
     readonly blockUser: (user: string) => void
     readonly unblockUser: (user: string) => void
     readonly createFolder: (folder: string) => void
+    readonly createUser: (user: Pick<User, 'name' | 'fullname' | 'unit'>) => void
 }
 
 const newSnapshot = (): ISnapshot => {
@@ -102,6 +103,17 @@ const newSnapshot = (): ISnapshot => {
         return st;
     });
 
+    const createUser: ISnapshot['createUser'] = (user) => state.modify(st => {
+        if (isSuccess(st)) {
+
+            return success({
+                groups: st.value.groups,
+                users: [...st.value.users, {...user, attachedGroups: [], lastLogin: '-', disabled: false} ]
+            })
+        }
+        return st;
+    });
+
     return {
         ...state,
         startLoad,
@@ -111,7 +123,8 @@ const newSnapshot = (): ISnapshot => {
         removeUserFromGroup,
         blockUser,
         unblockUser,
-        createFolder
+        createFolder,
+        createUser
     }
 }
 

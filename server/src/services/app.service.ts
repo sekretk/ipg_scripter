@@ -10,6 +10,7 @@ import {
   changePassword,
   COMMANDS,
   createResource,
+  createUser,
   deactivateUser,
   deleteUser,
   getUserDetailsCommand,
@@ -49,8 +50,8 @@ export class AppService {
 
   allGroups = (): Array<Group> =>
     pipe(
-      this.shellService.exec(COMMANDS.GET_ALL_GROUPS), 
-      toGroupLines(this.configService.get(ENV_KEYS.PREFIX))
+      this.shellService.exec(COMMANDS.GET_ALL_GROUPS),
+      toGroupLines(this.configService.get(ENV_KEYS.PREFIX)),
     );
 
   details = (login: string): UserDetailed => {
@@ -118,6 +119,23 @@ export class AppService {
         this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
         this.configService.get(ENV_KEYS.SHARE_ROOT),
         this.configService.get(ENV_KEYS.PREFIX),
+      ),
+    );
+  };
+
+  createUser = (
+    login: string,
+    name: string,
+    dep: string,
+    password: string,
+  ): void => {
+    this.shellService.exec(
+      createUser(
+        this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
+        login,
+        name,
+        dep,
+        password,
       ),
     );
   };
