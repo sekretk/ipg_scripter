@@ -21,3 +21,8 @@ $acl = (Get-ACL -Path $folder)
 $domainUsers = New-Object System.Security.Principal.Ntaccount("Domain Users")
 $acl.PurgeAccessRules($domainUsers)
 Set-Acl -Path $folder -AclObject $acl
+
+$acl = (Get-ACL -Path $folder)
+$accessrule = New-Object system.security.AccessControl.FileSystemAccessRule($parentGroup,"Read",,,"Allow")
+$acl.RemoveAccessRuleAll($accessrule)
+Set-Acl -AclObject $acl -Path $folder 

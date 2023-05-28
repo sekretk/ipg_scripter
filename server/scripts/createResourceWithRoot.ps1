@@ -5,11 +5,8 @@ $parentGroup = $args[3];
 
 New-ADGroup -Name $group -GroupScope Universal
 New-ADGroup -Name $parentGroup -GroupScope Universal
-
 Add-ADGroupMember -Identity "${parentGroup}" -Members ${group}
-
 New-Item -Path $parentFolder -Type Directory
-
 New-Item -Path $folder -Type Directory
 
 $AccessRuleRE = New-Object System.Security.AccessControl.FileSystemAccessRule($parentGroup, "ReadAndExecute", "ContainerInherit,ObjectInherit", "None", "Allow")
@@ -37,3 +34,8 @@ $acl = (Get-ACL -Path $folder)
 $domainUsers = New-Object System.Security.Principal.Ntaccount("Domain Users")
 $acl.PurgeAccessRules($domainUsers)
 Set-Acl -Path $folder -AclObject $acl
+
+$acl = (Get-ACL -Path $folder)
+$accessrule = New-Object system.security.AccessControl.FileSystemAccessRule($parentGroup,"Read",,,"Allow")
+$acl.RemoveAccessRuleAll($accessrule)
+Set-Acl -AclObject $acl -Path $folder 
