@@ -42,18 +42,24 @@ export const groupsProperty: Property<Array<Group>> = pipe(snapshotProperty, FRP
 
             groups.forEach(grp => {
 
-                const [root, scd] = grp.split('_');
 
-                if (scd !== undefined) {
-                    const resGrp = result.find(resGrp => typeof resGrp !== 'string' && grp.startsWith(resGrp.parent));
+                if (groups.some(g => g !== grp && g.startsWith(`${grp}_`))) {
+                    result.push({ parent: grp, items: [] });
+                    return;
+                }
+
+                if (grp.includes('_')) {
+                    const [root, scd] = grp.split('_');
+                    const resGrp = result.find(resGrp => typeof resGrp !== 'string' && resGrp.parent === root);
+
                     if (resGrp !== undefined && typeof resGrp !== 'string') {
                         resGrp.items.push(scd)
                     } else {
                         result.push({ parent: root, items: [scd] });
                     }
-                } else {
-                    result.push(root);
+                    return
                 }
+                result.push(grp);
             })
 
             return result;
@@ -61,7 +67,7 @@ export const groupsProperty: Property<Array<Group>> = pipe(snapshotProperty, FRP
     )));
 
 export const parentsProperty: Property<Array<string>> = pipe(snapshotProperty, FRP.map(({ groups }) =>
-    groups.filter(grp => groups.filter(g => g.startsWith(grp)).length > 1)));
+    groups.filter(grp => groups.some(g => g !== grp && g.startsWith(grp)))));
 
 export const pageProperty: Property<Page> = pipe(persistantProp, FRP.map(get('page')));
 

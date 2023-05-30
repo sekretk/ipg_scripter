@@ -30,6 +30,8 @@ export const MainToolBar = memo(() => {
 
   const parents = useProperty(parentsProperty);
 
+  console.log('XXX par', parents);
+
   const allGroups = useProperty(groupsPlainProperty);
 
   const pageNavMap: Record<Page, FC<Page>> = {

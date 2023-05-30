@@ -80,12 +80,8 @@ export class AppService {
 
     const users = toUsersWithGroup(res);
 
-    const all_groups = this.allGroups().map((_) =>
+    const groups = this.allGroups().map((_) =>
       _.name.replace(this.envService.prefix, ''),
-    );
-
-    const groups = all_groups.filter((grp) =>
-      all_groups.every((g) => g === grp || !g.startsWith(grp)),
     );
 
     return {
