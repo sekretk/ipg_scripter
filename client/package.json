@@ -29,6 +29,7 @@
   "scripts": {
     "start": "react-scripts start",
     "start:dev": "BE=http://localhost:4444/ && react-scripts start",
+    "start:dev:win": "SET BE=http://localhost:4444/ && react-scripts start",
     "build": "react-scripts build",
     "release": "cd .. && node ./scripts/release.js",
     "test": "react-scripts test",
