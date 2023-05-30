@@ -62,5 +62,11 @@ export const createUser = (
 export const deleteUser = (user: string, root: string) =>
   `${root}removeUser.ps1 ${user}`;
 
+export const logoff = (user: string, root: string) =>
+  `${root}logoff.ps1 ${user}`;
+
+export const signoff = (user: string, root: string) =>
+  `${root}signoff.ps1 ${user}`;
+
 export const changePassword = (user: string, password: string, root: string) =>
   `${root}removeUser.ps1 ${user}`;

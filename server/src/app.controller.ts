@@ -8,13 +8,12 @@ import {
   Redirect,
   Render,
   InternalServerErrorException,
-  UseFilters,
 } from '@nestjs/common';
 import { AppService } from './services/app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService) {}
 
   @Get('/')
   root() {
@@ -24,7 +23,6 @@ export class AppController {
   @Get('/users')
   @Render('users')
   getUsers() {
-
     try {
       const users = this.appService.users();
       return {
@@ -65,6 +63,28 @@ export class AppController {
 
     try {
       return this.appService.delete(user);
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
+  }
+
+  @Post('/users/logoff/:user')
+  logoff(@Param('user') user: string) {
+    console.log('[AppController#logoff]', user);
+
+    try {
+      return this.appService.logoff(user);
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
+  }
+
+  @Post('/users/signoff/:user')
+  signoff(@Param('user') user: string) {
+    console.log('[AppController#signoff]', user);
+
+    try {
+      return this.appService.signoff(user);
     } catch (err) {
       throw new InternalServerErrorException(err);
     }
@@ -117,7 +137,6 @@ export class AppController {
   createFolder(@Param('folder') folder: string) {
     console.log('[AppController#createFolder]', folder);
 
-
     try {
       this.appService.createFolder(folder);
     } catch (err) {
@@ -133,7 +152,6 @@ export class AppController {
     console.log('[AppController#createFolderinRoot]', folder, root);
 
     try {
-
       this.appService.createFolderInRoot(folder, root);
     } catch (err) {
       throw new InternalServerErrorException(err);
@@ -147,9 +165,7 @@ export class AppController {
   ) {
     console.log('[AppController#createFolderWithRoot]', folder, root);
 
-
     try {
-
       this.appService.createFolderWithRoot(folder, root);
     } catch (err) {
       throw new InternalServerErrorException(err);
@@ -168,16 +184,13 @@ export class AppController {
   ) {
     console.log('[AppController#createUser]', user);
 
-
     try {
-
       this.appService.createUser(
         user.login,
         user.name,
         user.department,
         user.password,
       );
-
     } catch (err) {
       throw new InternalServerErrorException(err);
     }
@@ -190,11 +203,8 @@ export class AppController {
   ) {
     console.log('[AppController#changePassword]', user, password);
 
-    
     try {
-
       this.appService.changePassword(user, password);
-
     } catch (err) {
       throw new InternalServerErrorException(err);
     }

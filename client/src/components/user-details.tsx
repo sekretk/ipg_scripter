@@ -97,6 +97,34 @@ export const UserDetails = () => {
             setShowChangePassword(false);
         })
     }, [password]);
+
+
+    const logoff = useCallback((user: string) => {
+        processProp.set(true);
+        axios.post(`${API_URL}users/logoff/${user}`).then(() => {
+            toast.info(`'${user}' отключен`);
+            processProp.set(false);
+        }).catch((err) => {
+            console.log(`Error on POST /users/logoff/${user}`, err)
+            toast.error('Ошибка', { autoClose: 5000 });
+            processProp.set(false);
+            setShowChangePassword(false);
+        })
+    }, []);
+
+    const signoff = useCallback((user: string) => {
+        processProp.set(true);
+        axios.post(`${API_URL}users/signoff/${user}`).then(() => {
+            toast.info(`'${user}' закрыта сессия сессие`);
+            processProp.set(false);
+        }).catch((err) => {
+            console.log(`Error on POST /users/signoff/${user}`, err)
+            toast.error('Ошибка', { autoClose: 5000 });
+            processProp.set(false);
+            setShowChangePassword(false);
+        })
+    }, []);
+
     return (pipe(
         selected,
         O.fold(
@@ -110,6 +138,8 @@ export const UserDetails = () => {
                         {user.disabled && <Button className="m-1" variant="primary" onClick={() => unblockUser(user.name)}>Разбокировать</Button>}
                         {!user.disabled && <Button className="m-1" variant="warning" onClick={() => blockUser(user.name)}>Заблокировать</Button>}
                         <Button className="m-1" variant="info" onClick={() => setShowChangePassword(true)}>Сменить пароль</Button>
+                        <Button className="m-1" variant="danger" onClick={() => logoff(user.name)}>Закрыть сессию</Button>
+                        <Button className="m-1" variant="success" onClick={() => signoff(user.name)}>Выйти из сессии</Button>
                         <ListGroup className="m-1">
                             {
                                 groups.map((group) => typeof group === 'string' ? (

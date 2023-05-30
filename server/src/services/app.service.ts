@@ -17,8 +17,10 @@ import {
   deleteUser,
   getUserDetailsCommand,
   getUserGroups,
+  logoff,
   moveUserToGroup,
   removeUserFromGroup,
+  signoff,
 } from '../consts/commands';
 import { Group, Snapshot, User, UserChangeSet, UserDetailed } from '../dto';
 import { toGroupLines, toUserLines, toUsersWithGroup } from '../utils/parse';
@@ -96,6 +98,14 @@ export class AppService {
 
   delete = (user: string): void => {
     this.shellService.exec(deleteUser(user, this.envService.scriptRoot));
+  };
+
+  logoff = (user: string): void => {
+    this.shellService.exec(logoff(user, this.envService.scriptRoot));
+  };
+
+  signoff = (user: string): void => {
+    this.shellService.exec(signoff(user, this.envService.scriptRoot));
   };
 
   deactive = (user: string): void => {
