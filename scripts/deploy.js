@@ -1,5 +1,6 @@
 const { execSync } = require("child_process");
 const fs = require('fs');
+const { formatWithOptions } = require("util");
 
 require('dotenv').config()
 
@@ -22,10 +23,11 @@ try {
 
   execSync('deploy.cmd');
 
-
 } catch (err) {
   console.error('Error on execution', err.toString())
 }
+
+fs.writeFileSync('../server/dist/config.json', JSON.stringify(process.env, null, 2))
 
 if (changes.length > 0) {
 

@@ -6,6 +6,7 @@ import { SHELL_SERVICE } from './services/shell/shell.abstract';
 import { ShellService } from './services/shell/shell.service';
 import { ShellServiceMock } from './services/shell/shell.service.mock';
 import { LoggerModule } from 'nestjs-pino';
+import { EnvService } from './services/env.service';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { LoggerModule } from 'nestjs-pino';
   controllers: [AppController],
   providers: [
     AppService,
+    EnvService,
     {
       provide: SHELL_SERVICE,
       useClass:

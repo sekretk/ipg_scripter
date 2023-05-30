@@ -1,0 +1,6 @@
+{
+  "SCRIPT_ROOTS": "c:\\projects\\ipg_scripter\\server\\scripts\\",
+"PREFIX":"IPG_",
+"SHARE_ROOT":"e:\\share\\",
+"NOTIFY_URL": "https://api.telegram.org/bot5391875483:AAHPomONGMaT1NRW72P4JOVWaKbk7LdI-is/sendMessage?chat_id=-1001830694124&text="
+}

@@ -27,15 +27,15 @@ import { IShellService, SHELL_SERVICE } from './shell/shell.abstract';
 import { get } from '../utils/generic';
 import { FALLBACK_USER } from '../consts/fixture';
 import { mergeGroups } from '../utils/group';
-import { ConfigService } from '@nestjs/config';
 import { ENV_KEYS } from '../consts/config';
+import { EnvService } from './env.service';
 
 @Injectable()
 export class AppService {
   private readonly logger = new Logger(AppService.name);
   constructor(
     @Inject(SHELL_SERVICE) private shellService: IShellService,
-    private configService: ConfigService,
+    private envService: EnvService,
   ) {}
 
   users = (): Array<User> =>
@@ -54,7 +54,7 @@ export class AppService {
   allGroups = (): Array<Group> =>
     pipe(
       this.shellService.exec(COMMANDS.GET_ALL_GROUPS),
-      toGroupLines(this.configService.get(ENV_KEYS.PREFIX)),
+      toGroupLines(this.envService.prefix),
     );
 
   details = (login: string): UserDetailed => {
@@ -69,7 +69,7 @@ export class AppService {
 
     const userGroups: Array<Group> = pipe(
       this.shellService.exec(getUserGroups(login)),
-      toGroupLines(this.configService.get(ENV_KEYS.PREFIX)),
+      toGroupLines(this.envService.prefix),
     );
 
     return { ...user, groups: mergeGroups(allGroups, userGroups) };
@@ -83,7 +83,7 @@ export class AppService {
     const users = toUsersWithGroup(res);
 
     const all_groups = this.allGroups().map((_) =>
-      _.name.replace(this.configService.get(ENV_KEYS.PREFIX), ''),
+      _.name.replace(this.envService.prefix, ''),
     );
 
     const groups = all_groups.filter((grp) =>
@@ -102,7 +102,7 @@ export class AppService {
 
   delete = (user: string): void => {
     this.shellService.exec(
-      deleteUser(user, this.configService.get(ENV_KEYS.SCRIPT_ROOTS)),
+      deleteUser(user, this.envService.scriptRoot),
     );
   };
 
@@ -118,7 +118,7 @@ export class AppService {
     this.shellService.exec(
       moveUserToGroup(
         user,
-        `${this.configService.get(ENV_KEYS.PREFIX)}${group}`,
+        `${this.envService.prefix}${group}`,
       ),
     );
   };
@@ -127,7 +127,7 @@ export class AppService {
     this.shellService.exec(
       removeUserFromGroup(
         user,
-        `${this.configService.get(ENV_KEYS.PREFIX)}${group}`,
+        `${this.envService.prefix}${group}`,
       ),
     );
   };
@@ -136,9 +136,9 @@ export class AppService {
     this.shellService.exec(
       createResource(
         folder,
-        this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
-        this.configService.get(ENV_KEYS.SHARE_ROOT),
-        this.configService.get(ENV_KEYS.PREFIX),
+        this.envService.scriptRoot,
+        this.envService.shareRoot,
+        this.envService.prefix,
       ),
     );
   };
@@ -146,11 +146,11 @@ export class AppService {
   createFolderWithRoot = (folder: string, root: string): void => {
     this.shellService.exec(
       createFolderWithRoot(
-        `${this.configService.get(ENV_KEYS.SHARE_ROOT)}${root}\\${folder}`,
-        `${this.configService.get(ENV_KEYS.PREFIX)}${root}_${folder}`,
-        `${this.configService.get(ENV_KEYS.PREFIX)}${root}`,
-        `${this.configService.get(ENV_KEYS.PREFIX)}${root}`,
-        this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
+        `${this.envService.shareRoot}${root}\\${folder}`,
+        `${this.envService.prefix}${root}_${folder}`,
+        `${this.envService.prefix}${root}`,
+        `${this.envService.prefix}${root}`,
+        this.envService.scriptRoot,
       ),
     );
   };
@@ -158,10 +158,10 @@ export class AppService {
   createFolderInRoot = (folder: string, root: string): void => {
     this.shellService.exec(
       createFolderInRoot(
-        `${this.configService.get(ENV_KEYS.SHARE_ROOT)}${root}\\${folder}`,
-        `${this.configService.get(ENV_KEYS.PREFIX)}${root}_${folder}`,
-        `${this.configService.get(ENV_KEYS.PREFIX)}${root}`,
-        this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
+        `${this.envService.shareRoot}${root}\\${folder}`,
+        `${this.envService.prefix}${root}_${folder}`,
+        `${this.envService.prefix}${root}`,
+        this.envService.scriptRoot,
       ),
     );
   };
@@ -174,7 +174,7 @@ export class AppService {
   ): void => {
     this.shellService.exec(
       createUser(
-        this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
+        this.envService.scriptRoot,
         login,
         name,
         dep,
@@ -188,7 +188,7 @@ export class AppService {
       changePassword(
         user,
         password,
-        this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
+        this.envService.scriptRoot,
       ),
     );
   };
