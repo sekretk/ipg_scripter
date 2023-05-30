@@ -47,3 +47,4 @@ lerna-debug.log*
 # Server
 /server/.env
 .env
+server/public/asset-manifest.json
