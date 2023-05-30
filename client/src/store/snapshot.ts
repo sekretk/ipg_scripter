@@ -109,7 +109,7 @@ const newSnapshot = (): ISnapshot => {
         if (isSuccess(st)) {
 
             return success({
-                groups: [`${root}_${folder}`, ...st.value.groups],
+                groups: pipe([root, `${root}_${folder}`, ...st.value.groups], A.uniq(S.Eq)),
                 users: st.value.users
             })
         }

@@ -40,6 +40,9 @@ export const groupsProperty: Property<Array<Group>> = pipe(snapshotProperty, FRP
         groups => {
             const result = new Array<Group>();
 
+
+            console.log('XXX groups', groups)
+
             groups.forEach(grp => {
 
 

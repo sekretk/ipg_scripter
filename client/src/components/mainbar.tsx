@@ -1,6 +1,6 @@
 import { Accordion, Button, ButtonGroup, Container, Form, Modal, Nav, NavDropdown, Navbar, Row, ToggleButton } from "react-bootstrap"
 import { DEPARTMENTS, Department, PAGES, Page } from "../abstract";
-import { groupsPlainProperty, groupsProperty, pageProperty, parentsProperty, processProp, snapshot } from "../store";
+import { groupsPlainProperty, pageProperty, parentsProperty, processProp, snapshot } from "../store";
 import { FC, memo, useCallback, useEffect, useState } from "react";
 import { persistantProp } from "../store/persistant";
 import { useProperty } from "../hoc/use-property";
@@ -29,8 +29,6 @@ export const MainToolBar = memo(() => {
   const currentPage = useProperty(pageProperty);
 
   const parents = useProperty(parentsProperty);
-
-  console.log('XXX par', parents);
 
   const allGroups = useProperty(groupsPlainProperty);
 
@@ -83,6 +81,11 @@ export const MainToolBar = memo(() => {
         return;
       }
 
+      if (allGroups.some(grp => grp.startsWith(`${parentFolder}_${folder}`))) {
+        toast.error('Колизия с другим каталогом, начало должно быть уникальным', { autoClose: 5000 });
+        return;
+      }
+
       processProp.set(true);
 
       setIsCreateFolderOpened(false);
@@ -121,6 +124,11 @@ export const MainToolBar = memo(() => {
 
       if (allGroups.includes(`${folder}_${subFolder}`) ) {
         toast.error('Такой каталог уже есть', { autoClose: 5000 });
+        return;
+      }
+
+      if (allGroups.some(grp => grp.startsWith(`${folder}_${subFolder}`))) {
+        toast.error('Колизия с другим каталогом, начало должно быть уникальным', { autoClose: 5000 });
         return;
       }
 

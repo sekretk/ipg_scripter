@@ -78,7 +78,7 @@ export class AppService {
 
     const res = this.shellService.exec(COMMANDS.SNAPSHOT);
 
-    const users = toUsersWithGroup(res);
+    const users = toUsersWithGroup(res, this.envService.prefix);
 
     const groups = this.allGroups().map((_) =>
       _.name.replace(this.envService.prefix, ''),

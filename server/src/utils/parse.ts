@@ -71,7 +71,10 @@ export const toGroupLines: (
     A.map(toGroup),
   );
 
-export const toUsersWithGroup: FunctionN<[string], Array<User>> = (value) => {
+export const toUsersWithGroup = (
+  value: string,
+  prefix: string,
+): Array<User> => {
   const users: Array<User> = [];
 
   const lines = byLines(value);
@@ -93,8 +96,8 @@ export const toUsersWithGroup: FunctionN<[string], Array<User>> = (value) => {
       unit,
       lastLogin,
       attachedGroups: groupsArr
-        .map(S.replace('\r', ''))
-        .map(S.replace('\\r', '')),
+        .filter(S.startsWith(prefix))
+        .map(S.replace(prefix, '')),
     };
 
     console.log(`[toUsersWithGroup] user`, user);

@@ -131,7 +131,7 @@ export const UserDetails = () => {
                                             key={`${group.parent}_${item}`}
                                         ><Form.Check
                                                 type={'checkbox'}
-                                                checked={user.attachedGroups.includes(`${group}_${item}`)}
+                                                checked={user.attachedGroups.includes(`${group.parent}_${item}`)}
                                                 label={item}
                                                 style={({ 'cursor': 'pointer' })}
                                                 onChange={() => user.attachedGroups.includes(`${group}_${item}`) ? removeFromGroup(`${group.parent}_${item}`, user.name) : addtoGroup(`${group.parent}_${item}`, user.name)}
