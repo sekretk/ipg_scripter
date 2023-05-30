@@ -7,7 +7,7 @@ import { get } from "./obj";
 import { pipe } from "fp-ts/lib/function";
 
 export const usersFilter = (str: string, dep: Department | undefined) => (user: User): boolean => {
-    if (Boolean(str) && (!user.name.includes(str) && !user.fullname.includes(str))) {
+    if (Boolean(str) && (!user.name.toLowerCase().includes(str.toLowerCase()) && !user.fullname.toLowerCase().includes(str.toLowerCase()))) {
         return false;
     }
 
