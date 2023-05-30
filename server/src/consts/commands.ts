@@ -57,7 +57,7 @@ export const createUser = (
   name: string,
   dep: string,
   password: string,
-) => `${scriptRoot}createUser.ps1 "${login}" "${name}" "${password}" ${dep}"`;
+) => `${scriptRoot}createUser.ps1 "${login}" "${name}" "${password}" "${dep}"`;
 
 export const deleteUser = (user: string, root: string) =>
   `${root}removeUser.ps1 ${user}`;

@@ -102,7 +102,7 @@ const newSnapshot = (): ISnapshot => {
         if (isSuccess(st)) {
 
             return success({
-                groups: [...st.value.groups, folder.toUpperCase()],
+                groups: [...st.value.groups, `IPG_${folder.toUpperCase()}`],
                 parents: st.value.parents,
                 users: st.value.users
             })
@@ -114,8 +114,8 @@ const newSnapshot = (): ISnapshot => {
         if (isSuccess(st)) {
 
             return success({
-                groups: [...st.value.groups, folder.toUpperCase()],
-                parents: pipe(st.value.parents, A.concat([root.toUpperCase()]), A.uniq(S.Eq)),
+                groups: [...st.value.groups, `IPG_${folder.toUpperCase()}`],
+                parents: pipe(st.value.parents, A.concat([`IPG_${root.toUpperCase()}`]), A.uniq(S.Eq)),
                 users: st.value.users
             })
         }
