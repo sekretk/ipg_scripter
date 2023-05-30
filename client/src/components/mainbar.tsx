@@ -134,6 +134,7 @@ export const MainToolBar = memo(() => {
     if (!Boolean(user.login)
       || !Boolean(user.name)
       || !Boolean(user.password)
+      || user.password?.length < 6
       || !/^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,19}$/g.test(user.login)) {
       return;
     }
@@ -167,6 +168,11 @@ export const MainToolBar = memo(() => {
     setParentFolder(parents[0] ?? '')
     setSubFolderOpened(undefined);
   }, [isCreateFolderOpened])
+
+
+  useEffect(() => {
+    setUser(emptyUser);
+  }, [isCreateUserOpened]);
 
   return (
     <>
