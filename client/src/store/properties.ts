@@ -72,7 +72,7 @@ export const groupsProperty: Property<Array<Group>> = pipe(snapshotProperty, FRP
     )));
 
 export const parentsProperty: Property<Array<string>> = pipe(snapshotProperty, FRP.map(({ groups }) =>
-    groups.filter(grp => groups.some(g => g !== grp && g.startsWith(grp)))));
+    pipe(groups, A.filter(S.includes('_')), A.map(_ => _.split('_')[0]), A.uniq(S.Eq))));
 
 export const pageProperty: Property<Page> = pipe(persistantProp, FRP.map(get('page')));
 
