@@ -194,7 +194,7 @@ export const UserDetails = () => {
                                                 checked={user.attachedGroups.includes(`${group.parent}_${item}`)}
                                                 label={item}
                                                 style={({ 'cursor': 'pointer' })}
-                                                onChange={() => user.attachedGroups.includes(`${group}_${item}`) ? removeFromGroup(`${group.parent}_${item}`, user.name) : addtoGroup(`${group.parent}_${item}`, user.name)}
+                                                onChange={() => user.attachedGroups.includes(`${group.parent}_${item}`) ? removeFromGroup(`${group.parent}_${item}`, user.name) : addtoGroup(`${group.parent}_${item}`, user.name)}
                                             /></ListGroup.Item>))}
                                         -----
                                     </React.Fragment>
