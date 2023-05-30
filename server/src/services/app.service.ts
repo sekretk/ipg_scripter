@@ -3,7 +3,6 @@ import * as Ord from 'fp-ts/lib/Ord';
 import * as B from 'fp-ts/lib/boolean';
 import * as N from 'fp-ts/lib/number';
 import * as O from 'fp-ts/lib/Option';
-import * as S from 'fp-ts/lib/string';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { constant, flow, pipe } from 'fp-ts/lib/function';
 import {
@@ -27,7 +26,6 @@ import { IShellService, SHELL_SERVICE } from './shell/shell.abstract';
 import { get } from '../utils/generic';
 import { FALLBACK_USER } from '../consts/fixture';
 import { mergeGroups } from '../utils/group';
-import { ENV_KEYS } from '../consts/config';
 import { EnvService } from './env.service';
 
 @Injectable()
@@ -101,9 +99,7 @@ export class AppService {
   };
 
   delete = (user: string): void => {
-    this.shellService.exec(
-      deleteUser(user, this.envService.scriptRoot),
-    );
+    this.shellService.exec(deleteUser(user, this.envService.scriptRoot));
   };
 
   deactive = (user: string): void => {
@@ -116,19 +112,13 @@ export class AppService {
 
   move = (user: string, group: string): void => {
     this.shellService.exec(
-      moveUserToGroup(
-        user,
-        `${this.envService.prefix}${group}`,
-      ),
+      moveUserToGroup(user, `${this.envService.prefix}${group}`),
     );
   };
 
   remove = (user: string, group: string): void => {
     this.shellService.exec(
-      removeUserFromGroup(
-        user,
-        `${this.envService.prefix}${group}`,
-      ),
+      removeUserFromGroup(user, `${this.envService.prefix}${group}`),
     );
   };
 
@@ -173,23 +163,13 @@ export class AppService {
     password: string,
   ): void => {
     this.shellService.exec(
-      createUser(
-        this.envService.scriptRoot,
-        login,
-        name,
-        dep,
-        password,
-      ),
+      createUser(this.envService.scriptRoot, login, name, dep, password),
     );
   };
 
   changePassword = (user: string, password: string): void => {
     this.shellService.exec(
-      changePassword(
-        user,
-        password,
-        this.envService.scriptRoot,
-      ),
+      changePassword(user, password, this.envService.scriptRoot),
     );
   };
 }
