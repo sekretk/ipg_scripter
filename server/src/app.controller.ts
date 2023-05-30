@@ -7,12 +7,13 @@ import {
   Post,
   Redirect,
   Render,
+  InternalServerErrorException
 } from '@nestjs/common';
 import { AppService } from './services/app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly appService: AppService) { }
 
   @Get('/')
   root() {
@@ -63,7 +64,11 @@ export class AppController {
   @Post('/users/:id/addToGroup/:group')
   togroup(@Param('id') id: string, @Param('group') group: string) {
     console.log('[AppController#togroup]', id, group);
-    this.appService.move(id, group);
+    try {
+      this.appService.move(id, group);
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
   }
 
   @Post('/users/:id/removeFromGroup/:group')

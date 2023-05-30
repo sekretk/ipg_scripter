@@ -10,12 +10,14 @@ export class ShellService implements IShellService {
       const res = execSync(cmd, {
         shell: 'pwsh',
         encoding: 'utf-8',
+        
       });
 
-      console.log('[ShellService#exec]', res);
+      this.logger.log('[ShellService#exec]', res);
       return res;
     } catch (err) {
       this.logger.error(`Execute error '${cmd}'`, err?.stack, err.toString());
+      throw err;
     }
   };
 }
