@@ -119,11 +119,11 @@ export class AppService {
   };
 
   move = (user: string, group: string): void => {
-    this.shellService.exec(moveUserToGroup(user, group));
+    this.shellService.exec(moveUserToGroup(user, `${this.configService.get(ENV_KEYS.PREFIX)}${group}`));
   };
 
   remove = (user: string, group: string): void => {
-    this.shellService.exec(removeUserFromGroup(user, group));
+    this.shellService.exec(removeUserFromGroup(user, `${this.configService.get(ENV_KEYS.PREFIX)}${group}`));
   };
 
   createFolder = (folder: string): void => {
@@ -138,25 +138,32 @@ export class AppService {
   };
 
   createFolderWithRoot = (folder: string, root: string): void => {
+    console.log('appSrv#createFolderWithRoot',`${this.configService.get(ENV_KEYS.SHARE_ROOT)}${root}\\${folder}`,
+    `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}_${folder.toUpperCase()}`,
+    `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}`,
+    this.configService.get(ENV_KEYS.SCRIPT_ROOTS),)
     this.shellService.exec(
       createFolderWithRoot(
-        folder,
-        root,
+        `${this.configService.get(ENV_KEYS.SHARE_ROOT)}${root}\\${folder}`,
+        `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}_${folder.toUpperCase()}`,
+        `${this.configService.get(ENV_KEYS.PREFIX)}${root}`,
+        `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}`,
         this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
-        this.configService.get(ENV_KEYS.SHARE_ROOT),
-        this.configService.get(ENV_KEYS.PREFIX),
       ),
     );
   };
 
   createFolderInRoot = (folder: string, root: string): void => {
+    console.log('appSrv#createFolderInRoot', `${this.configService.get(ENV_KEYS.SHARE_ROOT)}${root}\\${folder}`,
+    `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}_${folder.toUpperCase()}`,
+    `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}`,
+    this.configService.get(ENV_KEYS.SCRIPT_ROOTS))
     this.shellService.exec(
       createFolderInRoot(
-        folder,
-        root,
+        `${this.configService.get(ENV_KEYS.SHARE_ROOT)}${root}\\${folder}`,
+        `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}_${folder.toUpperCase()}`,
+        `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}`,
         this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
-        this.configService.get(ENV_KEYS.SHARE_ROOT),
-        this.configService.get(ENV_KEYS.PREFIX),
       ),
     );
   };

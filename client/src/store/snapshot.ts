@@ -115,7 +115,7 @@ const newSnapshot = (): ISnapshot => {
 
             return success({
                 groups: [...st.value.groups, `IPG_${folder.toUpperCase()}`],
-                parents: pipe(st.value.parents, A.concat([`IPG_${root.toUpperCase()}`]), A.uniq(S.Eq)),
+                parents: pipe(st.value.parents, A.concat([root]), A.uniq(S.Eq)),
                 users: st.value.users
             })
         }
