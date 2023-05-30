@@ -5,11 +5,13 @@ cd ..\client\
 call npm i
 call npm run build
 cd ..\server\
-if not exist dist rmdir dist /Q /S
+if exist dist rmdir dist /Q /S
+
 cd ..
 if not exist .\server\public mkdir .\server\public
 xcopy .\client\build .\server\public /E/H/C/I/Y
-cd ..\server\
+
+cd .\server\
 call npm i
 call npm run build
 
