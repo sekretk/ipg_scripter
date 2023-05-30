@@ -48,8 +48,9 @@ export const createFolderInRoot = (
   rootFolder: string,
   scriptRoot: string,
   shareRoot: string,
+  prefix: string,
 ) =>
-  `${scriptRoot}createResourceSecondLevel.ps1  "${shareRoot}${rootFolder.toUpperCase()}\\${folder.toUpperCase()}" ${rootFolder.toUpperCase()}_${folder.toUpperCase()}" "${rootFolder.toUpperCase()}"`;
+  `${scriptRoot}createResourceSecondLevel.ps1  "${shareRoot}${rootFolder.toUpperCase()}\\${folder.toUpperCase()}" "${prefix}${rootFolder.toUpperCase()}_${folder.toUpperCase()}" "${rootFolder.toUpperCase()}"`;
 
 export const createUser = (
   scriptRoot: string,

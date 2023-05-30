@@ -156,6 +156,7 @@ export class AppService {
         root,
         this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
         this.configService.get(ENV_KEYS.SHARE_ROOT),
+        this.configService.get(ENV_KEYS.PREFIX),
       ),
     );
   };
