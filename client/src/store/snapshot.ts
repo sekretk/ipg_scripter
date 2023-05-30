@@ -30,7 +30,6 @@ const newSnapshot = (): ISnapshot => {
 
             return success({
                 groups: st.value.groups,
-                parents: st.value.parents,
                 users: st.value.users.map(usr => {
                     if (usr.name === user) {
                         return { ...usr, attachedGroups: A.uniq(S.Eq)([...usr.attachedGroups, group]) }
@@ -48,7 +47,6 @@ const newSnapshot = (): ISnapshot => {
 
             return success({
                 groups: st.value.groups,
-                parents: st.value.parents,
                 users: st.value.users.map(usr => {
                     if (usr.name === user) {
 
@@ -67,7 +65,6 @@ const newSnapshot = (): ISnapshot => {
 
             return success({
                 groups: st.value.groups,
-                parents: st.value.parents,
                 users: st.value.users.map(usr => {
                     if (usr.name === user) {
                         return { ...usr, disabled: true }
@@ -85,7 +82,6 @@ const newSnapshot = (): ISnapshot => {
 
             return success({
                 groups: st.value.groups,
-                parents: st.value.parents,
                 users: st.value.users.map(usr => {
                     if (usr.name === user) {
                         return { ...usr, disabled: false }
@@ -102,8 +98,7 @@ const newSnapshot = (): ISnapshot => {
         if (isSuccess(st)) {
 
             return success({
-                groups: [...st.value.groups, `${folder.toUpperCase()}`],
-                parents: st.value.parents,
+                groups: [folder, ...st.value.groups],
                 users: st.value.users
             })
         }
@@ -114,8 +109,7 @@ const newSnapshot = (): ISnapshot => {
         if (isSuccess(st)) {
 
             return success({
-                groups: [...st.value.groups, `${root.toUpperCase}_${folder.toUpperCase()}`],
-                parents: pipe(st.value.parents, A.concat([root]), A.uniq(S.Eq)),
+                groups: [`${root}_${folder}`, ...st.value.groups],
                 users: st.value.users
             })
         }
@@ -127,8 +121,7 @@ const newSnapshot = (): ISnapshot => {
 
             return success({
                 groups: st.value.groups,
-                parents: st.value.parents,
-                users: [...st.value.users, {...user, attachedGroups: [], lastLogin: '-', disabled: false} ]
+                users: [{...user, attachedGroups: [], lastLogin: '-', disabled: false}, ...st.value.users ]
             })
         }
         return st;

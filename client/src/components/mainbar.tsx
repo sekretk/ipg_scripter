@@ -1,6 +1,6 @@
 import { Accordion, Button, ButtonGroup, Container, Form, Modal, Nav, NavDropdown, Navbar, Row, ToggleButton } from "react-bootstrap"
 import { DEPARTMENTS, Department, PAGES, Page } from "../abstract";
-import { pageProperty, parentsProperty, processProp, snapshot } from "../store";
+import { groupsPlainProperty, groupsProperty, pageProperty, parentsProperty, processProp, snapshot } from "../store";
 import { FC, memo, useCallback, useEffect, useState } from "react";
 import { persistantProp } from "../store/persistant";
 import { useProperty } from "../hoc/use-property";
@@ -29,6 +29,8 @@ export const MainToolBar = memo(() => {
   const currentPage = useProperty(pageProperty);
 
   const parents = useProperty(parentsProperty);
+
+  const allGroups = useProperty(groupsPlainProperty);
 
   const pageNavMap: Record<Page, FC<Page>> = {
     groups: (page) => <Nav.Link key={'groups'} active={page === 'groups'} onClick={() => persistantProp.page('groups')}>Группы</Nav.Link>,
@@ -59,7 +61,23 @@ export const MainToolBar = memo(() => {
   const createFolder = useCallback(() => {
 
     if (currentFolderMode === 'second') {
-      if (!Boolean(folder) || !Boolean(parentFolder)) {
+      if (!Boolean(folder)) {
+        toast.error('Не задан каталог', { autoClose: 5000 });
+        return;
+      }
+
+      if (!Boolean(parentFolder)) {
+        toast.error('Не задан корневой каталог', { autoClose: 5000 });
+        return;
+      }
+
+      if (folder.includes('_') || parentFolder.includes('_')) {
+        toast.error('Подчеркивание нельзя использовать', { autoClose: 5000 });
+        return;
+      }
+
+      if (allGroups.includes(`${parentFolder}_${folder}`) ) {
+        toast.error('Такой каталог уже есть', { autoClose: 5000 });
         return;
       }
 
@@ -84,7 +102,23 @@ export const MainToolBar = memo(() => {
     }
 
     if (subFolderOpened === '0') {
-      if (!Boolean(folder) || !Boolean(subFolder) || parents.map(S.toUpperCase).includes(folder.toUpperCase())) {
+      if (!Boolean(folder)) {
+        toast.error('Не задан корневой каталог', { autoClose: 5000 });
+        return;
+      }
+
+      if (!Boolean(subFolder)) {
+        toast.error('Не задан каталог', { autoClose: 5000 });
+        return;
+      }
+
+      if (folder.includes('_') || subFolder.includes('_')) {
+        toast.error('Подчеркивание нельзя использовать', { autoClose: 5000 });
+        return;
+      }
+
+      if (allGroups.includes(`${folder}_${subFolder}`) ) {
+        toast.error('Такой каталог уже есть', { autoClose: 5000 });
         return;
       }
 
@@ -110,6 +144,22 @@ export const MainToolBar = memo(() => {
     }
 
     if (!Boolean(folder)) {
+      toast.error('Не задан каталог', { autoClose: 5000 });
+      return;
+    }
+
+    if (folder.includes('_')) {
+      toast.error('Подчеркивание нельзя использовать', { autoClose: 5000 });
+      return;
+    }
+
+    if (allGroups.includes(folder) ) {
+      toast.error('Такой каталог уже есть', { autoClose: 5000 });
+      return;
+    }
+
+    if (allGroups.some(grp => grp.startsWith(folder))) {
+      toast.error('Колизия с другим каталогом, начало должно быть уникальным', { autoClose: 5000 });
       return;
     }
 
@@ -136,6 +186,7 @@ export const MainToolBar = memo(() => {
       || !Boolean(user.password)
       || user.password?.length < 6
       || !/^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,19}$/g.test(user.login)) {
+        toast.error('Ошибка ввода', { autoClose: 5000 });
       return;
     }
 
@@ -148,6 +199,8 @@ export const MainToolBar = memo(() => {
       processProp.set(false);
       snapshot.createUser({ fullname: user.name, name: user.login, unit: user.department });
       setFolder('');
+      persistantProp.selectUser(user.login);
+      
     }).catch((err) => {
       console.log(`Error on POST users/createUser/${folder}`, err)
       toast.error('Ошибка', { autoClose: 5000 });

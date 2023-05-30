@@ -1,4 +1,4 @@
-import { processProp, selectedUserGroupsProp, selectedUserProp, snapshot } from "../store";
+import { groupsProperty, processProp, selectedUserProp, snapshot } from "../store";
 import * as O from "fp-ts/lib/Option";
 import { constant, pipe } from "fp-ts/lib/function";
 import styled from "styled-components";
@@ -15,7 +15,8 @@ margin: 10px;`;
 
 export const UserDetails = () => {
     const selected = useProperty(selectedUserProp);
-    const groups = useProperty(selectedUserGroupsProp);
+
+    const groups = useProperty(groupsProperty);
 
     const removeFromGroup = useCallback((group: string, user: string) => {
         processProp.set(true);
@@ -111,18 +112,34 @@ export const UserDetails = () => {
                         <Button className="m-1" variant="info" onClick={() => setShowChangePassword(true)}>Сменить пароль</Button>
                         <ListGroup className="m-1">
                             {
-                                groups.map(({ isChecked, value }) => (
+                                groups.map((group) => typeof group === 'string' ? (
                                     <ListGroup.Item
-                                        key={value}
+                                        key={group}
                                     >
                                         <Form.Check
                                             type={'checkbox'}
-                                            checked={isChecked}
-                                            label={value}
+                                            checked={user.attachedGroups.includes(group)}
+                                            label={group}
                                             style={({ 'cursor': 'pointer' })}
-                                            onChange={() => isChecked ? removeFromGroup(value, user.name) : addtoGroup(value, user.name)}
+                                            onChange={() => user.attachedGroups.includes(group) ? removeFromGroup(group, user.name) : addtoGroup(group, user.name)}
                                         />
-                                    </ListGroup.Item>))
+                                    </ListGroup.Item>
+                                ) : (
+                                    <>
+                                        <p>{group.parent}</p>
+                                        {group.items.map(item => (<ListGroup.Item
+                                            key={`${group.parent}_${item}`}
+                                        ><Form.Check
+                                                type={'checkbox'}
+                                                checked={user.attachedGroups.includes(`${group}_${item}`)}
+                                                label={item}
+                                                style={({ 'cursor': 'pointer' })}
+                                                onChange={() => user.attachedGroups.includes(`${group}_${item}`) ? removeFromGroup(`${group.parent}_${item}`, user.name) : addtoGroup(`${group.parent}_${item}`, user.name)}
+                                            /></ListGroup.Item>))}
+                                        -----
+                                    </>
+                                ))
+
                             }
                         </ListGroup>
                     </Container>

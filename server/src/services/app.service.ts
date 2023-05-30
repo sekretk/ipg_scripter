@@ -54,8 +54,7 @@ export class AppService {
   allGroups = (): Array<Group> =>
     pipe(
       this.shellService.exec(COMMANDS.GET_ALL_GROUPS),
-      toGroupLines('IPG_'),
-      // toGroupLines(this.configService.get(ENV_KEYS.PREFIX)),
+      toGroupLines(this.configService.get(ENV_KEYS.PREFIX)),
     );
 
   details = (login: string): UserDetailed => {
@@ -83,20 +82,17 @@ export class AppService {
 
     const users = toUsersWithGroup(res);
 
-    const allgroups = this.allGroups().map((_) => _.name);
+    const all_groups = this.allGroups().map((_) =>
+      _.name.replace(this.configService.get(ENV_KEYS.PREFIX), ''),
+    );
 
-    const parents = allgroups
-      .filter((group) => allgroups.some((ag) => ag.startsWith(`${group}_`)))
-      .map(S.replace('IPG_', ''));
-
-    const groups = allgroups
-      .filter((group) => !parents.includes(group))
-      .map(S.replace('IPG_', ''));
+    const groups = all_groups.filter((grp) =>
+      all_groups.every((g) => g === grp || !g.startsWith(grp)),
+    );
 
     return {
       groups,
       users,
-      parents,
     };
   };
 
@@ -119,11 +115,21 @@ export class AppService {
   };
 
   move = (user: string, group: string): void => {
-    this.shellService.exec(moveUserToGroup(user, `${this.configService.get(ENV_KEYS.PREFIX)}${group}`));
+    this.shellService.exec(
+      moveUserToGroup(
+        user,
+        `${this.configService.get(ENV_KEYS.PREFIX)}${group}`,
+      ),
+    );
   };
 
   remove = (user: string, group: string): void => {
-    this.shellService.exec(removeUserFromGroup(user, `${this.configService.get(ENV_KEYS.PREFIX)}${group}`));
+    this.shellService.exec(
+      removeUserFromGroup(
+        user,
+        `${this.configService.get(ENV_KEYS.PREFIX)}${group}`,
+      ),
+    );
   };
 
   createFolder = (folder: string): void => {
@@ -138,14 +144,21 @@ export class AppService {
   };
 
   createFolderWithRoot = (folder: string, root: string): void => {
-    console.log('appSrv#createFolderWithRoot',`${this.configService.get(ENV_KEYS.SHARE_ROOT)}${root}\\${folder}`,
-    `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}_${folder.toUpperCase()}`,
-    `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}`,
-    this.configService.get(ENV_KEYS.SCRIPT_ROOTS),)
+    console.log(
+      'appSrv#createFolderWithRoot',
+      `${this.configService.get(ENV_KEYS.SHARE_ROOT)}${root}\\${folder}`,
+      `${this.configService.get(
+        ENV_KEYS.PREFIX,
+      )}${root.toUpperCase()}_${folder.toUpperCase()}`,
+      `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}`,
+      this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
+    );
     this.shellService.exec(
       createFolderWithRoot(
         `${this.configService.get(ENV_KEYS.SHARE_ROOT)}${root}\\${folder}`,
-        `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}_${folder.toUpperCase()}`,
+        `${this.configService.get(
+          ENV_KEYS.PREFIX,
+        )}${root.toUpperCase()}_${folder.toUpperCase()}`,
         `${this.configService.get(ENV_KEYS.PREFIX)}${root}`,
         `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}`,
         this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
@@ -154,14 +167,21 @@ export class AppService {
   };
 
   createFolderInRoot = (folder: string, root: string): void => {
-    console.log('appSrv#createFolderInRoot', `${this.configService.get(ENV_KEYS.SHARE_ROOT)}${root}\\${folder}`,
-    `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}_${folder.toUpperCase()}`,
-    `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}`,
-    this.configService.get(ENV_KEYS.SCRIPT_ROOTS))
+    console.log(
+      'appSrv#createFolderInRoot',
+      `${this.configService.get(ENV_KEYS.SHARE_ROOT)}${root}\\${folder}`,
+      `${this.configService.get(
+        ENV_KEYS.PREFIX,
+      )}${root.toUpperCase()}_${folder.toUpperCase()}`,
+      `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}`,
+      this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
+    );
     this.shellService.exec(
       createFolderInRoot(
         `${this.configService.get(ENV_KEYS.SHARE_ROOT)}${root}\\${folder}`,
-        `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}_${folder.toUpperCase()}`,
+        `${this.configService.get(
+          ENV_KEYS.PREFIX,
+        )}${root.toUpperCase()}_${folder.toUpperCase()}`,
         `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}`,
         this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
       ),

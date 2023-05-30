@@ -7,13 +7,16 @@ import {
   Post,
   Redirect,
   Render,
-  InternalServerErrorException
+  InternalServerErrorException,
+  UseFilters,
 } from '@nestjs/common';
 import { AppService } from './services/app.service';
+import { HttpExceptionFilter } from './httpExceptionFilter';
 
 @Controller()
+@UseFilters(new HttpExceptionFilter())
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService) {}
 
   @Get('/')
   root() {

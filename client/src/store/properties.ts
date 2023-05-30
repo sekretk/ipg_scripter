@@ -3,7 +3,7 @@ import { snapshot } from "./snapshot";
 import * as FRP from "@frp-ts/fp-ts";
 import * as RD from "@devexperts/remote-data-ts";
 import { Property } from "@frp-ts/core";
-import { Checked, Department, Page, Snapshot, User } from "../abstract";
+import { Checked, Department, Group, Page, Snapshot, User } from "../abstract";
 import { EMPTY_SNAPSHOT } from "../fixture";
 import { any, get, usersFilter, usersOrd } from "../utils";
 import { not } from "fp-ts/lib/Predicate";
@@ -28,18 +28,40 @@ export const usersProperty: Property<Array<User>> = pipe(snapshotProperty,
             get('users'),
             A.sort(Ord.contramap<string, User>(get('lastLogin'))(S.Ord)))));
 
-export const groupsProperty: Property<Array<string>> = pipe(snapshotProperty, FRP.map(
+export const groupsPlainProperty: Property<Array<string>> = pipe(snapshotProperty, FRP.map(
     flow(
         get('groups'),
         A.sort(S.Ord)
     )));
 
-
-export const parentsProperty: Property<Array<string>> = pipe(snapshotProperty, FRP.map(
+export const groupsProperty: Property<Array<Group>> = pipe(snapshotProperty, FRP.map(
     flow(
-        get('parents'),
-        A.sort(S.Ord)
+        get('groups'),
+        groups => {
+            const result = new Array<Group>();
+
+            groups.forEach(grp => {
+
+                const [root, scd] = grp.split('_');
+
+                if (scd !== undefined) {
+                    const resGrp = result.find(resGrp => typeof resGrp !== 'string' && grp.startsWith(resGrp.parent));
+                    if (resGrp !== undefined && typeof resGrp !== 'string') {
+                        resGrp.items.push(scd)
+                    } else {
+                        result.push({ parent: root, items: [scd] });
+                    }
+                } else {
+                    result.push(root);
+                }
+            })
+
+            return result;
+        }
     )));
+
+export const parentsProperty: Property<Array<string>> = pipe(snapshotProperty, FRP.map(({ groups }) =>
+    groups.filter(grp => groups.filter(g => g.startsWith(grp)).length > 1)));
 
 export const pageProperty: Property<Page> = pipe(persistantProp, FRP.map(get('page')));
 
@@ -48,27 +70,10 @@ export const selectedUserProp: Property<O.Option<User>> = pipe(FRP.sequenceT(per
         ([{ selectedUser }, users]) => users.find(user => user.name === selectedUser)
     ), FRP.map(O.fromNullable));
 
-export const selectedGroupProp: Property<O.Option<string>> = pipe(FRP.sequenceT(persistantProp, groupsProperty),
+export const selectedGroupProp: Property<O.Option<string>> = pipe(FRP.sequenceT(persistantProp, groupsPlainProperty),
     FRP.map(
         ([{ selectedGroup }, groups]) => groups.find(group => group === selectedGroup)
     ), FRP.map(O.fromNullable));
-
-export const selectedUserGroupsProp: Property<Array<Checked<string>>> = pipe(
-    FRP.sequenceT(persistantProp, snapshotProperty),
-    FRP.map(
-        ([{ selectedUser }, { users, groups }]) => {
-            const user = users.find(user => user.name === selectedUser);
-
-            if (user === undefined) {
-                return [];
-            }
-
-            return pipe(groups, A.sort(S.Ord), A.map(group => ({
-                value: group,
-                isChecked: Boolean(user.attachedGroups?.find(userGroup => userGroup === group)) ? true : false
-            })))
-        }
-    ));
 
 export const selectedGroupUsersProp: Property<Array<Checked<User>>> = pipe(
     FRP.sequenceT(selectedGroupProp, snapshotProperty),

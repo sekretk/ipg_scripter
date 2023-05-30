@@ -20,12 +20,24 @@ export const Groups: FC = () => {
         <Container>
             <ListGroup>
                 {
-                    groups.map((group) => (
+                    groups.map((group) => typeof group === 'string' ? (
                         <ListGroup.Item
                             key={group}
                             active={pipe(selected, O.map(groupName => group === groupName), O.getOrElse(constant(false)))}
                             onClick={() => persistantProp.selectGroup(group)}
-                        >{group}</ListGroup.Item>))
+                        >{group}</ListGroup.Item>
+                    ) : (
+                        <>
+                            <p>{group.parent}</p>
+                            {group.items.map(item => (<ListGroup.Item
+                                key={`${group.parent}_${item}`}
+                                active={pipe(selected, O.map(grp => grp === `${group.parent}_${item}`), O.getOrElse(constant(false)))}
+                                onClick={() => persistantProp.selectGroup(`${group.parent}_${item}`)}
+                            >{item}</ListGroup.Item>))}
+                            -----
+                        </>
+                    ))
+
                 }
             </ListGroup>
             <GroupDetails />
