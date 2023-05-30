@@ -86,6 +86,11 @@ export const MainToolBar = memo(() => {
         return;
       }
 
+      if (folder.includes(' ') || parentFolder.includes(' ')) {
+        toast.error('Пробелы нельзя использовать', { autoClose: 5000 });
+        return;
+      }
+
       processProp.set(true);
 
       setIsCreateFolderOpened(false);
@@ -119,6 +124,11 @@ export const MainToolBar = memo(() => {
 
       if (folder.includes('_') || subFolder.includes('_')) {
         toast.error('Подчеркивание нельзя использовать', { autoClose: 5000 });
+        return;
+      }
+
+      if (folder.includes(' ') || subFolder.includes(' ')) {
+        toast.error('Пробелы нельзя использовать', { autoClose: 5000 });
         return;
       }
 
@@ -162,6 +172,12 @@ export const MainToolBar = memo(() => {
       toast.error('Подчеркивание нельзя использовать', { autoClose: 5000 });
       return;
     }
+
+    if (folder.includes(' ')) {
+      toast.error('Пробелы нельзя использовать', { autoClose: 5000 });
+      return;
+    }
+
 
     if (allGroups.includes(folder) ) {
       toast.error('Такой каталог уже есть', { autoClose: 5000 });
