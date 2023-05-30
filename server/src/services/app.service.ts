@@ -144,45 +144,23 @@ export class AppService {
   };
 
   createFolderWithRoot = (folder: string, root: string): void => {
-    console.log(
-      'appSrv#createFolderWithRoot',
-      `${this.configService.get(ENV_KEYS.SHARE_ROOT)}${root}\\${folder}`,
-      `${this.configService.get(
-        ENV_KEYS.PREFIX,
-      )}${root.toUpperCase()}_${folder.toUpperCase()}`,
-      `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}`,
-      this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
-    );
     this.shellService.exec(
       createFolderWithRoot(
         `${this.configService.get(ENV_KEYS.SHARE_ROOT)}${root}\\${folder}`,
-        `${this.configService.get(
-          ENV_KEYS.PREFIX,
-        )}${root.toUpperCase()}_${folder.toUpperCase()}`,
+        `${this.configService.get(ENV_KEYS.PREFIX)}${root}_${folder}`,
         `${this.configService.get(ENV_KEYS.PREFIX)}${root}`,
-        `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}`,
+        `${this.configService.get(ENV_KEYS.PREFIX)}${root}`,
         this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
       ),
     );
   };
 
   createFolderInRoot = (folder: string, root: string): void => {
-    console.log(
-      'appSrv#createFolderInRoot',
-      `${this.configService.get(ENV_KEYS.SHARE_ROOT)}${root}\\${folder}`,
-      `${this.configService.get(
-        ENV_KEYS.PREFIX,
-      )}${root.toUpperCase()}_${folder.toUpperCase()}`,
-      `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}`,
-      this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
-    );
     this.shellService.exec(
       createFolderInRoot(
         `${this.configService.get(ENV_KEYS.SHARE_ROOT)}${root}\\${folder}`,
-        `${this.configService.get(
-          ENV_KEYS.PREFIX,
-        )}${root.toUpperCase()}_${folder.toUpperCase()}`,
-        `${this.configService.get(ENV_KEYS.PREFIX)}${root.toUpperCase()}`,
+        `${this.configService.get(ENV_KEYS.PREFIX)}${root}_${folder}`,
+        `${this.configService.get(ENV_KEYS.PREFIX)}${root}`,
         this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
       ),
     );
