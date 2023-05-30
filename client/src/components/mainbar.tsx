@@ -291,7 +291,7 @@ export const MainToolBar = memo(() => {
           <Form.Control type="text" placeholder="Имя пользователя" value={user.name} onChange={e => setUser({ ...user, name: e.target.value })} />
 
           <Form.Label>Пароль</Form.Label>
-          <Form.Control type="text" placeholder="Пароль" value={user.password} onChange={e => setUser({ ...user, password: e.target.value })} />
+          <Form.Control type="text" placeholder="Пароль от 6 символов" value={user.password} onChange={e => setUser({ ...user, password: e.target.value })} />
 
           <Form.Label>Отделение</Form.Label>
           <Form.Select placeholder="Пароль" value={user.department} onChange={e => setUser({ ...user, department: e.target.value as Department })}>

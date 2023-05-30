@@ -3,6 +3,7 @@ import * as Ord from 'fp-ts/lib/Ord';
 import * as B from 'fp-ts/lib/boolean';
 import * as N from 'fp-ts/lib/number';
 import * as O from 'fp-ts/lib/Option';
+import * as S from 'fp-ts/lib/string';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { constant, flow, pipe } from 'fp-ts/lib/function';
 import {
@@ -84,11 +85,13 @@ export class AppService {
 
     const allgroups = this.allGroups().map((_) => _.name);
 
-    const parents = allgroups.filter((group) =>
-      allgroups.some((ag) => ag.startsWith(`${group}_`)),
-    );
+    const parents = allgroups
+      .filter((group) => allgroups.some((ag) => ag.startsWith(`${group}_`)))
+      .map(S.replace('IPG_', ''));
 
-    const groups = allgroups.filter((group) => !parents.includes(group));
+    const groups = allgroups
+      .filter((group) => !parents.includes(group))
+      .map(S.replace('IPG_', ''));
 
     return {
       groups,
