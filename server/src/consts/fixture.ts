@@ -89,68 +89,82 @@ krm_netolchina|CN=Нетолчина Ольга Юрьевна,OU=CRM,DC=IPG,DC=
 volga_jabkin|CN=Жабкин А.И.,OU=VLG,DC=IPG,DC=LOCAL|True|1601-01-01
 volga_zobov|CN=Зобов С.А.,OU=VLG,DC=IPG,DC=LOCAL|True|1601-01-01`;
 
-export const GROUPS_OUTPUT_01 = `Name                                    SID
-----                                    ---
-Administrators                          S-1-5-32-544
-Users                                   S-1-5-32-545
-Guests                                  S-1-5-32-546
-Print Operators                         S-1-5-32-550
-Backup Operators                        S-1-5-32-551
-Replicator                              S-1-5-32-552
-Remote Desktop Users                    S-1-5-32-555
-Network Configuration Operators         S-1-5-32-556
-Performance Monitor Users               S-1-5-32-558
-Performance Log Users                   S-1-5-32-559
-Distributed COM Users                   S-1-5-32-562
-IIS_IUSRS                               S-1-5-32-568
-Cryptographic Operators                 S-1-5-32-569
-Event Log Readers                       S-1-5-32-573
-Certificate Service DCOM Access         S-1-5-32-574
-RDS Remote Access Servers               S-1-5-32-575
-RDS Endpoint Servers                    S-1-5-32-576
-RDS Management Servers                  S-1-5-32-577
-Hyper-V Administrators                  S-1-5-32-578
-Access Control Assistance Operators     S-1-5-32-579
-Remote Management Users                 S-1-5-32-580
-System Managed Accounts Group           S-1-5-32-581
-Storage Replica Administrators          S-1-5-32-582
-Domain Computers                        S-1-5-21-1403180944-1677745273-223...
-Domain Controllers                      S-1-5-21-1403180944-1677745273-223...
-Schema Admins                           S-1-5-21-1403180944-1677745273-223...
-Enterprise Admins                       S-1-5-21-1403180944-1677745273-223...
-Cert Publishers                         S-1-5-21-1403180944-1677745273-223...
-Domain Admins                           S-1-5-21-1403180944-1677745273-223...
-Domain Users                            S-1-5-21-1403180944-1677745273-223...
-Domain Guests                           S-1-5-21-1403180944-1677745273-223...
-Group Policy Creator Owners             S-1-5-21-1403180944-1677745273-223...
-RAS and IAS Servers                     S-1-5-21-1403180944-1677745273-223...
-Server Operators                        S-1-5-32-549
-Account Operators                       S-1-5-32-548
-Pre-Windows 2000 Compatible Access      S-1-5-32-554
-Incoming Forest Trust Builders          S-1-5-32-557
-Windows Authorization Access Group      S-1-5-32-560
-Terminal Server License Servers         S-1-5-32-561
-Allowed RODC Password Replication Group S-1-5-21-1403180944-1677745273-223...
-Denied RODC Password Replication Group  S-1-5-21-1403180944-1677745273-223...
-Read-only Domain Controllers            S-1-5-21-1403180944-1677745273-223...
-Enterprise Read-only Domain Controllers S-1-5-21-1403180944-1677745273-223...
-Cloneable Domain Controllers            S-1-5-21-1403180944-1677745273-223...
-Protected Users                         S-1-5-21-1403180944-1677745273-223...
-Key Admins                              S-1-5-21-1403180944-1677745273-223...
-Enterprise Key Admins                   S-1-5-21-1403180944-1677745273-223...
-DnsAdmins                               S-1-5-21-1403180944-1677745273-223...
-DnsUpdateProxy                          S-1-5-21-1403180944-1677745273-223...
-RND                                     S-1-5-21-1403180944-1677745273-223...
-_ALL                                    S-1-5-21-1403180944-1677745273-223...
-1C                                      S-1-5-21-1403180944-1677745273-223...
-IPG_Management                          S-1-5-21-1403180944-1677745273-223...
-Controller_Temp130223Sam                S-1-5-21-1403180944-1677745273-223...
-IPG_Production                          S-1-5-21-1403180944-1677745273-223...
-IPG_Controller                          S-1-5-21-1403180944-1677745273-223...
-IPG_Management_M-A-M                    S-1-5-21-1403180944-1677745273-223...
-IPG_Management_M-A-K                    S-1-5-21-1403180944-1677745273-223...
-IPG_Documentation                       S-1-5-21-1403180944-1677745273-223...
-IPG_Buhgalteria                         S-1-5-21-1403180944-1677745273-223...
+export const GROUPS_OUTPUT_01 = `
+Name
+----
+Administrators
+Users
+Guests
+Print Operators
+Backup Operators
+Replicator
+Remote Desktop Users
+Network Configuration Operators
+Performance Monitor Users
+Performance Log Users
+Distributed COM Users
+IIS_IUSRS
+Cryptographic Operators
+Event Log Readers
+Certificate Service DCOM Access
+RDS Remote Access Servers
+RDS Endpoint Servers
+RDS Management Servers
+Hyper-V Administrators
+Access Control Assistance Operators
+Remote Management Users
+System Managed Accounts Group
+Storage Replica Administrators
+Domain Computers
+Domain Controllers
+Schema Admins
+Enterprise Admins
+Cert Publishers
+Domain Admins
+Domain Users
+Domain Guests
+Group Policy Creator Owners
+RAS and IAS Servers
+Server Operators
+Account Operators
+Pre-Windows 2000 Compatible Access
+Incoming Forest Trust Builders
+Windows Authorization Access Group
+Terminal Server License Servers
+Allowed RODC Password Replication Group
+Denied RODC Password Replication Group
+Read-only Domain Controllers
+Enterprise Read-only Domain Controllers
+Cloneable Domain Controllers
+Protected Users
+Key Admins
+Enterprise Key Admins
+DnsAdmins
+DnsUpdateProxy
+RND
+_ALL
+1C
+IPG_Management
+Controller_Temp130223Sam
+IPG_Production
+IPG_Controller
+IPG_Management_M-A-M
+IPG_Management_M-A-K
+IPG_Documentation
+IPG_Buhgalteria
+IPG_АЙПИДЖИ-ЮГ
+IPG_ВОЛГОГРАД
+IPG_КРАСНОДАР_АДЫГЕЯ
+IPG_МОСКВА
+IPG_ПЯТИГОРСК
+IPG_РОСТОВ
+IPG_САНКТ-ПЕТЕРБУРГ
+IPG_СЕВАСТОПОЛЬ
+IPG_ОБЩАЯ
+IPG_СНАБЖЕНИЕ
+IPG_ИП-ЛИИ
+IPG_OLD
+IPG_ТАБЕЛИ
 `;
 
 export const GROUPS_OUTPUT_02 = `name                 SID

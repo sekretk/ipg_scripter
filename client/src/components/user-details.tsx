@@ -96,9 +96,6 @@ export const UserDetails = () => {
             setShowChangePassword(false);
         })
     }, [password]);
-
-    console.log('XXX pass', password)
-
     return (pipe(
         selected,
         O.fold(

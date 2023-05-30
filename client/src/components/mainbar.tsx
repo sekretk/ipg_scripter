@@ -1,13 +1,13 @@
-import { Button, Container, Form, Modal, Nav, NavDropdown, Navbar } from "react-bootstrap"
+import { Accordion, Button, ButtonGroup, Container, Form, Modal, Nav, NavDropdown, Navbar, Row, ToggleButton } from "react-bootstrap"
 import { DEPARTMENTS, Department, PAGES, Page } from "../abstract";
-import { pageProperty, processProp, snapshot } from "../store";
-import { FC, memo, useCallback, useState } from "react";
+import { pageProperty, parentsProperty, processProp, snapshot } from "../store";
+import { FC, memo, useCallback, useEffect, useState } from "react";
 import { persistantProp } from "../store/persistant";
 import { useProperty } from "../hoc/use-property";
 import axios from "axios";
 import { API_URL } from "../config";
 import { toast } from "react-toastify";
-import { string } from "fp-ts";
+import { string as S } from "fp-ts";
 import { unitDescription } from "../utils";
 
 type UserForm = {
@@ -28,6 +28,8 @@ export const MainToolBar = memo(() => {
 
   const currentPage = useProperty(pageProperty);
 
+  const parents = useProperty(parentsProperty);
+
   const pageNavMap: Record<Page, FC<Page>> = {
     groups: (page) => <Nav.Link key={'groups'} active={page === 'groups'} onClick={() => persistantProp.page('groups')}>Группы</Nav.Link>,
     users: (page) => <Nav.Link key={'users'} active={page === 'users'} onClick={() => persistantProp.page('users')}>Пользователи</Nav.Link>
@@ -36,8 +38,13 @@ export const MainToolBar = memo(() => {
   const [isCreateFolderOpened, setIsCreateFolderOpened] = useState(false);
   const [isCreateUserOpened, setIsCreateUserOpened] = useState(false);
   const [folder, setFolder] = useState('');
-
+  const [subFolder, setSubFolder] = useState('');
+  const [parentFolder, setParentFolder] = useState(parents[0] ?? '');
+  const [subFolderOpened, setSubFolderOpened] = useState<'0' | undefined>(undefined);
+  const [currentFolderMode, setCurrentFolderMode] = useState<'second' | 'root'>('root')
   const [user, setUser] = useState<UserForm>(emptyUser);
+
+  const onSubFolderClicked = useCallback(() => setSubFolderOpened(subFolderOpened === '0' ? undefined : '0'), [subFolderOpened])
 
   const handleCloseCreateFolder = useCallback(() => {
     setFolder('');
@@ -50,6 +57,58 @@ export const MainToolBar = memo(() => {
   }, [])
 
   const createFolder = useCallback(() => {
+
+    if (currentFolderMode === 'second') {
+      if (!Boolean(folder) || !Boolean(parentFolder)) {
+        return;
+      }
+
+      processProp.set(true);
+
+      setIsCreateFolderOpened(false);
+
+      axios.post(`${API_URL}users/createFolderInRoot/${folder}/${parentFolder}`).then(() => {
+        toast.info(`Каталог '${folder}' создан в '${parentFolder}'`);
+        processProp.set(false);
+        snapshot.createSecondFolder(folder, parentFolder);
+        setFolder('');
+        setParentFolder(parents[0] ?? '');
+      }).catch((err) => {
+        console.log(`Error on POST users/createFolderInRoot/${folder}/${parentFolder}`, err)
+        toast.error('Ошибка', { autoClose: 5000 });
+        processProp.set(false);
+        setFolder('');
+      })
+
+      return;
+    }
+
+    if (subFolderOpened === '0') {
+      if (!Boolean(folder) || !Boolean(subFolder) || parents.map(S.toUpperCase).includes(folder.toUpperCase())) {
+        return;
+      }
+
+      processProp.set(true);
+
+      setIsCreateFolderOpened(false);
+
+      axios.post(`${API_URL}users/createFolderWithRoot/${subFolder}/${folder}`).then(() => {
+        toast.info(`Каталог '${folder}' и его подкаталог '${subFolder}' созданы`);
+        processProp.set(false);
+        snapshot.createSecondFolder(subFolder, folder);
+        setFolder('');
+        setSubFolder('');
+      }).catch((err) => {
+        console.log(`Error on POST users/createFolderWithRoot/${subFolder}/${folder}`, err)
+        toast.error('Ошибка', { autoClose: 5000 });
+        processProp.set(false);
+        setFolder('');
+        setSubFolder('');
+      })
+
+      return;
+    }
+
     if (!Boolean(folder)) {
       return;
     }
@@ -69,13 +128,13 @@ export const MainToolBar = memo(() => {
       processProp.set(false);
       setFolder('');
     })
-  }, [folder]);
+  }, [currentFolderMode, folder, parentFolder, parents, subFolder, subFolderOpened]);
 
   const createUser = useCallback(() => {
-    if (!Boolean(user.login) 
-    || !Boolean(user.name) 
-    || !Boolean(user.password) 
-    || !/^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,19}$/g.test( user.login)) {
+    if (!Boolean(user.login)
+      || !Boolean(user.name)
+      || !Boolean(user.password)
+      || !/^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,19}$/g.test(user.login)) {
       return;
     }
 
@@ -86,7 +145,7 @@ export const MainToolBar = memo(() => {
     axios.post(`${API_URL}users/createUser`, user).then(() => {
       toast.info(`Пользователь '${user.name}' создан`);
       processProp.set(false);
-      snapshot.createUser({fullname: user.name, name: user.login, unit: user.department});
+      snapshot.createUser({ fullname: user.name, name: user.login, unit: user.department });
       setFolder('');
     }).catch((err) => {
       console.log(`Error on POST users/createUser/${folder}`, err)
@@ -95,6 +154,19 @@ export const MainToolBar = memo(() => {
       setFolder('');
     })
   }, [user]);
+
+  useEffect(() => {
+    setFolder('');
+    setSubFolder('');
+  }, [currentFolderMode])
+
+  useEffect(() => {
+    setCurrentFolderMode('root');
+    setFolder('');
+    setSubFolder('');
+    setParentFolder(parents[0] ?? '')
+    setSubFolderOpened(undefined);
+  }, [isCreateFolderOpened])
 
   return (
     <>
@@ -114,7 +186,7 @@ export const MainToolBar = memo(() => {
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item>
-                  [x] Написать сообщение
+                  [x] Написать всем сообщение
                 </NavDropdown.Item>
                 <NavDropdown.Item>
                   [x] Перезапустить 1С
@@ -133,8 +205,66 @@ export const MainToolBar = memo(() => {
         </Modal.Header>
 
         <Modal.Body>
-          <Form.Label>Имя</Form.Label>
-          <Form.Control type="text" placeholder="название каталога" value={folder} onChange={e => setFolder(e.target.value)} />
+          <Row className="mb-2">
+            <ButtonGroup>
+
+              <ToggleButton
+                type="radio"
+                variant={'outline-danger'}
+                name="radio"
+                value={''}
+                checked={currentFolderMode === 'root'}
+                onClick={() => setCurrentFolderMode('root')}
+              >
+                1 уровня
+              </ToggleButton>
+              <ToggleButton
+                type="radio"
+                variant={'outline-success'}
+                name="radio"
+                value={''}
+                checked={currentFolderMode === 'second'}
+                onClick={() => setCurrentFolderMode('second')}
+              >
+                2 уровня
+              </ToggleButton>
+            </ButtonGroup>
+          </Row>
+
+          {
+            currentFolderMode === 'second' && (
+              <>
+                <Form.Label>Родительский Каталог</Form.Label>
+                <Form.Select aria-label="Default select example" value={parentFolder} onChange={(e => setParentFolder(e.target.value))}>
+                  {
+                    parents.map(parent => <option value={parent} key={parent}>{parent}</option>)
+                  }
+                </Form.Select>
+                <Form.Label>Каталог 2 уровня</Form.Label>
+                <Form.Control type="text" placeholder="каталог 2 уровня" value={folder} onChange={e => setFolder(e.target.value)} />
+              </>
+            )
+          }
+
+          {
+            currentFolderMode === 'root' && (
+              <>
+                <Form.Label>Родительский Каталог</Form.Label>
+                <Form.Control type="text" placeholder="Родительский Каталог" value={folder} onChange={e => setFolder(e.target.value)} />
+
+                <Accordion className="mt-3" activeKey={subFolderOpened} onSelect={onSubFolderClicked} >
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header>Подкаталог</Accordion.Header>
+                    <Accordion.Body>
+                      <Form.Label>Каталог 2 уровня</Form.Label>
+                      <Form.Control type="text" placeholder="каталог 2 уровня" value={subFolder} onChange={e => setSubFolder(e.target.value)} />
+                    </Accordion.Body>
+                  </Accordion.Item>
+                </Accordion>
+              </>
+            )
+          }
+
         </Modal.Body>
 
         <Modal.Footer>
@@ -149,16 +279,16 @@ export const MainToolBar = memo(() => {
 
         <Modal.Body>
           <Form.Label>Логин</Form.Label>
-          <Form.Control type="text" placeholder="Логин латиницей" value={user.login} onChange={e => setUser({...user, login: e.target.value})} />
+          <Form.Control type="text" placeholder="Логин латиницей" value={user.login} onChange={e => setUser({ ...user, login: e.target.value })} />
 
           <Form.Label>Имя</Form.Label>
-          <Form.Control type="text" placeholder="Имя пользователя" value={user.name} onChange={e => setUser({...user, name: e.target.value})} />
+          <Form.Control type="text" placeholder="Имя пользователя" value={user.name} onChange={e => setUser({ ...user, name: e.target.value })} />
 
           <Form.Label>Пароль</Form.Label>
-          <Form.Control type="text" placeholder="Пароль" value={user.password} onChange={e => setUser({...user, password: e.target.value})} />
+          <Form.Control type="text" placeholder="Пароль" value={user.password} onChange={e => setUser({ ...user, password: e.target.value })} />
 
           <Form.Label>Отделение</Form.Label>
-          <Form.Select placeholder="Пароль" value={user.department} onChange={e => setUser({...user, department: e.target.value as Department})}>
+          <Form.Select placeholder="Пароль" value={user.department} onChange={e => setUser({ ...user, department: e.target.value as Department })}>
             {DEPARTMENTS.map(dep => <option key={dep} value={dep}>{unitDescription[dep]}</option>)}
           </Form.Select>
         </Modal.Body>

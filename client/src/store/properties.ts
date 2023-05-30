@@ -34,6 +34,13 @@ export const groupsProperty: Property<Array<string>> = pipe(snapshotProperty, FR
         A.sort(S.Ord)
     )));
 
+
+export const parentsProperty: Property<Array<string>> = pipe(snapshotProperty, FRP.map(
+    flow(
+        get('parents'),
+        A.sort(S.Ord)
+    )));
+
 export const pageProperty: Property<Page> = pipe(persistantProp, FRP.map(get('page')));
 
 export const selectedUserProp: Property<O.Option<User>> = pipe(FRP.sequenceT(persistantProp, usersProperty),

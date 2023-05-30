@@ -14,4 +14,5 @@ export type User = {
 export type Snapshot = {
     users: Array<User>;
     groups: Array<string>;
+    parents: Array<string>;
 }

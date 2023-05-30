@@ -34,6 +34,23 @@ export const createResource = (
 ) =>
   `${scriptRoot}createResource.ps1 "${shareRoot}${folder.toUpperCase()}" "${prefix}${folder.toUpperCase()}"`;
 
+export const createFolderWithRoot = (
+  folder: string,
+  rootFolder: string,
+  scriptRoot: string,
+  shareRoot: string,
+  prefix: string,
+) =>
+  `${scriptRoot}createResourceWithRoot.ps1 "${shareRoot}${rootFolder.toUpperCase()}\\${folder.toUpperCase()}" "${prefix}${rootFolder.toUpperCase()}_${folder.toUpperCase()}" "${shareRoot}${rootFolder.toUpperCase()}" "${prefix}${rootFolder.toUpperCase()}"`;
+
+export const createFolderInRoot = (
+  folder: string,
+  rootFolder: string,
+  scriptRoot: string,
+  shareRoot: string,
+) =>
+  `${scriptRoot}createResourceSecondLevel.ps1  "${shareRoot}${rootFolder.toUpperCase()}\\${folder.toUpperCase()}" ${rootFolder.toUpperCase()}_${folder.toUpperCase()}" "${rootFolder.toUpperCase()}"`;
+
 export const createUser = (
   scriptRoot: string,
   login: string,

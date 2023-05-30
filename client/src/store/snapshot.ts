@@ -3,6 +3,7 @@ import { Snapshot, User } from "../abstract"
 import { RemoteData, failure, initial, isSuccess, pending, success } from "@devexperts/remote-data-ts"
 import * as A from "fp-ts/lib/Array";
 import * as S from "fp-ts/lib/string";
+import { pipe } from "fp-ts/lib/function";
 
 interface ISnapshot extends Property<RemoteData<string, Snapshot>> {
     readonly startLoad: () => void
@@ -13,6 +14,7 @@ interface ISnapshot extends Property<RemoteData<string, Snapshot>> {
     readonly blockUser: (user: string) => void
     readonly unblockUser: (user: string) => void
     readonly createFolder: (folder: string) => void
+    readonly createSecondFolder: (folder: string, root: string) => void
     readonly createUser: (user: Pick<User, 'name' | 'fullname' | 'unit'>) => void
 }
 
@@ -28,6 +30,7 @@ const newSnapshot = (): ISnapshot => {
 
             return success({
                 groups: st.value.groups,
+                parents: st.value.parents,
                 users: st.value.users.map(usr => {
                     if (usr.name === user) {
                         return { ...usr, attachedGroups: A.uniq(S.Eq)([...usr.attachedGroups, group]) }
@@ -45,6 +48,7 @@ const newSnapshot = (): ISnapshot => {
 
             return success({
                 groups: st.value.groups,
+                parents: st.value.parents,
                 users: st.value.users.map(usr => {
                     if (usr.name === user) {
 
@@ -63,6 +67,7 @@ const newSnapshot = (): ISnapshot => {
 
             return success({
                 groups: st.value.groups,
+                parents: st.value.parents,
                 users: st.value.users.map(usr => {
                     if (usr.name === user) {
                         return { ...usr, disabled: true }
@@ -80,6 +85,7 @@ const newSnapshot = (): ISnapshot => {
 
             return success({
                 groups: st.value.groups,
+                parents: st.value.parents,
                 users: st.value.users.map(usr => {
                     if (usr.name === user) {
                         return { ...usr, disabled: false }
@@ -96,7 +102,20 @@ const newSnapshot = (): ISnapshot => {
         if (isSuccess(st)) {
 
             return success({
-                groups: [...st.value.groups, folder],
+                groups: [...st.value.groups, folder.toUpperCase()],
+                parents: st.value.parents,
+                users: st.value.users
+            })
+        }
+        return st;
+    });
+
+    const createSecondFolder: ISnapshot['createSecondFolder'] = (folder, root) => state.modify(st => {
+        if (isSuccess(st)) {
+
+            return success({
+                groups: [...st.value.groups, folder.toUpperCase()],
+                parents: pipe(st.value.parents, A.concat([root.toUpperCase()]), A.uniq(S.Eq)),
                 users: st.value.users
             })
         }
@@ -108,6 +127,7 @@ const newSnapshot = (): ISnapshot => {
 
             return success({
                 groups: st.value.groups,
+                parents: st.value.parents,
                 users: [...st.value.users, {...user, attachedGroups: [], lastLogin: '-', disabled: false} ]
             })
         }
@@ -124,6 +144,7 @@ const newSnapshot = (): ISnapshot => {
         blockUser,
         unblockUser,
         createFolder,
+        createSecondFolder,
         createUser
     }
 }

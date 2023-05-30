@@ -30,7 +30,7 @@ export const GroupDetails = () => {
     const addUserToGroup = useCallback((user: User, group: string) => {
         processProp.set(true);
         axios.post(`${API_URL}users/${user}/addToGroup/${group}`).then(() => {
-            toast.warn(`${user} добавлен в ${group}`);
+            toast.warn(`${user.fullname} добавлен в ${group}`);
             snapshot.moveUserToGroup(user.name, group);
             processProp.set(false);
         }).catch((err) => {

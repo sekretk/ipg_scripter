@@ -79,6 +79,26 @@ export class AppController {
     this.appService.createFolder(folder);
   }
 
+  @Post('/users/createFolderInRoot/:folder/:root')
+  createFolderInRoot(
+    @Param('folder') folder: string,
+    @Param('root') root: string,
+  ) {
+    console.log('[AppController#createFolderinRoot]', folder, root);
+
+    this.appService.createFolderInRoot(folder, root);
+  }
+
+  @Post('/users/createFolderWithRoot/:folder/:root')
+  createFolderWithRoot(
+    @Param('folder') folder: string,
+    @Param('root') root: string,
+  ) {
+    console.log('[AppController#createFolderWithRoot]', folder, root);
+
+    this.appService.createFolderWithRoot(folder, root);
+  }
+
   @Post('/users/createUser')
   createUser(
     @Body()

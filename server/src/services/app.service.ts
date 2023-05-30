@@ -9,6 +9,8 @@ import {
   activateUser,
   changePassword,
   COMMANDS,
+  createFolderInRoot,
+  createFolderWithRoot,
   createResource,
   createUser,
   deactivateUser,
@@ -78,11 +80,19 @@ export class AppService {
     const res = this.shellService.exec(COMMANDS.SNAPSHOT);
 
     const users = toUsersWithGroup(res);
-    const groups = this.allGroups().map((_) => _.name);
+
+    const allgroups = this.allGroups().map((_) => _.name);
+
+    const parents = allgroups.filter((group) =>
+      allgroups.some((ag) => ag.startsWith(`${group}_`)),
+    );
+
+    const groups = allgroups.filter((group) => !parents.includes(group));
 
     return {
       groups,
       users,
+      parents,
     };
   };
 
@@ -119,6 +129,29 @@ export class AppService {
         this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
         this.configService.get(ENV_KEYS.SHARE_ROOT),
         this.configService.get(ENV_KEYS.PREFIX),
+      ),
+    );
+  };
+
+  createFolderWithRoot = (folder: string, root: string): void => {
+    this.shellService.exec(
+      createFolderWithRoot(
+        folder,
+        root,
+        this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
+        this.configService.get(ENV_KEYS.SHARE_ROOT),
+        this.configService.get(ENV_KEYS.PREFIX),
+      ),
+    );
+  };
+
+  createFolderInRoot = (folder: string, root: string): void => {
+    this.shellService.exec(
+      createFolderInRoot(
+        folder,
+        root,
+        this.configService.get(ENV_KEYS.SCRIPT_ROOTS),
+        this.configService.get(ENV_KEYS.SHARE_ROOT),
       ),
     );
   };
