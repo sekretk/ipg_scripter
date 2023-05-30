@@ -13,6 +13,9 @@ cd ..\server\
 call npm i
 call npm run build
 
+
+cd ..
+
 xcopy .\server\public .\server\dist\public /E/H/C/I/Y
 
 
