@@ -7,6 +7,7 @@ import { constant, pipe } from "fp-ts/lib/function";
 import * as O from "fp-ts/lib/Option";
 import { persistantProp } from "../store/persistant";
 import { useProperty } from "../hoc/use-property";
+import React from "react";
 
 const Container = styled.div`
     display: grid;
@@ -20,14 +21,14 @@ export const Groups: FC = () => {
         <Container>
             <ListGroup>
                 {
-                    groups.map((group) => typeof group === 'string' ? (
+                    groups.map((group, idx) => typeof group === 'string' ? (
                         <ListGroup.Item
                             key={group}
                             active={pipe(selected, O.map(groupName => group === groupName), O.getOrElse(constant(false)))}
                             onClick={() => persistantProp.selectGroup(group)}
                         >{group}</ListGroup.Item>
                     ) : (
-                        <>
+                        <React.Fragment key={idx}>
                             <p>{group.parent}</p>
                             {group.items.map(item => (<ListGroup.Item
                                 key={`${group.parent}_${item}`}
@@ -35,7 +36,7 @@ export const Groups: FC = () => {
                                 onClick={() => persistantProp.selectGroup(`${group.parent}_${item}`)}
                             >{item}</ListGroup.Item>))}
                             -----
-                        </>
+                        </React.Fragment>
                     ))
 
                 }

@@ -9,6 +9,7 @@ import axios from "axios";
 import { toast } from 'react-toastify';
 import { API_URL } from "../config";
 import { useProperty } from "../hoc/use-property";
+import React from "react";
 
 const Container = styled.div`
 margin: 10px;`;
@@ -73,10 +74,18 @@ export const UserDetails = () => {
     const [showChangePassword, setShowChangePassword] = useState(false);
     const [password, setPassword] = useState('');
 
+    const [showMessage, setShowMessage] = useState(false);
+    const [message, setMessage] = useState('');
+
     const handleCloseChangePassword = () => {
         setShowChangePassword(false);
         setPassword('');
     };
+
+    const handleCloseMessageDialog = () => {
+        setShowMessage(false);
+        setMessage('');
+    }
 
     const changePassword = useCallback((user: string) => {
         if (!Boolean(password)) {
@@ -125,6 +134,26 @@ export const UserDetails = () => {
         })
     }, []);
 
+    const sendMessage = useCallback((user: string) => {
+        if (!Boolean(message)) {
+            return;
+        }
+
+        processProp.set(true);
+        axios.post(`${API_URL}users/${user}/message/${message}`).then(() => {
+            toast.info(`'${user}' отправлено сообщение`);
+            processProp.set(false);
+            setMessage('');
+            setShowMessage(false);
+        }).catch((err) => {
+            console.log(`Error on POST /users/${user}/message/${message}`, err)
+            toast.error('Ошибка', { autoClose: 5000 });
+            setMessage('');
+            processProp.set(false);
+            setShowMessage(false);
+        })
+    }, [])
+
     return (pipe(
         selected,
         O.fold(
@@ -140,11 +169,12 @@ export const UserDetails = () => {
                         <Button className="m-1" variant="info" onClick={() => setShowChangePassword(true)}>Сменить пароль</Button>
                         <Button className="m-1" variant="danger" onClick={() => logoff(user.name)}>Закрыть сессию</Button>
                         <Button className="m-1" variant="success" onClick={() => signoff(user.name)}>Выйти из сессии</Button>
+                        <Button className="m-1" variant="secondary" onClick={() => setShowMessage(true)}>Отправить сообщение</Button>
                         <ListGroup className="m-1">
                             {
-                                groups.map((group) => typeof group === 'string' ? (
+                                groups.map((group, idx) => typeof group === 'string' ? (
                                     <ListGroup.Item
-                                        key={group}
+                                        key={idx}
                                     >
                                         <Form.Check
                                             type={'checkbox'}
@@ -155,10 +185,9 @@ export const UserDetails = () => {
                                         />
                                     </ListGroup.Item>
                                 ) : (
-                                    <>
+                                    <React.Fragment key={idx}>
                                         <p>{group.parent}</p>
-                                        {group.items.map(item => (<ListGroup.Item
-                                            key={`${group.parent}_${item}`}
+                                        {group.items.map(item => (<ListGroup.Item key={item}
                                         ><Form.Check
                                                 type={'checkbox'}
                                                 checked={user.attachedGroups.includes(`${group.parent}_${item}`)}
@@ -167,7 +196,7 @@ export const UserDetails = () => {
                                                 onChange={() => user.attachedGroups.includes(`${group}_${item}`) ? removeFromGroup(`${group.parent}_${item}`, user.name) : addtoGroup(`${group.parent}_${item}`, user.name)}
                                             /></ListGroup.Item>))}
                                         -----
-                                    </>
+                                    </React.Fragment>
                                 ))
 
                             }
@@ -186,6 +215,22 @@ export const UserDetails = () => {
                         <Modal.Footer>
                             <Button variant="secondary" onClick={handleCloseChangePassword}>Отмена</Button>
                             <Button variant="primary" onClick={() => changePassword(user.name)}>Сменить</Button>
+                        </Modal.Footer>
+                    </Modal>
+
+                    <Modal show={showMessage} onHide={handleCloseMessageDialog}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Отправка сообщения</Modal.Title>
+                        </Modal.Header>
+
+                        <Modal.Body>
+                            <Form.Label>Сообщение для '{user.fullname}'</Form.Label>
+                            <Form.Control type="text" placeholder="текст сообщения" value={message} onChange={e => setMessage(e.target.value)} />
+                        </Modal.Body>
+
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleCloseMessageDialog}>Отмена</Button>
+                            <Button variant="primary" onClick={() => sendMessage(user.name)}>Отправить</Button>
                         </Modal.Footer>
                     </Modal>
                 </>)

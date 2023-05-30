@@ -209,4 +209,15 @@ export class AppController {
       throw new InternalServerErrorException(err);
     }
   }
+
+  @Post('/users/:id/message/:message')
+  message(@Param('id') user: string, @Param('message') message: string) {
+    console.log('[AppController#message]', user, message);
+
+    try {
+      this.appService.message(user, message);
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
+  }
 }

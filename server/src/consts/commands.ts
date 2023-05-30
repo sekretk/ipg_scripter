@@ -69,4 +69,7 @@ export const signoff = (user: string, root: string) =>
   `${root}signoff.ps1 ${user}`;
 
 export const changePassword = (user: string, password: string, root: string) =>
-  `${root}removeUser.ps1 ${user}`;
+  `${root}changePassword.ps1 "${user}" "${password}"`;
+
+export const sendMessage = (user: string, message: string, root: string) =>
+  `${root}message2user.ps1 "${user}" "${message}"`;

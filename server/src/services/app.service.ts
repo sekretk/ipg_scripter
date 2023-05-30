@@ -20,6 +20,7 @@ import {
   logoff,
   moveUserToGroup,
   removeUserFromGroup,
+  sendMessage,
   signoff,
 } from '../consts/commands';
 import { Group, Snapshot, User, UserChangeSet, UserDetailed } from '../dto';
@@ -176,6 +177,12 @@ export class AppService {
   changePassword = (user: string, password: string): void => {
     this.shellService.exec(
       changePassword(user, password, this.envService.scriptRoot),
+    );
+  };
+
+  message = (user: string, message: string): void => {
+    this.shellService.exec(
+      sendMessage(user, message, this.envService.scriptRoot),
     );
   };
 }
