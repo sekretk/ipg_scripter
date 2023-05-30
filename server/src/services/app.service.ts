@@ -53,7 +53,7 @@ export class AppService {
   allGroups = (): Array<Group> =>
     pipe(
       this.shellService.exec(COMMANDS.GET_ALL_GROUPS),
-      toGroupLines(this.configService.get('IPG_')),
+      toGroupLines('IPG_'),
       // toGroupLines(this.configService.get(ENV_KEYS.PREFIX)),
     );
 
