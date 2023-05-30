@@ -81,7 +81,8 @@ export const MainToolBar = memo(() => {
         return;
       }
 
-      if (allGroups.some(grp => grp.startsWith(`${parentFolder}_${folder}`))) {
+      if (allGroups.some(grp => grp.startsWith(`${parentFolder}_${folder}`)) ||
+      allGroups.some(grp => `${parentFolder}_${folder}`.startsWith(grp))) {
         toast.error('Колизия с другим каталогом, начало должно быть уникальным', { autoClose: 5000 });
         return;
       }
@@ -185,7 +186,8 @@ export const MainToolBar = memo(() => {
       return;
     }
 
-    if (allGroups.some(grp => grp.startsWith(folder))) {
+    if (allGroups.some(grp => grp.startsWith(folder)) ||
+    allGroups.some(grp => `${folder}`.startsWith(grp))) {
       toast.error('Колизия с другим каталогом, начало должно быть уникальным', { autoClose: 5000 });
       return;
     }
