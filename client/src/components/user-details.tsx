@@ -135,6 +135,7 @@ export const UserDetails = () => {
     }, []);
 
     const sendMessage = useCallback((user: string) => {
+        console.log('XXX', message)
         if (!Boolean(message)) {
             return;
         }
@@ -152,7 +153,7 @@ export const UserDetails = () => {
             processProp.set(false);
             setShowMessage(false);
         })
-    }, [])
+    }, [message])
 
     return (pipe(
         selected,
@@ -225,7 +226,10 @@ export const UserDetails = () => {
 
                         <Modal.Body>
                             <Form.Label>Сообщение для '{user.fullname}'</Form.Label>
-                            <Form.Control type="text" placeholder="текст сообщения" value={message} onChange={e => setMessage(e.target.value)} />
+                            <Form.Control type="text" placeholder="текст сообщения" value={message} onChange={e => {
+                                console.log('XXX', e.target.value)
+                                setMessage(e.target.value);
+                                }} />
                         </Modal.Body>
 
                         <Modal.Footer>
