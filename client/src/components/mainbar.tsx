@@ -137,7 +137,8 @@ export const MainToolBar = memo(() => {
         return;
       }
 
-      if (allGroups.some(grp => grp.startsWith(`${folder}_${subFolder}`))) {
+      if (allGroups.some(grp => grp.startsWith(`${folder}_${subFolder}`)) ||
+       allGroups.some(grp => `${folder}_${subFolder}`.startsWith(grp))) {
         toast.error('Колизия с другим каталогом, начало должно быть уникальным', { autoClose: 5000 });
         return;
       }
