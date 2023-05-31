@@ -204,15 +204,27 @@ export const MainToolBar = memo(() => {
       processProp.set(false);
       setFolder('');
     })
-  }, [currentFolderMode, folder, parentFolder, parents, subFolder, subFolderOpened]);
+  }, [allGroups, currentFolderMode, folder, parentFolder, parents, subFolder, subFolderOpened]);
 
   const createUser = useCallback(() => {
-    if (!Boolean(user.login)
-      || !Boolean(user.name)
-      || !Boolean(user.password)
-      || user.password?.length < 6
-      || !/^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,19}$/g.test(user.login)) {
-        toast.error('Ошибка ввода', { autoClose: 5000 });
+
+    if (!Boolean(user.login)) {
+      toast.error('Логин не задан', { autoClose: 5000 });
+      return;
+    }
+
+    if (!Boolean(user.name)) {
+      toast.error('Имя не задано', { autoClose: 5000 });
+      return;
+    }
+
+    if (user.password?.length < 6) {
+      toast.error('Пароль должен быть больше 6 символов', { autoClose: 5000 });
+      return;
+    }
+
+    if (!/^(?=.*[A-Za-z0-9]$)[A-Za-z][_A-Za-z\d.-]{0,19}/g.test(user.login)) {
+      toast.error('Логин должен состоять из латинских символов цифр и знака "_"', { autoClose: 5000 });
       return;
     }
 
@@ -233,7 +245,7 @@ export const MainToolBar = memo(() => {
       processProp.set(false);
       setFolder('');
     })
-  }, [user]);
+  }, [folder, user]);
 
   useEffect(() => {
     setFolder('');
