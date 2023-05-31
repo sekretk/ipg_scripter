@@ -208,7 +208,7 @@ export const MainToolBar = memo(() => {
       return;
     }
 
-    if (!/^(?=.*[A-Za-z0-9]$)[A-Za-z][_A-Za-z\d.-]{0,19}/g.test(user.login)) {
+    if (!/^(?=.*[A-Za-z0-9]$)[A-Za-z][_A-Za-z\d.-]{0,19}$/g.test(user.login)) {
       toast.error('Логин должен состоять из латинских символов цифр и знака "_"', { autoClose: 5000 });
       return;
     }
