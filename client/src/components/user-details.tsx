@@ -71,6 +71,19 @@ export const UserDetails = () => {
         })
     }, [])
 
+    const deleteUser = useCallback((user: string) => {
+        processProp.set(true);
+        axios.delete(`${API_URL}users/${user}`).then(() => {
+            toast.info(`${user} удалён`);
+            snapshot.deleteUser(user);
+            processProp.set(false);
+        }).catch((err) => {
+            console.log(`Error on DELETE /users/${user}`, err)
+            toast.error('Ошибка', { autoClose: 5000 });
+            processProp.set(false);
+        })
+    }, [])
+
     const [showChangePassword, setShowChangePassword] = useState(false);
     const [password, setPassword] = useState('');
 
@@ -165,9 +178,17 @@ export const UserDetails = () => {
                         <Badge bg={unitColor[user.unit]}>{unitDescription[user.unit]}</Badge>
                         <p>Логин: {user.name}</p>
                         <p>Дата последнего логина: {user.lastLogin}</p>
-                        {user.disabled && <Button className="m-1" variant="primary" onClick={() => unblockUser(user.name)}>Разбокировать</Button>}
+                        {user.disabled && <>
+                            <Button className="m-1" variant="primary" onClick={() => unblockUser(user.name)}>
+                                Разбокировать
+                            </Button>
+                            <Button className="m-1" variant="primary" onClick={() => deleteUser(user.name)}>
+                                Удалить
+                            </Button>
+                        </>}
                         {!user.disabled && <Button className="m-1" variant="warning" onClick={() => blockUser(user.name)}>Заблокировать</Button>}
                         <Button className="m-1" variant="info" onClick={() => setShowChangePassword(true)}>Сменить пароль</Button>
+
                         <Button className="m-1" variant="danger" onClick={() => logoff(user.name)}>Закрыть сессию</Button>
                         <Button className="m-1" variant="success" onClick={() => signoff(user.name)}>Выйти из сессии</Button>
                         <Button className="m-1" variant="secondary" onClick={() => setShowMessage(true)}>Отправить сообщение</Button>
@@ -194,7 +215,7 @@ export const UserDetails = () => {
                                                 checked={user.attachedGroups.includes(`${group.parent}_${item}`)}
                                                 label={item}
                                                 style={({ 'cursor': 'pointer' })}
-                                                onChange={() => user.attachedGroups.includes(`${group}_${item}`) ? removeFromGroup(`${group.parent}_${item}`, user.name) : addtoGroup(`${group.parent}_${item}`, user.name)}
+                                                onChange={() => user.attachedGroups.includes(`${group.parent}_${item}`) ? removeFromGroup(`${group.parent}_${item}`, user.name) : addtoGroup(`${group.parent}_${item}`, user.name)}
                                             /></ListGroup.Item>))}
                                         -----
                                     </React.Fragment>
@@ -229,7 +250,7 @@ export const UserDetails = () => {
                             <Form.Control type="text" placeholder="текст сообщения" value={message} onChange={e => {
                                 console.log('XXX', e.target.value)
                                 setMessage(e.target.value);
-                                }} />
+                            }} />
                         </Modal.Body>
 
                         <Modal.Footer>

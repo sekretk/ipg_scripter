@@ -81,11 +81,6 @@ export const MainToolBar = memo(() => {
         return;
       }
 
-      if (allGroups.some(grp => grp.startsWith(`${parentFolder}_${folder}`))) {
-        toast.error('Колизия с другим каталогом, начало должно быть уникальным', { autoClose: 5000 });
-        return;
-      }
-
       if (folder.includes(' ') || parentFolder.includes(' ')) {
         toast.error('Пробелы нельзя использовать', { autoClose: 5000 });
         return;
@@ -137,11 +132,6 @@ export const MainToolBar = memo(() => {
         return;
       }
 
-      if (allGroups.some(grp => grp.startsWith(`${folder}_${subFolder}`))) {
-        toast.error('Колизия с другим каталогом, начало должно быть уникальным', { autoClose: 5000 });
-        return;
-      }
-
       processProp.set(true);
 
       setIsCreateFolderOpened(false);
@@ -181,11 +171,6 @@ export const MainToolBar = memo(() => {
 
     if (allGroups.includes(folder) ) {
       toast.error('Такой каталог уже есть', { autoClose: 5000 });
-      return;
-    }
-
-    if (allGroups.some(grp => grp.startsWith(folder))) {
-      toast.error('Колизия с другим каталогом, начало должно быть уникальным', { autoClose: 5000 });
       return;
     }
 
