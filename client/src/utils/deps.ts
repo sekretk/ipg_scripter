@@ -5,7 +5,8 @@ export const unitDescription: Record<Department, string> = {
     MSK: 'Москва',
     RND: 'Ростов-на-Дону',
     SPB: 'Санкт Петербург',
-    VLG: 'Волгоград'
+    VLG: 'Волгоград',
+    KRN: 'Краснодар'
 }
 
 export const unitColor: Record<Department, string> = {
@@ -13,5 +14,6 @@ export const unitColor: Record<Department, string> = {
     MSK: 'secondary',
     RND: 'success',
     SPB: 'danger',
-    VLG: 'warning'
+    VLG: 'warning',
+    KRN: 'primary'
 }

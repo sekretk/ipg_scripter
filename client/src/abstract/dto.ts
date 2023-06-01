@@ -1,4 +1,4 @@
-export const DEPARTMENTS = ['RND', 'MSK', 'SPB', 'CRM', 'VLG'] as const;
+export const DEPARTMENTS = ['RND', 'MSK', 'SPB', 'CRM', 'VLG', 'KRN'] as const;
 
 export type Department = typeof DEPARTMENTS[number];
 

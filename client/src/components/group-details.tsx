@@ -16,12 +16,12 @@ export const GroupDetails = () => {
 
     const removeUserFromGroup = useCallback((user: User, group: string) => {
         processProp.set(true);
-        axios.post(`${API_URL}users/${user}/removeFromGroup/${group}`).then(() => {
+        axios.post(`${API_URL}users/${user.name}/removeFromGroup/${group}`).then(() => {
             toast.info(`${user} удалён из ${group}`);
             snapshot.removeUserFromGroup(user.name, group);
             processProp.set(false);
         }).catch((err) => {
-            console.log(`Error on POST /users/${user}/addToGroup/${group}`, err)
+            console.log(`Error on POST /users/${user.name}/addToGroup/${group}`, err)
             toast.error('Ошибка', { autoClose: 5000 });
             processProp.set(false);
         })
