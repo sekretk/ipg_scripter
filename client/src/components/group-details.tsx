@@ -29,12 +29,12 @@ export const GroupDetails = () => {
 
     const addUserToGroup = useCallback((user: User, group: string) => {
         processProp.set(true);
-        axios.post(`${API_URL}users/${user}/addToGroup/${group}`).then(() => {
+        axios.post(`${API_URL}users/${user.name}/addToGroup/${group}`).then(() => {
             toast.warn(`${user.fullname} добавлен в ${group}`);
             snapshot.moveUserToGroup(user.name, group);
             processProp.set(false);
         }).catch((err) => {
-            console.log(`Error on POST /users/${user}/addToGroup/${group}`, err)
+            console.log(`Error on POST /users/${user.name}/addToGroup/${group}`, err)
             toast.error('Ошибка', { autoClose: 5000 });
             processProp.set(false);
         })
